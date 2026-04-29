@@ -13,9 +13,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 include_directories(Include)
 
 # Sub-folders
-# Will need a CMakeLists in each to work
-# add_subdirectory(Engine)
-# add_subdirectory(Editor)
+add_subdirectory(Engine)
+add_subdirectory(Editor)
 
 # Log
 message(STATUS "Engine project initialized. Root: ${CMAKE_SOURCE_DIR}")
