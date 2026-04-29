@@ -1,0 +1,15 @@
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# CMake & Build
+cmake-build-debug/
+cmake-build-release/
+Build/
+bin/
+obj/
+
+# OS specific
+.DS_Store
+Thumbs.db
