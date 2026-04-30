@@ -1,4 +1,5 @@
 #include "main.h"
+#include "window.h"
 
 namespace Editor {
 
@@ -23,7 +24,17 @@ namespace Editor {
 
 // OS entry point
 int main() {
-    Editor::EditorApp app;
-    app.Run();
+    // 1. Create the window instance
+    Daedalus::EditorWindow editor(1280, 720, "Daedalus Engine Editor - v1.0.0");
+
+    // 2. The Main Loop
+    while (!editor.ShouldClose()) {
+        // Handle input events (clicks, keypresses)
+        editor.PollEvents();
+
+        // 3. Rendering logic will go here eventually
+        // For now, it's just a blank, responsive window
+    }
+
     return 0;
 }

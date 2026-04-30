@@ -10,6 +10,9 @@ Build/
 bin/
 obj/
 
+# vcpkg
+vcpkg.json.user
+
 # OS specific
 .DS_Store
 Thumbs.db

@@ -1,10 +1,16 @@
+find_package(glfw3 REQUIRED)
+
 set(EDITOR_SOURCES
         main.cpp
         main.h
+        window.cpp
+        window.h
 )
 
 # Executable
 add_executable(EditorApp ${EDITOR_SOURCES})
+# To hide the console, change add_executable to:
+# add_executable(EditorApp WIN32 ${EDITOR_SOURCES})
 
 # C++ Standard
 set_target_properties(EditorApp PROPERTIES
@@ -19,8 +25,21 @@ target_include_directories(EditorApp
             ${CMAKE_SOURCE_DIR}/Include
 )
 
+if(WIN32)
+    target_link_options(EditorApp
+            PRIVATE
+                "-static-libgcc"
+                "-static-libstdc++"
+                "-static"
+    )
+endif()
+
 # Libraries
-target_link_libraries(EditorApp PRIVATE Engine)
+target_link_libraries(EditorApp
+        PRIVATE
+            Engine
+            glfw
+)
 
 # Output to ../Build/
 set_target_properties(EditorApp PROPERTIES
