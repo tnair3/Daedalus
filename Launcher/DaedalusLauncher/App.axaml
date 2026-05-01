@@ -2,14 +2,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="DaedalusLauncher.App"
              xmlns:local="using:DaedalusLauncher"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Dark">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
-    <Application.DataTemplates>
-        <local:ViewLocator/>
-    </Application.DataTemplates>
-  
-    <Application.Styles>
-        <FluentTheme />
-    </Application.Styles>
+            <Application.Resources>
+                <ResourceDictionary>
+                    <FontFamily x:Key="SoraFont">avares://DaedalusLauncher/Assets/Fonts#Sora</FontFamily>
+                    
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceInclude Source="avares://DaedalusLauncher/Assets/Icons.axaml"/>
+                    </ResourceDictionary.MergedDictionaries>
+                    
+                    <SolidColorBrush x:Key="PrimaryBackground">#1e1e1e</SolidColorBrush>
+                    <SolidColorBrush x:Key="SidebarBackground">#2b2b2b</SolidColorBrush>
+                    <SolidColorBrush x:Key="PrimaryText">#CFCFCF</SolidColorBrush>
+                    <SolidColorBrush x:Key="SecondaryText">#8e8e8e</SolidColorBrush>
+                    <SolidColorBrush x:Key="PrimaryHoverText">White</SolidColorBrush>
+                    <SolidColorBrush x:Key="SidebarHoverBackground">#333333</SolidColorBrush>
+                </ResourceDictionary>
+            </Application.Resources>
+             
+            <Application.DataTemplates>
+                <local:ViewLocator/>
+            </Application.DataTemplates>
+
+            <Application.Styles>
+                <FluentTheme />
+                <StyleInclude Source="Styles/AppDefaultStyles.axaml"></StyleInclude>
+            </Application.Styles>
 </Application>
