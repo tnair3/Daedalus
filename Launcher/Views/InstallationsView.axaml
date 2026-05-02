@@ -12,7 +12,7 @@
             <Grid RowDefinitions="Auto, *">
                 <!-- Page Header -->
                 <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
-                    <TextBlock Grid.Column="0" Text="Installations" FontSize="24" Margin="10"/>
+                    <TextBlock Grid.Column="0" Text="Installations" Classes="heading"/>
                     <Button Grid.Column="1" Command="{Binding CheckVersionsAsync}" Classes="refreshButton">
                         <PathIcon Data="{StaticResource Refresh}"/>
                     </Button>
@@ -26,7 +26,7 @@
                             <DockPanel LastChildFill="True">
                                 <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
                                     <Button Classes="updateButton" IsVisible="{Binding IsLauncherUpdateAvailable}"/>
-                                    <TextBlock Classes="upToDate" IsVisible="{Binding !IsLauncherUpdateAvailable}"/>
+                                    <TextBlock Classes="upToDate" Text="{Binding Status}" IsVisible="{Binding !IsLauncherUpdateAvailable}"/>
                                 </Grid>
                                 <StackPanel VerticalAlignment="Center">
                                     <TextBlock Text="Daedalus Launcher" FontSize="18" FontWeight="Bold"/>
@@ -40,7 +40,7 @@
                             <DockPanel LastChildFill="True">
                                 <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
                                     <Button Classes="updateButton" IsVisible="{Binding IsEditorUpdateAvailable}"/>
-                                    <TextBlock Classes="upToDate" IsVisible="{Binding !IsEditorUpdateAvailable}"/>
+                                    <TextBlock Classes="upToDate" Text="{Binding Status}" IsVisible="{Binding !IsEditorUpdateAvailable}"/>
                                 </Grid>
                                 <StackPanel VerticalAlignment="Center">
                                     <TextBlock Text="Daedalus Project Editor" FontSize="18" FontWeight="Bold"/>
@@ -54,7 +54,7 @@
                             <DockPanel LastChildFill="True">
                                 <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
                                     <Button Classes="updateButton" IsVisible="{Binding IsEngineUpdateAvailable}"/>
-                                    <TextBlock Classes="upToDate" IsVisible="{Binding !IsEngineUpdateAvailable}"/>
+                                    <TextBlock Classes="upToDate" Text="{Binding Status}" IsVisible="{Binding !IsEngineUpdateAvailable}"/>
                                 </Grid>
                                 <StackPanel VerticalAlignment="Center">
                                     <TextBlock Text="Daedalus Engine" FontSize="18" FontWeight="Bold"/>

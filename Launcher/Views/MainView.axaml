@@ -1,16 +1,19 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:DaedalusLauncher.ViewModels"
-        xmlns:view="using:DaedalusLauncher.Views"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:models="clr-namespace:DaedalusLauncher.Models"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        Width="800" Height="450"
-        x:Class="DaedalusLauncher.Views.MainView"
-        x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="Daedalus Engine Launcher">
+<rxui:ReactiveWindow x:TypeArguments="vm:MainViewModel"
+                     xmlns="https://github.com/avaloniaui"
+                     xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:vm="using:DaedalusLauncher.ViewModels"
+                     xmlns:view="using:DaedalusLauncher.Views"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:models="clr-namespace:DaedalusLauncher.Models"
+                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                     Width="800" Height="450"
+                     x:Class="DaedalusLauncher.Views.MainView"
+                     x:DataType="vm:MainViewModel"
+                     CanResize="False"
+                     Icon="/Assets/avalonia-logo.ico"
+                     Title="Daedalus Engine Launcher">
         
         <Grid ColumnDefinitions="200, *">
                 <!-- Sidebar -->
@@ -58,13 +61,13 @@
                                 
                                 <!-- Utility Navigation -->
                                 <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
-                                        <Button Classes="sidebar">
+                                        <Button Classes="sidebar" Command="{Binding OpenSettings}">
                                                 <PathIcon Data="{StaticResource NavigationSettings}"/>
                                         </Button>
-                                        <Button Classes="sidebar">
+                                        <Button Classes="sidebar" Command="{Binding OpenReport}">
                                                 <PathIcon Data="{StaticResource NavigationBugReport}"/>
                                         </Button>
-                                        <Button Classes="sidebar">
+                                        <Button Classes="sidebar" Command="{Binding OpenAbout}">
                                                 <PathIcon Data="{StaticResource NavigationAbout}"/>
                                         </Button>
                                 </StackPanel>
@@ -75,7 +78,6 @@
                 <ContentControl Grid.Column="1"><view:ProjectsView IsVisible="{Binding IsProjectsTab}"/></ContentControl>
                 <ContentControl Grid.Column="1"><view:InstallationsView Content="{Binding Installations}" IsVisible="{Binding IsInstallationsTab}"/></ContentControl>
                 <ContentControl Grid.Column="1"><view:LearnView IsVisible="{Binding IsLearnTab}"/></ContentControl>
-                
         </Grid>
 
-</Window>
+</rxui:ReactiveWindow>

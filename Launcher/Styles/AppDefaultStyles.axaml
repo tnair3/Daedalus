@@ -101,10 +101,14 @@
         <Setter Property="RenderTransform" Value="scale(1.1)"/>
     </Style>
     
+    <Style Selector="TextBlock.heading">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Margin" Value="10"/>
+    </Style>
+    
     <Style Selector="TextBlock.upToDate">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
-        <Setter Property="Text" Value="Up to date"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
     </Style>
     

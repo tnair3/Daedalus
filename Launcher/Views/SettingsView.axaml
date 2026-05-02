@@ -1,0 +1,23 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="425" d:DesignHeight="470"
+        Width="425" Height="470"
+        x:Class="DaedalusLauncher.Views.SettingsView"
+        CanResize="False"
+        Title="Settings">
+    
+    <Grid ColumnDefinitions="125, 1, *" Background="{StaticResource PrimaryBackground}">
+        <Border Grid.Column="0" Padding="10">
+            <Grid/>
+        </Border>
+        
+        <Border Grid.Column="1" Width="1" Background="{StaticResource SidebarBackground}" VerticalAlignment="Stretch"/>
+        
+        <Border Grid.Column="2" Padding="10">
+            <Grid/>
+        </Border>
+    </Grid>
+    
+</Window>

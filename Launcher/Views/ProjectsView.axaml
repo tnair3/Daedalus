@@ -12,7 +12,7 @@
                 <StackPanel Grid.Row="0">
                     <!-- Page Title, Search Bar, and Create New Button-->
                     <Grid ColumnDefinitions="*, Auto">
-                        <TextBlock Grid.Column="0" Text="Projects" FontSize="24" Margin="10"/>
+                        <TextBlock Grid.Column="0" Text="Projects" Classes="heading"/>
                 
                         <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10" Spacing="15">
                             <AutoCompleteBox Classes="searchBox" VerticalAlignment="Center" CornerRadius="20" Width="250"/>

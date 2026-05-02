@@ -5,11 +5,20 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DaedalusLauncher.Views.LearnView">
     
-    <Grid Background="{StaticResource PrimaryBackground}" RowDefinitions="Auto, *">
-        <TextBlock Grid.Row="0" Text="Learn" FontSize="24" Margin="20"/>
-        <ScrollViewer Grid.Row="1">
-            <TextBlock Text="Nothing to learn yet..." VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.5"/>
-        </ScrollViewer>
+    <Grid Background="{StaticResource PrimaryBackground}">
+        <Border Padding="10">
+            <Grid RowDefinitions="Auto, *">
+                <!-- Page Header -->
+                <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
+                    <TextBlock Grid.Column="0" Text="Learn" Classes="heading"/>
+                </Grid>
+                
+                <!-- Main Content -->
+                <ScrollViewer Grid.Row="1">
+                    <TextBlock Text="Nothing to learn yet..." VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.5"/>
+                </ScrollViewer>
+            </Grid>
+        </Border>
     </Grid>
     
 </UserControl>
