@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DaedalusLauncher.Models;
@@ -11,6 +12,8 @@ public partial class MainViewModel : ViewModelBase
         Assembly.GetExecutingAssembly()
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
             .InformationalVersion ?? "1.0.0";
+    
+    public InstallationsViewModel Installations { get; } = new();
 
     [ObservableProperty] 
     [NotifyPropertyChangedFor(nameof(IsProjectsTab))]
@@ -19,8 +22,13 @@ public partial class MainViewModel : ViewModelBase
     private TabType _selectedTab = TabType.Projects;
 
     [RelayCommand]
-    public void Navigate(TabType targetTab)
+    public async Task Navigate(TabType targetTab)
     {
+        if (targetTab == TabType.Installations && SelectedTab != TabType.Installations)
+        {
+            await Installations.CheckVersionsAsync();
+        }
+        
         SelectedTab = targetTab;
     }
 

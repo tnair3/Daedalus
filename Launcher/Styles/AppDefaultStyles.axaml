@@ -12,6 +12,12 @@
         <Setter Property="FontFamily" Value="{StaticResource SoraFont}"/>
     </Style>
     
+    <Style Selector="Border.appVersions">
+        <Setter Property="Background" Value="{StaticResource SecondaryBackground}"/>
+        <Setter Property="Padding" Value="15"/>
+        <Setter Property="CornerRadius" Value="10"/>
+    </Style>
+    
     <Style Selector="Button /template/ ContentPresenter">
         <Setter Property="Transitions">
             <Transitions>
@@ -58,6 +64,48 @@
     <Style Selector="Button.createButton:pressed /template/ ContentPresenter">
         <Setter Property="Foreground" Value="{DynamicResource PrimaryHoverText}"/>
         <Setter Property="Background" Value="#389615"/>
+    </Style>
+    
+    <Style Selector="Button.updateButton">
+        <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+        <Setter Property="Content" Value="Update Now"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="CornerRadius" Value="20"/>
+    </Style>
+    
+    <Style Selector="Button.updateButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPointerOver}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryHoverText}"/>
+    </Style>
+    
+    <Style Selector="Button.updateButton:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPointerOver}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryHoverText}"/>
+    </Style>
+    
+    <Style Selector="Button.refreshButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+        <Setter Property="RenderTransform" Value="scale(1)"/>
+    </Style>
+    
+    <Style Selector="Button.refreshButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryHoverText}"/>
+    </Style>
+    
+    <Style Selector="Button.refreshButton:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryHoverText}"/>
+        <Setter Property="RenderTransform" Value="scale(1.1)"/>
+    </Style>
+    
+    <Style Selector="TextBlock.upToDate">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+        <Setter Property="Text" Value="Up to date"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
     </Style>
     
     <Style Selector="Label.sidebar">

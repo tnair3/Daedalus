@@ -73,7 +73,7 @@
 
                 <!-- Main Content Area -->
                 <ContentControl Grid.Column="1"><view:ProjectsView IsVisible="{Binding IsProjectsTab}"/></ContentControl>
-                <ContentControl Grid.Column="1"><view:InstallationsView IsVisible="{Binding IsInstallationsTab}"/></ContentControl>
+                <ContentControl Grid.Column="1"><view:InstallationsView Content="{Binding Installations}" IsVisible="{Binding IsInstallationsTab}"/></ContentControl>
                 <ContentControl Grid.Column="1"><view:LearnView IsVisible="{Binding IsLearnTab}"/></ContentControl>
                 
         </Grid>
