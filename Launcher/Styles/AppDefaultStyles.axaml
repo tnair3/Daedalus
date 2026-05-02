@@ -12,19 +12,6 @@
         <Setter Property="FontFamily" Value="{StaticResource SoraFont}"/>
     </Style>
     
-    <Style Selector="Button.sidebar">
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
-        <Setter Property="Background" Value="{DynamicResource SidebarBackground}"/>
-        <Setter Property="CornerRadius" Value="15"/>
-    </Style>
-    
-        
-    <Style Selector="Button.sidebar[Tag=True] /template/ ContentPresenter">
-        <Setter Property="Foreground" Value="{DynamicResource PrimaryHoverText}"/>
-        <Setter Property="Background" Value="{DynamicResource SidebarHoverBackground}"/>
-    </Style>
-    
     <Style Selector="Button /template/ ContentPresenter">
         <Setter Property="Transitions">
             <Transitions>
@@ -32,6 +19,18 @@
                 <BrushTransition Property="Foreground" Duration="0:0:0.1"/>
             </Transitions>
         </Setter>
+    </Style>
+    
+    <Style Selector="Button.sidebar">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+        <Setter Property="Background" Value="{DynamicResource SidebarBackground}"/>
+        <Setter Property="CornerRadius" Value="15"/>
+    </Style>
+        
+    <Style Selector="Button.sidebar[Tag=True] /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryHoverText}"/>
+        <Setter Property="Background" Value="{DynamicResource SidebarHoverBackground}"/>
     </Style>
     
     <Style Selector="Button.sidebar:pointerover /template/ ContentPresenter">
@@ -44,6 +43,23 @@
         <Setter Property="Background" Value="{DynamicResource SidebarHoverBackground}"/>
     </Style>
     
+    <Style Selector="Button.createButton">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+        <Setter Property="Background" Value="#279100"/>
+        <Setter Property="CornerRadius" Value="15"/>
+    </Style>
+    
+    <Style Selector="Button.createButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryHoverText}"/>
+        <Setter Property="Background" Value="#389615"/>
+    </Style>
+    
+    <Style Selector="Button.createButton:pressed /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryHoverText}"/>
+        <Setter Property="Background" Value="#389615"/>
+    </Style>
+    
     <Style Selector="Label.sidebar">
         <Setter Property="Padding" Value="10, 0, 0, 0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -51,5 +67,19 @@
     
     <Style Selector="PathIcon">
         <Setter Property="Width" Value="14"/>
+    </Style>
+    
+    <Style Selector="AutoCompleteBox.searchBox">
+        <Setter Property="Background" Value="{DynamicResource AutoCompleteBackground}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+    
+    <Style Selector="AutoCompleteBox.searchBox /template/ TextBox#PART_TextBox">
+        <Setter Property="PlaceholderText" Value="Search"/>
+        <Setter Property="InnerLeftContent">
+            <Template>
+                <PathIcon Data="{StaticResource Search}" Width="15" Height="15" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            </Template>
+        </Setter>
     </Style>
 </Styles>

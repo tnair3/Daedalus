@@ -5,11 +5,36 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DaedalusLauncher.Views.ProjectsView">
     
-    <Grid Background="{StaticResource PrimaryBackground}" RowDefinitions="Auto, *">
-        <TextBlock Grid.Row="0" Text="Projects" FontSize="24" Margin="20"/>
-        <ScrollViewer Grid.Row="1">
-                <TextBlock Text="No projects found yet..." VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.5"/>
-        </ScrollViewer>
+    <Grid Background="{StaticResource PrimaryBackground}">
+        <Border Padding="10">
+            <Grid RowDefinitions="Auto, *">
+                <!-- Page Header -->
+                <StackPanel Grid.Row="0">
+                    <!-- Page Title, Search Bar, and Create New Button-->
+                    <Grid ColumnDefinitions="*, Auto">
+                        <TextBlock Grid.Column="0" Text="Projects" FontSize="24" Margin="10"/>
+                
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10" Spacing="15">
+                            <AutoCompleteBox Classes="searchBox" VerticalAlignment="Center" CornerRadius="20" Width="250"/>
+                            
+                            <Button Background="Green" CornerRadius="12" Classes="createButton">
+                                <StackPanel Orientation="Horizontal">
+                                    <PathIcon Data="{StaticResource Add}"/>
+                                    <Label Content="Create New"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+            
+                    <!-- Projects Table Header Row -->
+                </StackPanel>
+        
+                <!-- Projects Content -->
+                <ScrollViewer Grid.Row="1">
+                    <TextBlock Text="No projects found yet..." VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.5"/>
+                </ScrollViewer>
+            </Grid>
+        </Border>
     </Grid>
     
 </UserControl>
