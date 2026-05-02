@@ -1,18 +1,20 @@
 {
-  "launcher": {
-    "name": "Daedalus Launcher",
-    "version": "1.0.0-alpha.1",
-    "download_url": null
+  "Launcher": {
+    "Name": "",
+    "Version": "1.0.0-alpha.1",
+    "DownloadUrl": null,
+    "RequiredEngine": null
   },
-  "editor": {
-    "name": "Daedalus Project Editor",
-    "version": "1.0.0-alpha.1",
-    "required_engine": "1.0.0-alpha.1",
-    "download_url": null
+  "Editor": {
+    "Name": "",
+    "Version": "1.0.0-alpha.1",
+    "DownloadUrl": null,
+    "RequiredEngine": "1.0.0-alpha.1"
   },
-  "engine": {
-    "name": "Daedalus Engine",
-    "version": "1.0.0-alpha.1",
-    "download_url": null
+  "Engine": {
+    "Name": "",
+    "Version": "1.0.0-alpha.1",
+    "DownloadUrl": null,
+    "RequiredEngine": null
   }
 }
