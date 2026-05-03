@@ -1,20 +1,40 @@
 {
-  "Launcher": {
-    "Name": "",
-    "Version": "1.0.0-alpha.1",
-    "DownloadUrl": null,
-    "RequiredEngine": null
+  "last_updated": null,
+  "maintenance_tools": {
+    "win-x64": {
+      "version": null,
+      "url": null,
+      "checksum": null
+    },
+    "linux-x64": {
+      "version": null,
+      "url": null,
+      "checksum": null
+    }
   },
-  "Editor": {
-    "Name": "",
-    "Version": "1.0.0-alpha.1",
-    "DownloadUrl": null,
-    "RequiredEngine": "1.0.0-alpha.1"
-  },
-  "Engine": {
-    "Name": "",
-    "Version": "1.0.0-alpha.1",
-    "DownloadUrl": null,
-    "RequiredEngine": null
+  "modules": {
+    "launcher": {
+      "version": "1.0.0-alpha.1",
+      "release_date": null,
+      "download_url": null,
+      "critical_update": false
+    },
+    "editor": {
+      "version": "1.0.0-alpha.1",
+      "release_date": null,
+      "download_url": null,
+      "critical_update": false
+    },
+    "engine": {
+      "version": "1.0.0-alpha.1",
+      "release_date": null,
+      "download_url": null,
+      "critical_update": true
+    },
+    "books": {
+      "version": "0000-00-00",
+      "release_date": null,
+      "download_url": null
+    }
   }
 }
