@@ -21,7 +21,7 @@
                 <!-- Installations Content -->
                 <ScrollViewer Grid.Row="1">
                     <StackPanel Spacing="15" Margin="10">
-                        <!-- Launcher Module -->
+                        <!-- Launcher -->
                         <Border Classes="appVersions">
                             <DockPanel LastChildFill="True">
                                 <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
@@ -35,7 +35,7 @@
                             </DockPanel>
                         </Border>
 
-                        <!-- Editor Module -->
+                        <!-- Project Editor -->
                         <Border Classes="appVersions">
                             <DockPanel LastChildFill="True">
                                 <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
@@ -49,7 +49,7 @@
                             </DockPanel>
                         </Border>
 
-                        <!-- Engine Module -->
+                        <!-- Engine -->
                         <Border Classes="appVersions">
                             <DockPanel LastChildFill="True">
                                 <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
@@ -59,6 +59,20 @@
                                 <StackPanel VerticalAlignment="Center">
                                     <TextBlock Text="Daedalus Engine" FontSize="18" FontWeight="Bold"/>
                                     <TextBlock Text="{Binding EngineVersion, StringFormat='Installed Version: {0}'}" Opacity="0.7"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        
+                        <!-- Books -->
+                        <Border Classes="appVersions">
+                            <DockPanel LastChildFill="True">
+                                <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
+                                    <Button Classes="updateButton" IsVisible="{Binding IsBooksUpdateAvailable}"/>
+                                    <TextBlock Classes="upToDate" Text="{Binding Status}" IsVisible="{Binding !IsBooksUpdateAvailable}"/>
+                                </Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Books" FontSize="18" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding BooksVersion, StringFormat='Installed Version: {0}'}" Opacity="0.7"/>
                                 </StackPanel>
                             </DockPanel>
                         </Border>
