@@ -18,6 +18,14 @@
         <Setter Property="CornerRadius" Value="10"/>
     </Style>
     
+    <Style Selector="Border.tableHeader">
+        <Setter Property="Background" Value="{DynamicResource SidebarBackground}"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="CornerRadius" Value="16 16 0 0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Margin" Value="0 10 0 0"/>
+    </Style>
+    
     <Style Selector="Button /template/ ContentPresenter">
         <Setter Property="Transitions">
             <Transitions>
@@ -26,7 +34,14 @@
             </Transitions>
         </Setter>
     </Style>
-    
+        <Style Selector="Button /template/ ContentPresenter">
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.1"/>
+                <BrushTransition Property="Foreground" Duration="0:0:0.1"/>
+            </Transitions>
+        </Setter>
+    </Style>
     <Style Selector="Button.sidebar">
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
@@ -125,13 +140,100 @@
         <Setter Property="Background" Value="{DynamicResource AutoCompleteBackground}"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
     </Style>
-    
+
     <Style Selector="AutoCompleteBox.searchBox /template/ TextBox#PART_TextBox">
         <Setter Property="PlaceholderText" Value="Search"/>
+        <Setter Property="SelectionBrush" Value="{DynamicResource YourAccentColor}"/>
         <Setter Property="InnerLeftContent">
             <Template>
-                <PathIcon Data="{StaticResource Search}" Width="15" Height="15" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                <PathIcon Data="{StaticResource Search}" Width="15" Height="15" Margin="10 0 0 0" VerticalAlignment="Center"/>
             </Template>
         </Setter>
     </Style>
+
+    <Style Selector="AutoCompleteBox.searchBox /template/ TextBox#PART_TextBox:pointerover /template/ Border#PART_BorderElement,
+                    AutoCompleteBox.searchBox /template/ TextBox#PART_TextBox:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{DynamicResource AutoCompleteBackground}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <Style Selector="AutoCompleteBox.searchBox /template/ Popup#PART_Popup Border">
+        <Setter Property="Background" Value="{DynamicResource AutoCompleteBackground}"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <Style Selector="AutoCompleteBox.searchBox /template/ TextBox#PART_TextBox:focus /template/ TextBlock#PART_Watermark">
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+        <Setter Property="Opacity" Value="0.5"/>
+    </Style>
+    
+    <Style Selector="ListBox /template/ ContentPresenter">
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.1"/>
+                <BrushTransition Property="Foreground" Duration="0:0:0.1"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="ListBox">
+        <Setter Property="Background" Value="{DynamicResource SidebarBackground}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+
+    <Style Selector="ListBoxItem">
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+        <Setter Property="Background" Value="{DynamicResource SidebarBackground}"/>
+        <Setter Property="Padding" Value="0"/> 
+        <Setter Property="Margin" Value="0,2"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="CornerRadius" Value="15"/>
+    </Style>
+
+    <Style Selector="ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+        <Setter Property="Background" Value="{DynamicResource SidebarBackground}"/>
+        <Setter Property="Padding" Value="12,8"/> 
+        <Setter Property="CornerRadius" Value="15"/>
+    </Style>
+    
+    <Style Selector="ListBoxItem /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+        <Setter Property="Background" Value="{DynamicResource SidebarBackground}"/>
+        <Setter Property="CornerRadius" Value="15"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.1"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="ListBoxItem /template/ Border">
+        <Setter Property="CornerRadius" Value="15"/>
+    </Style>
+    
+    <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource SidebarHoverBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryHoverText}"/>
+    </Style>
+
+    <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource SidebarBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryHoverText}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    
+    <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}"/>
+    </Style>
+
+    <Style Selector="ListBoxItem:selected TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryHoverText}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+    
 </Styles>

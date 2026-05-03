@@ -6,8 +6,8 @@
              x:Class="DaedalusLauncher.Views.ProjectsView">
     
     <Grid Background="{StaticResource PrimaryBackground}">
-        <Border Padding="10">
-            <Grid RowDefinitions="Auto, *">
+        <Border Padding="10" Grid.IsSharedSizeScope="True">
+            <Grid RowDefinitions="Auto *">
                 <!-- Page Header -->
                 <StackPanel Grid.Row="0">
                     <!-- Page Title, Search Bar, and Create New Button-->
@@ -18,7 +18,7 @@
                             <AutoCompleteBox Classes="searchBox" VerticalAlignment="Center" CornerRadius="20" Width="250"/>
                             
                             <Button Background="Green" CornerRadius="12" Classes="createButton">
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Spacing="5">
                                     <PathIcon Data="{StaticResource Add}"/>
                                     <Label Content="Create New"/>
                                 </StackPanel>
@@ -27,6 +27,24 @@
                     </Grid>
             
                     <!-- Projects Table Header Row -->
+                    <Border Classes="tableHeader">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" DefinitionBase.SharedSizeGroup="FavoriteCol"/>   <!-- Favorite Star Column -->
+                                <ColumnDefinition Width="*"/>                                                   <!-- Main Name Column -->
+                                <ColumnDefinition Width="Auto" DefinitionBase.SharedSizeGroup="VersionCol"/>    <!-- Engine Version -->
+                                <ColumnDefinition Width="Auto" DefinitionBase.SharedSizeGroup="DateCol"/>       <!-- Last Modified -->
+                                <ColumnDefinition Width="Auto" DefinitionBase.SharedSizeGroup="OptionsCol"/>    <!-- Options Menu Column -->
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0" Width="40">
+                                <PathIcon Data="{StaticResource StarFilled}" Width="14" Opacity="0.5" VerticalAlignment="Center"/>
+                            </Grid>
+                            <TextBlock Grid.Column="1" Text="Name" VerticalAlignment="Center" Margin="15,0" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="2" Text="Engine Version" Width="125" TextAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="3" Text="Last Modified" Width="150" TextAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            <Grid Grid.Column="4" Width="50"/>
+                        </Grid>
+                    </Border>
                 </StackPanel>
         
                 <!-- Projects Content -->

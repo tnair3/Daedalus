@@ -7,9 +7,9 @@
     
     <Grid Background="{StaticResource PrimaryBackground}">
         <Border Padding="10">
-            <Grid RowDefinitions="Auto, *">
+            <Grid RowDefinitions="Auto *">
                 <!-- Page Header -->
-                <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
+                <Grid Grid.Row="0" ColumnDefinitions="* Auto">
                     <TextBlock Grid.Column="0" Text="Learn" Classes="heading"/>
                 </Grid>
                 

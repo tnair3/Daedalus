@@ -15,21 +15,21 @@
                      Icon="/Assets/avalonia-logo.ico"
                      Title="Daedalus Engine Launcher">
         
-        <Grid ColumnDefinitions="200, *">
+        <Grid ColumnDefinitions="200 *">
                 <!-- Sidebar -->
                 <Border Grid.Column="0" Background="{StaticResource SidebarBackground}" Padding="10">
-                        <Grid RowDefinitions="*, Auto">
+                        <Grid RowDefinitions="* Auto">
                                 <!-- Logo and Main Page Navigation -->
                                 <StackPanel Grid.Row="0" Spacing="5">
-                                        <Grid ColumnDefinitions="Auto, *" Margin="5, 5, 5, 20">
-                                                <Border Grid.Column="0" Padding="5, 0" VerticalAlignment="Center">
+                                        <Grid ColumnDefinitions="Auto *" Margin="5 5 5 20">
+                                                <Border Grid.Column="0" Padding="5 0" VerticalAlignment="Center">
                                                         <PathIcon Data="{StaticResource AppLogo}" Width="30" Height="30"/>
                                                 </Border>
                                                 
                                                 <Border Grid.Column="1" VerticalAlignment="Center">
                                                         <StackPanel Spacing="-2">
                                                                 <TextBlock Text="Daedalus" FontSize="14" FontWeight="Regular" VerticalAlignment="Center"/>
-                                                                <TextBlock FontSize="10" FontWeight="ExtraLight" Foreground="{DynamicResource SecondaryText}">
+                                                                <TextBlock FontSize="12" FontWeight="ExtraLight" Foreground="{DynamicResource SecondaryText}">
                                                                         <Label Content="{Binding AppVersion, StringFormat='v{0}'}" Padding="0"/>
                                                                 </TextBlock>
                                                         </StackPanel>

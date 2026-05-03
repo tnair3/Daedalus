@@ -2,20 +2,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:DaedalusLauncher.ViewModels"
         mc:Ignorable="d" d:DesignWidth="425" d:DesignHeight="470"
         Width="425" Height="470"
         x:Class="DaedalusLauncher.Views.SettingsView"
+        x:DataType="vm:SettingsViewModel"
         CanResize="False"
         Title="Settings">
     
-    <Grid ColumnDefinitions="125, 1, *" Background="{StaticResource PrimaryBackground}">
-        <Border Grid.Column="0" Padding="10">
-            <Grid/>
+    <Grid ColumnDefinitions="150 *" Background="{StaticResource PrimaryBackground}">
+        <Border Grid.Column="0" Padding="10" Background="{StaticResource SidebarBackground}">
+            <ListBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Padding="10 5" VerticalAlignment="Center"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Border>
         
-        <Border Grid.Column="1" Width="1" Background="{StaticResource SidebarBackground}" VerticalAlignment="Stretch"/>
-        
-        <Border Grid.Column="2" Padding="10">
+        <Border Grid.Column="1" Padding="10">
             <Grid/>
         </Border>
     </Grid>
