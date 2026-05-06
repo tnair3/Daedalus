@@ -17,7 +17,7 @@
         
         <Grid ColumnDefinitions="200 *">
                 <!-- Sidebar -->
-                <Border Grid.Column="0" Background="{StaticResource SidebarBackground}" Padding="10">
+                <Border Grid.Column="0" Background="{DynamicResource SidebarBackground}" Padding="10">
                         <Grid RowDefinitions="* Auto">
                                 <!-- Logo and Main Page Navigation -->
                                 <StackPanel Grid.Row="0" Spacing="5">
@@ -77,7 +77,7 @@
                 <!-- Main Content Area -->
                 <ContentControl Grid.Column="1"><view:ProjectsView IsVisible="{Binding IsProjectsTab}"/></ContentControl>
                 <ContentControl Grid.Column="1"><view:InstallationsView Content="{Binding Installations}" IsVisible="{Binding IsInstallationsTab}"/></ContentControl>
-                <ContentControl Grid.Column="1"><view:LearnView IsVisible="{Binding IsLearnTab}"/></ContentControl>
+                <ContentControl Grid.Column="1"><view:LearnView Content="{Binding Learn}" IsVisible="{Binding IsLearnTab}"/></ContentControl>
         </Grid>
 
 </rxui:ReactiveWindow>

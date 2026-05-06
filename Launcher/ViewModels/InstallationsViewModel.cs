@@ -27,7 +27,7 @@ public partial class InstallationsViewModel : ViewModelBase
     [ObservableProperty] private string _booksVersion = "Loading...";
     [ObservableProperty] private bool _isBooksUpdateAvailable;
 
-    [ObservableProperty] private string _status = "Up to date";
+    [ObservableProperty] private string _status = "Loading...";
     
     private const string RemoteUrl = "https://raw.githubusercontent.com/tnair3/Daedalus/main/Maintenance/versions.json";
     private static string LocalPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "release.json"); // Change to ../.metadata/ as Directory for release build
@@ -60,40 +60,29 @@ public partial class InstallationsViewModel : ViewModelBase
         {
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-            using var localStream = new FileStream(LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            await using var localStream = new FileStream(LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             var localRoot = JsonSerializer.Deserialize<ManifestRoot>(localStream, options);
             var localData = localRoot?.Modules;
-    
-            var remoteJson = await _httpClient.GetStringAsync(RemoteUrl);
-            var remoteRoot = JsonSerializer.Deserialize<ManifestRoot>(remoteJson, options);
-            var remoteData = remoteRoot?.Modules;
 
-            if (localData != null && remoteData != null) // Update to proper SemVer/Date-Based version checking
+            if (localData != null)
             {
                 LauncherVersion = localData.Launcher.Version;
                 EditorVersion = localData.Editor.Version;
                 EngineVersion = localData.Engine.Version;
                 BooksVersion = localData.Books.Version;
+
+                var remoteJson = await _httpClient.GetStringAsync(RemoteUrl);
+                var remoteRoot = JsonSerializer.Deserialize<ManifestRoot>(remoteJson, options);
+                var remoteData = remoteRoot?.Modules;
                 
-                IsLauncherUpdateAvailable = (remoteData.Launcher.Version != localData.Launcher.Version);
-                IsEditorUpdateAvailable = (remoteData.Editor.Version != localData.Editor.Version);
-                IsEngineUpdateAvailable = (remoteData.Engine.Version != localData.Engine.Version);
-                IsBooksUpdateAvailable = (remoteData.Books.Version != localData.Books.Version);
-                
-                /*
-                Console.WriteLine("Local Versions");
-                Console.WriteLine(LauncherVersion);
-                Console.WriteLine(EditorVersion);
-                Console.WriteLine(EngineVersion);
-                Console.WriteLine(BooksVersion);
-                Console.WriteLine();
-                Console.WriteLine("Remote Versions");
-                Console.WriteLine(remoteData.Launcher.Version);
-                Console.WriteLine(remoteData.Editor.Version);
-                Console.WriteLine(remoteData.Engine.Version);
-                Console.WriteLine(remoteData.Books.Version);
-                Console.WriteLine();
-                */
+                if (remoteData != null)
+                {
+                    // Update to proper SemVer/Date-Based version checking
+                    IsLauncherUpdateAvailable = (remoteData.Launcher.Version != localData.Launcher.Version);
+                    IsEditorUpdateAvailable = (remoteData.Editor.Version != localData.Editor.Version);
+                    IsEngineUpdateAvailable = (remoteData.Engine.Version != localData.Engine.Version);
+                    IsBooksUpdateAvailable = (remoteData.Books.Version != localData.Books.Version);
+                }
             }
             
             Status = "Up to date";

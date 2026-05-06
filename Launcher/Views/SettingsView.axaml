@@ -10,8 +10,8 @@
         CanResize="False"
         Title="Settings">
     
-    <Grid ColumnDefinitions="150 *" Background="{StaticResource PrimaryBackground}">
-        <Border Grid.Column="0" Padding="10" Background="{StaticResource SidebarBackground}">
+    <Grid ColumnDefinitions="150 *" Background="{DynamicResource PrimaryBackground}">
+        <Border Grid.Column="0" Padding="10" Background="{DynamicResource SidebarBackground}">
             <ListBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>

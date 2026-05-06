@@ -16,6 +16,7 @@ public partial class MainViewModel : ViewModelBase
             .InformationalVersion ?? "1.0.0";
     
     public InstallationsViewModel Installations { get; } = new();
+    public LearnViewModel Learn { get; } = new();
 
     [ObservableProperty] 
     [NotifyPropertyChangedFor(nameof(IsProjectsTab))]
@@ -29,6 +30,11 @@ public partial class MainViewModel : ViewModelBase
         if (targetTab == TabType.Installations && SelectedTab != TabType.Installations)
         {
             await Installations.CheckVersionsAsync();
+        }
+
+        if (targetTab == TabType.Learn && SelectedTab != TabType.Learn)
+        {
+            await Learn.LoadLibraryAsync();
         }
         
         SelectedTab = targetTab;

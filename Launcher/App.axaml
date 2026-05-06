@@ -13,15 +13,17 @@
                         <ResourceInclude Source="avares://DaedalusLauncher/Assets/Icons.axaml"/>
                     </ResourceDictionary.MergedDictionaries>
                     
-                    <SolidColorBrush x:Key="PrimaryBackground">#1e1e1e</SolidColorBrush>
-                    <SolidColorBrush x:Key="SecondaryBackground">#323232</SolidColorBrush>
-                    <SolidColorBrush x:Key="SidebarBackground">#2b2b2b</SolidColorBrush>
-                    <SolidColorBrush x:Key="AutoCompleteForeground">#a3a3a3</SolidColorBrush>
-                    <SolidColorBrush x:Key="AutoCompleteBackground">#3f3f3f</SolidColorBrush>
-                    <SolidColorBrush x:Key="PrimaryText">#CFCFCF</SolidColorBrush>
-                    <SolidColorBrush x:Key="SecondaryText">#8e8e8e</SolidColorBrush>
-                    <SolidColorBrush x:Key="PrimaryHoverText">White</SolidColorBrush>
-                    <SolidColorBrush x:Key="SidebarHoverBackground">#333333</SolidColorBrush>
+                    <SolidColorBrush x:Key="PrimaryBackground" Color="#1e1e1e"/>
+                    <SolidColorBrush x:Key="SecondaryBackground" Color="#323232"/>
+                    <SolidColorBrush x:Key="SidebarBackground" Color="#2b2b2b"/>
+                    <SolidColorBrush x:Key="AutoCompleteForeground" Color="#a3a3a3"/>
+                    <SolidColorBrush x:Key="AutoCompleteBackground" Color="#3f3f3f"/>
+                    <SolidColorBrush x:Key="PrimaryText" Color="#cfcfcf"/>
+                    <SolidColorBrush x:Key="SecondaryText" Color="#8e8e8e"/>
+                    <SolidColorBrush x:Key="PrimaryHoverText" Color="White"/>
+                    <SolidColorBrush x:Key="SidebarHoverBackground" Color="#333333"/>
+                    <SolidColorBrush x:Key="ApplicationAccent" Color="#0d3163"/>
+                    <SolidColorBrush x:Key="ApplicationAccentAlt" Color="#2d63ad"/>
                 </ResourceDictionary>
             </Application.Resources>
              
@@ -31,6 +33,6 @@
 
             <Application.Styles>
                 <FluentTheme />
-                <StyleInclude Source="Styles/AppDefaultStyles.axaml"></StyleInclude>
+                <StyleInclude Source="Styles/AppDefaultStyles.axaml"/>
             </Application.Styles>
 </Application>
