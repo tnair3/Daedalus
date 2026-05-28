@@ -61,13 +61,13 @@
                                 
                                 <!-- Utility Navigation -->
                                 <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
-                                        <Button Classes="sidebar" Command="{Binding OpenSettings}">
+                                        <Button Classes="sidebar" Command="{Binding OpenWindow}" CommandParameter="{x:Static models:WindowType.Settings}">
                                                 <PathIcon Data="{StaticResource NavigationSettings}"/>
                                         </Button>
-                                        <Button Classes="sidebar" Command="{Binding OpenReport}">
+                                        <Button Classes="sidebar" Command="{Binding OpenWindow}" CommandParameter="{x:Static models:WindowType.Report}">
                                                 <PathIcon Data="{StaticResource NavigationBugReport}"/>
                                         </Button>
-                                        <Button Classes="sidebar" Command="{Binding OpenAbout}">
+                                        <Button Classes="sidebar" Command="{Binding OpenWindow}" CommandParameter="{x:Static models:WindowType.About}">
                                                 <PathIcon Data="{StaticResource NavigationAbout}"/>
                                         </Button>
                                 </StackPanel>

@@ -28,7 +28,7 @@ public partial class LearnViewModel : ViewModelBase
             SoftwareBooks.Clear();
         });
         
-        string booksRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../Books");
+        string booksRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../Docs");
         
         await Task.Run(() => 
         {
