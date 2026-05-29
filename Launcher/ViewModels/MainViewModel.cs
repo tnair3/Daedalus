@@ -15,12 +15,15 @@ public partial class MainViewModel : ViewModelBase
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
             .InformationalVersion ?? "1.0.0";
     
+    public ProjectsViewModel Projects { get; } = new();
     public InstallationsViewModel Installations { get; } = new();
     public LearnViewModel Learn { get; } = new();
     
     public bool IsProjectsTab => SelectedTab == TabType.Projects;
     public bool IsInstallationsTab => SelectedTab == TabType.Installations;
     public bool IsLearnTab => SelectedTab == TabType.Learn;
+
+    [ObservableProperty] private object _currentPage;
     
     [ObservableProperty] 
     [NotifyPropertyChangedFor(nameof(IsProjectsTab))]
@@ -28,18 +31,37 @@ public partial class MainViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(IsLearnTab))]
     private TabType _selectedTab;
 
+    public MainViewModel()
+    {
+        _selectedTab = TabType.Projects;
+        _currentPage = Projects; 
+    }
+    
     // Navigation within the main window
     [RelayCommand]
     public async Task Navigate(TabType targetTab)
     {
-        if (targetTab == TabType.Installations && SelectedTab != TabType.Installations)
+        switch (targetTab)
         {
-            await Installations.CheckVersionsAsync();
-        }
-
-        if (targetTab == TabType.Learn && SelectedTab != TabType.Learn)
-        {
-            await Learn.LoadLibraryAsync();
+            case TabType.Projects:
+                CurrentPage = Projects;
+                break;
+            
+            case TabType.Installations:
+                CurrentPage = Installations;
+                if (SelectedTab != TabType.Installations)
+                {
+                    await Installations.CheckVersionsAsync();
+                }
+                break;
+            
+            case TabType.Learn:
+                CurrentPage = Learn;
+                if (SelectedTab != TabType.Learn)
+                {
+                    await Learn.LoadLibraryAsync();
+                }
+                break;
         }
         
         SelectedTab = targetTab;

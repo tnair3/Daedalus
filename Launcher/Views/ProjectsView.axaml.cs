@@ -1,13 +1,43 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using DaedalusLauncher.ViewModels;
+using System.Threading.Tasks;
+using System.Reactive.Disposables;
+using ReactiveUI;
 
 namespace DaedalusLauncher.Views;
 
-public partial class ProjectsView : UserControl
+public partial class ProjectsView : ReactiveUserControl<ProjectsViewModel>
 {
     public ProjectsView()
     {
         InitializeComponent();
+        
+        this.WhenActivated((CompositeDisposable disposables) =>
+        {
+            this.ViewModel!.ShowCreateProjectDialog
+                .RegisterHandler(DoOpenCreateProjectDialog)
+                .DisposeWith(disposables);
+        });
+    }
+
+    private async Task DoOpenCreateProjectDialog(IInteractionContext<CreateProjectViewModel, bool> context)
+    {
+        var parentWindow = TopLevel.GetTopLevel(this) as Window;
+        
+        var dialog = new CreateProjectView
+        {
+            DataContext = context.Input
+        };
+        
+        if (parentWindow != null)
+        {
+            var result = await dialog.ShowDialog<bool>(parentWindow);
+            context.SetOutput(result);
+        }
+        else
+        {
+            context.SetOutput(false);
+        }
     }
 }

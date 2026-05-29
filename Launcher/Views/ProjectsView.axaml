@@ -1,8 +1,11 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DaedalusLauncher.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:DaedalusLauncher.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:ProjectsViewModel"
              x:Class="DaedalusLauncher.Views.ProjectsView">
     
     <Grid Background="{DynamicResource PrimaryBackground}">
@@ -17,7 +20,7 @@
                         <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10" Spacing="15">
                             <AutoCompleteBox Classes="searchBox" VerticalAlignment="Center" CornerRadius="20" Width="250"/>
                             
-                            <Button Background="Green" CornerRadius="12" Classes="createButton">
+                            <Button Background="Green" CornerRadius="12" Classes="createButton" Command="{Binding OpenCreateProjectWindowCommand}">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
                                     <PathIcon Data="{StaticResource Add}"/>
                                     <Label Content="Create New"/>
@@ -30,11 +33,11 @@
                     <Border Classes="tableHeader">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" DefinitionBase.SharedSizeGroup="FavoriteCol"/>   <!-- Favorite Star Column -->
-                                <ColumnDefinition Width="*"/>                                                   <!-- Main Name Column -->
-                                <ColumnDefinition Width="Auto" DefinitionBase.SharedSizeGroup="VersionCol"/>    <!-- Engine Version -->
-                                <ColumnDefinition Width="Auto" DefinitionBase.SharedSizeGroup="DateCol"/>       <!-- Last Modified -->
-                                <ColumnDefinition Width="Auto" DefinitionBase.SharedSizeGroup="OptionsCol"/>    <!-- Options Menu Column -->
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="FavoriteCol"/>   <!-- Favorite Star Column -->
+                                <ColumnDefinition Width="*"/>                                    <!-- Main Name Column -->
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="VersionCol"/>    <!-- Engine Version -->
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="DateCol"/>       <!-- Last Modified -->
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OptionsCol"/>    <!-- Options Menu Column -->
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0" Width="40">
                                 <PathIcon Data="{StaticResource StarFilled}" Width="14" Opacity="0.5" VerticalAlignment="Center"/>

@@ -1,3 +1,3 @@
 namespace DaedalusLauncher.Models;
 
-public enum WindowType { Settings, Report, About }
+public enum WindowType { Settings, Report, About, NewProject }

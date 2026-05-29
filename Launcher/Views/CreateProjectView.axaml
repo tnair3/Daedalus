@@ -1,0 +1,25 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:DaedalusLauncher.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="425" d:DesignHeight="470"
+        Width="425" Height="470"
+        x:DataType="vm:CreateProjectViewModel"
+        x:Class="DaedalusLauncher.Views.CreateProjectView"
+        Title="Create New Project">
+    <DockPanel LastChildFill="True" Background="{StaticResource SidebarBackground}">
+        <Grid Height="50" ColumnDefinitions="20, *, 20" DockPanel.Dock="Top">
+            <TextBlock Grid.Column="1" Text="Create New Project" Foreground="{DynamicResource PrimaryText}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+        </Grid>
+        <Border Width="20" DockPanel.Dock="Left"/>
+        <Border Width="20" DockPanel.Dock="Right"/>
+        <Border Height="20" DockPanel.Dock="Bottom"/>
+        
+        <Border Background="{StaticResource PrimaryBackground}" CornerRadius="8" ClipToBounds="True" Padding="15">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Project Configuration" FontSize="14" Foreground="{DynamicResource PrimaryText}"/>
+            </StackPanel>
+        </Border>
+    </DockPanel>
+</Window>

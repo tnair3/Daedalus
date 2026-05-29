@@ -15,6 +15,18 @@
                      Icon="/Assets/avalonia-logo.ico"
                      Title="Daedalus Engine Launcher">
         
+        <rxui:ReactiveWindow.DataTemplates>
+                <DataTemplate DataType="{x:Type vm:ProjectsViewModel}">
+                        <view:ProjectsView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:InstallationsViewModel}">
+                        <view:InstallationsView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:LearnViewModel}">
+                        <view:LearnView />
+                </DataTemplate>
+        </rxui:ReactiveWindow.DataTemplates>
+        
         <Grid ColumnDefinitions="200 *">
                 <!-- Sidebar -->
                 <Border Grid.Column="0" Background="{DynamicResource SidebarBackground}" Padding="10">
@@ -75,9 +87,7 @@
                 </Border>
 
                 <!-- Main Content Area -->
-                <ContentControl Grid.Column="1"><view:ProjectsView IsVisible="{Binding IsProjectsTab}"/></ContentControl>
-                <ContentControl Grid.Column="1"><view:InstallationsView Content="{Binding Installations}" IsVisible="{Binding IsInstallationsTab}"/></ContentControl>
-                <ContentControl Grid.Column="1"><view:LearnView Content="{Binding Learn}" IsVisible="{Binding IsLearnTab}"/></ContentControl>
+                <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" />
         </Grid>
 
 </rxui:ReactiveWindow>

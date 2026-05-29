@@ -34,5 +34,8 @@
             <Application.Styles>
                 <FluentTheme />
                 <StyleInclude Source="Styles/AppDefaultStyles.axaml"/>
+                <Style Selector="Window">
+                    <Setter Property="WindowStartupLocation" Value="CenterScreen"/>
+                </Style>
             </Application.Styles>
 </Application>
