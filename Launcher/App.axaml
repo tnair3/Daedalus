@@ -24,6 +24,12 @@
                     <SolidColorBrush x:Key="SidebarHoverBackground" Color="#333333"/>
                     <SolidColorBrush x:Key="ApplicationAccent" Color="#0d3163"/>
                     <SolidColorBrush x:Key="ApplicationAccentAlt" Color="#2d63ad"/>
+                    <SolidColorBrush x:Key="StatusSuccess" Color="#279100"/>
+                    <SolidColorBrush x:Key="SuccessOnHover" Color="#389615"/>
+                    <SolidColorBrush x:Key="StatusSuccessAlt" Color="#5a8f57"/>
+                    <SolidColorBrush x:Key="StatusWarning" Color="#eab308"/>
+                    <SolidColorBrush x:Key="StatusError" Color="#c24b4b"/>
+                    <SolidColorBrush x:Key="SeparatorColour" Color="#474747"/>
                 </ResourceDictionary>
             </Application.Resources>
              

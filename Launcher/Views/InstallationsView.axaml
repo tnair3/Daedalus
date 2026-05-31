@@ -7,7 +7,7 @@
              x:Class="DaedalusLauncher.Views.InstallationsView"
              x:DataType="vm:InstallationsViewModel">
     
-    <Grid Background="{DynamicResource PrimaryBackground}">
+    <Grid Background="{StaticResource PrimaryBackground}">
         <Border Padding="10">
             <Grid RowDefinitions="Auto *">
                 <!-- Page Header -->

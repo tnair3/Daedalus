@@ -9,17 +9,98 @@
         x:Class="DaedalusLauncher.Views.CreateProjectView"
         Title="Create New Project">
     <DockPanel LastChildFill="True" Background="{StaticResource SidebarBackground}">
-        <Grid Height="50" ColumnDefinitions="20, *, 20" DockPanel.Dock="Top">
-            <TextBlock Grid.Column="1" Text="Create New Project" Foreground="{DynamicResource PrimaryText}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+        <Grid Height="50" ColumnDefinitions="20, *, Auto, 20" DockPanel.Dock="Top">
+            <TextBlock Grid.Column="1" Text="Create New Project" Foreground="{StaticResource PrimaryText}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center" Padding="5, 0"/>
+            <Button Grid.Column="2" Command="{Binding CloseWindow}" CommandParameter="{Binding $parent[Window]}" Classes="closeButton" Padding="5, 0"/>
         </Grid>
         <Border Width="20" DockPanel.Dock="Left"/>
         <Border Width="20" DockPanel.Dock="Right"/>
         <Border Height="20" DockPanel.Dock="Bottom"/>
         
         <Border Background="{StaticResource PrimaryBackground}" CornerRadius="8" ClipToBounds="True" Padding="15">
-            <StackPanel Spacing="10">
-                <TextBlock Text="Project Configuration" FontSize="14" Foreground="{DynamicResource PrimaryText}"/>
-            </StackPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+                <StackPanel Margin="5" Spacing="20">
+                    
+                    <!-- Project Details -->
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Project Details" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PrimaryText}"/>
+                        
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Project Name" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                            <TextBox Text="{Binding ProjectName, Mode=TwoWay}" PlaceholderText="New Daedalus Project"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Project Path" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                            <TextBox Text="{Binding ProjectPath, Mode=TwoWay}" PlaceholderText="/home/user/projects/ or C:\Projects\"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Author / Organization" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                            <TextBox Text="{Binding ProjectAuthor, Mode=TwoWay}" PlaceholderText="Daedalus Developer"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Separator Height="1" Background="{StaticResource SeparatorColour}" Opacity="0.3"/>
+
+                    <!-- Development and Scripting -->
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Development &amp; Scripting Options" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PrimaryText}"/>
+                        
+                        <Grid ColumnDefinitions="*, *">
+                            <StackPanel Grid.Column="0" Spacing="4" Margin="0,0,5,0">
+                                <TextBlock Text="Project Template" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                                <ComboBox ItemsSource="{Binding AvailableTemplates}" SelectedItem="{Binding SelectedTemplate}" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Spacing="4" Margin="5,0,0,0">
+                                <TextBlock Text="Target .NET Version" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                                <ComboBox ItemsSource="{Binding AvailableDotNetVersions}" SelectedItem="{Binding SelectedDotNetVersion}" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <Separator Height="1" Background="{StaticResource SeparatorColour}" Opacity="0.3"/>
+
+                    <!-- Engine and Graphics Configuration -->
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Engine &amp; Graphics Configuration" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PrimaryText}"/>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Render API Backend" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                            <ComboBox ItemsSource="{Binding AvailableRenderApis}" SelectedItem="{Binding SelectedRenderApi}" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+
+                        <Grid ColumnDefinitions="*, *">
+                            <StackPanel Grid.Column="0" Spacing="4" Margin="0,0,5,0">
+                                <TextBlock Text="Default Window Mode" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                                <ComboBox ItemsSource="{Binding AvailableWindowModes}" SelectedItem="{Binding SelectedWindowMode}" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Spacing="4" Margin="5,0,0,0">
+                                <TextBlock Text="Target Resolution" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                                <ComboBox ItemsSource="{Binding AvailableResolutions}" SelectedItem="{Binding SelectedResolution}" 
+                                          IsEnabled="{Binding IsResolutionEditable}" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <Separator Height="1" Background="{StaticResource SeparatorColour}" Opacity="0.3"/>
+
+                    <!-- Git -->
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Source Control" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PrimaryText}"/>
+                        <CheckBox Content="Initialize local git repository" IsChecked="{Binding InitializeGit, Mode=TwoWay}" FontSize="12"/>
+                    </StackPanel>
+                    
+                    <!-- Creating project -->
+                    <Grid ColumnDefinitions="* 10 *">
+                        <Button Grid.Column="0" Content="Create Project" Background="{StaticResource StatusSuccessAlt}" Classes="creatingProject"/>
+                        <Button Grid.Column="2" Content="Create and Open" Background="{StaticResource ApplicationAccentAlt}" Classes="creatingProject"/>
+                    </Grid>
+
+                </StackPanel>
+            </ScrollViewer>
         </Border>
     </DockPanel>
 </Window>

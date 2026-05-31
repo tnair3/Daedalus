@@ -8,7 +8,7 @@
              x:DataType="vm:ProjectsViewModel"
              x:Class="DaedalusLauncher.Views.ProjectsView">
     
-    <Grid Background="{DynamicResource PrimaryBackground}">
+    <Grid Background="{StaticResource PrimaryBackground}">
         <Border Padding="10" Grid.IsSharedSizeScope="True">
             <Grid RowDefinitions="Auto *">
                 <!-- Page Header -->

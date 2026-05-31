@@ -22,12 +22,12 @@
                                            TextWrapping="Wrap" MaxLines="2" LineHeight="20" TextTrimming="CharacterEllipsis"/>
                                 <Rectangle Height="1" Fill="White" Opacity="0.2" HorizontalAlignment="Left" Width="40"/>
                                 <TextBlock Text="{Binding Author}" FontSize="12" FontWeight="Light" 
-                                           Foreground="{DynamicResource PrimaryText}" Opacity="0.7" 
+                                           Foreground="{StaticResource PrimaryText}" Opacity="0.7" 
                                            TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                             </StackPanel>
 
                             <Border Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                    Padding="6 2" Background="{DynamicResource ApplicationAccentAlt}" 
+                                    Padding="6 2" Background="{StaticResource ApplicationAccentAlt}" 
                                     CornerRadius="4" Opacity="0.4">
                                 <TextBlock Text="{Binding Version}" FontSize="9" Foreground="White" 
                                            FontWeight="SemiBold" Opacity="1.0"/>
@@ -39,7 +39,7 @@
         </DataTemplate>
     </UserControl.Resources>
     
-    <Grid Background="{DynamicResource PrimaryBackground}">
+    <Grid Background="{StaticResource PrimaryBackground}">
         <Border Padding="10">
             <Grid RowDefinitions="Auto *">
                 <!-- Page Header -->
@@ -52,8 +52,8 @@
                     <!-- Application Basics -->
                     <Grid Grid.Row="0" RowDefinitions="Auto *" Margin="10, 0, 10, 5">
                         <Grid Grid.Row="0" ColumnDefinitions="Auto, *" ColumnSpacing="10">
-                            <Label Content="Application Basics" Foreground="{DynamicResource PrimaryText}"/>
-                            <Rectangle Grid.Column="1" Height="1" Fill="{DynamicResource PrimaryText}" Opacity="0.1"/>
+                            <Label Content="Application Basics" Foreground="{StaticResource PrimaryText}"/>
+                            <Rectangle Grid.Column="1" Height="1" Fill="{StaticResource PrimaryText}" Opacity="0.1"/>
                         </Grid>
                         <ScrollViewer Grid.Row="1" Classes="booksView" PointerWheelChanged="OnPointerWheelChanged">
                             <ItemsControl ItemsSource="{Binding ApplicationBooks}" ItemsPanel="{StaticResource ShelfPanelTemplate}" ItemTemplate="{StaticResource BookItemTemplate}" />
@@ -63,8 +63,8 @@
                     <!-- Software Architecture -->
                     <Grid Grid.Row="1" RowDefinitions="Auto *" Margin="10, 0, 10, 0">
                         <Grid Grid.Row="0" ColumnDefinitions="Auto, *" ColumnSpacing="10">
-                            <Label Content="Software Architecture" Foreground="{DynamicResource PrimaryText}"/>
-                            <Rectangle Grid.Column="1" Height="1" Fill="{DynamicResource PrimaryText}" Opacity="0.1"/>
+                            <Label Content="Software Architecture" Foreground="{StaticResource PrimaryText}"/>
+                            <Rectangle Grid.Column="1" Height="1" Fill="{StaticResource PrimaryText}" Opacity="0.1"/>
                         </Grid>
                         <ScrollViewer Grid.Row="1" Classes="booksView" PointerWheelChanged="OnPointerWheelChanged">
                             <ItemsControl ItemsSource="{Binding SoftwareBooks}" ItemsPanel="{StaticResource ShelfPanelTemplate}" ItemTemplate="{StaticResource BookItemTemplate}" />

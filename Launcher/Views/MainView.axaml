@@ -29,7 +29,7 @@
         
         <Grid ColumnDefinitions="200 *">
                 <!-- Sidebar -->
-                <Border Grid.Column="0" Background="{DynamicResource SidebarBackground}" Padding="10">
+                <Border Grid.Column="0" Background="{StaticResource SidebarBackground}" Padding="10">
                         <Grid RowDefinitions="* Auto">
                                 <!-- Logo and Main Page Navigation -->
                                 <StackPanel Grid.Row="0" Spacing="5">
@@ -41,7 +41,7 @@
                                                 <Border Grid.Column="1" VerticalAlignment="Center">
                                                         <StackPanel Spacing="-2">
                                                                 <TextBlock Text="Daedalus" FontSize="14" FontWeight="Regular" VerticalAlignment="Center"/>
-                                                                <TextBlock FontSize="12" FontWeight="ExtraLight" Foreground="{DynamicResource SecondaryText}">
+                                                                <TextBlock FontSize="12" FontWeight="ExtraLight" Foreground="{StaticResource SecondaryText}">
                                                                         <Label Content="{Binding AppVersion, StringFormat='v{0}'}" Padding="0"/>
                                                                 </TextBlock>
                                                         </StackPanel>
