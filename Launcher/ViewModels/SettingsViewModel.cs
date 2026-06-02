@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DaedalusLauncher.Models;
@@ -29,5 +30,14 @@ public partial class SettingsViewModel : ViewModelBase
     private void RequestClose(bool result)
     {
         CloseRequested?.Invoke(result);
+    }
+    
+    [RelayCommand]
+    public void CloseWindow(Window? window)
+    {
+        if (window != null)
+        {
+            window.Close();
+        }
     }
 }

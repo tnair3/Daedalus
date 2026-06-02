@@ -53,7 +53,7 @@ public partial class InstallationsViewModel : ViewModelBase
             var options = new JsonSerializerOptions { WriteIndented = true };
     
             string initialJson = JsonSerializer.Serialize(root, options);
-            File.WriteAllText(LocalPath, initialJson);
+            await File.WriteAllTextAsync(LocalPath, initialJson);
         }
 
         try

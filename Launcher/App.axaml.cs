@@ -3,6 +3,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
+using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using DaedalusLauncher.ViewModels;
 using DaedalusLauncher.Views;
@@ -27,5 +29,19 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private void TitleBar_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (sender is Visual visual)
+        {
+            if (e.GetCurrentPoint(visual).Properties.IsLeftButtonPressed)
+            {
+                if (TopLevel.GetTopLevel(visual) is Window window)
+                {
+                    window.BeginMoveDrag(e);
+                }
+            }
+        }
     }
 }
