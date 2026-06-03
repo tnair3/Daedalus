@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using DaedalusLauncher.Models;
 using ReactiveUI;
 
@@ -19,6 +20,14 @@ public partial class ProjectsViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<ProjectInfo> _projects = new();
     
     public Interaction<CreateProjectViewModel, bool> ShowCreateProjectDialog { get; } = new();
+
+    public ProjectsViewModel()
+    {
+        WeakReferenceMessenger.Default.Register<ProjectCreatedMessage>(this, async (r, m) =>
+        {
+            await LoadProjects();
+        });
+    }
     
     public async Task LoadProjects()
     {
@@ -48,7 +57,11 @@ public partial class ProjectsViewModel : ViewModelBase
             
             if (root?.Projects != null)
             {
-                Projects = new ObservableCollection<ProjectInfo>(root.Projects);
+                Projects.Clear();
+                foreach (var project in root.Projects)
+                {
+                    Projects.Add(project);
+                }
             }
         }
         catch (Exception ex)

@@ -21,17 +21,26 @@
                     <TextBlock Text="Project Details" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PrimaryText}"/>
                     
                     <StackPanel Spacing="4">
-                        <TextBlock Text="Project Name" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                        <Grid ColumnDefinitions="Auto, 5, Auto">
+                            <TextBlock Grid.Column="0" Text="Project Name" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                            <TextBlock Grid.Column="2" Text="*Required" FontSize="11" Foreground="{StaticResource StatusErrorAlt}"/>
+                        </Grid>
                         <TextBox Text="{Binding ProjectName, Mode=TwoWay}" PlaceholderText="New Daedalus Project"/>
                     </StackPanel>
 
                     <StackPanel Spacing="4">
-                        <TextBlock Text="Project Path" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                        <Grid ColumnDefinitions="Auto, 5, Auto">
+                            <TextBlock Grid.Column="0" Text="Project Path" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                            <TextBlock Grid.Column="2" Text="*Required" FontSize="11" Foreground="{StaticResource StatusErrorAlt}"/>
+                        </Grid>
                         <TextBox Text="{Binding ProjectPath, Mode=TwoWay}" PlaceholderText="/home/user/projects/ or C:\Projects\"/>
                     </StackPanel>
 
                     <StackPanel Spacing="4">
-                        <TextBlock Text="Author / Organization" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                        <Grid ColumnDefinitions="Auto, 5, Auto">
+                            <TextBlock Grid.Column="0" Text="Author / Organisation" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                            <TextBlock Grid.Column="2" Text="*Required" FontSize="11" Foreground="{StaticResource StatusErrorAlt}"/>
+                        </Grid>
                         <TextBox Text="{Binding ProjectAuthor, Mode=TwoWay}" PlaceholderText="Daedalus Developer"/>
                     </StackPanel>
                 </StackPanel>
@@ -90,7 +99,7 @@
                 
                 <!-- Creating project -->
                 <Grid ColumnDefinitions="* 10 *">
-                    <Button Grid.Column="0" Content="Create Project" Background="{StaticResource StatusSuccessAlt}" Classes="creatingProject"/>
+                    <Button Grid.Column="0" Content="Create Project" Command="{Binding CreateProjectAsync}" CommandParameter="{Binding $parent[Window]}" Background="{StaticResource StatusSuccessAlt}" Classes="creatingProject"/>
                     <Button Grid.Column="2" Content="Create and Open" Background="{StaticResource ApplicationAccentAlt}" Classes="creatingProject"/>
                 </Grid>
 

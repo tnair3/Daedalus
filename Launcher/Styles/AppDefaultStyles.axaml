@@ -169,6 +169,23 @@
         <Setter Property="RenderTransform" Value="scale(1.1)"/>
     </Style>
     
+    <Style Selector="Button.contextMenuButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="RenderTransform" Value="scale(1)"/>
+    </Style>
+    
+    <Style Selector="Button.contextMenuButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+    </Style>
+    
+    <Style Selector="Button.contextMenuButton:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="RenderTransform" Value="scale(1.1)"/>
+    </Style>
+    
     <Style Selector="Button.book">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Background" Value="Transparent"/>

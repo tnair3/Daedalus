@@ -52,7 +52,38 @@
         
                 <!-- Projects Content -->
                 <ScrollViewer Grid.Row="1">
-                    <TextBlock Text="No projects found yet..." VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.5"/>
+                    <Grid>
+                        <TextBlock Text="No projects found yet..." VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.5" Margin="0,40,0,0" IsVisible="{Binding !Projects.Count}"/>
+
+                        <ItemsControl ItemsSource="{Binding Projects}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:ProjectInfo">
+                                    <Border BorderBrush="{StaticResource SecondaryBackground}" BorderThickness="0,0,0,1" Padding="0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="FavoriteCol"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="VersionCol"/>
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="DateCol"/>
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="OptionsCol"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="0" Width="40">
+                                                <PathIcon Data="{StaticResource StarFilled}" Width="14" IsVisible="{Binding IsFavourite}" VerticalAlignment="Center"/>
+                                            </Grid>
+
+                                            <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" Margin="15,0"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding EngineVersion}" Width="125" TextAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding LastModified, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="150" TextAlignment="Center" VerticalAlignment="Center"/>
+                                            <Button Grid.Column="4" HorizontalAlignment="Center" Classes="contextMenuButton">
+                                                <PathIcon Data="{StaticResource ContextMenu}"/>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
                 </ScrollViewer>
             </Grid>
         </Border>

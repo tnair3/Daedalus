@@ -29,6 +29,7 @@
             <SolidColorBrush x:Key="StatusSuccessAlt" Color="#5a8f57"/>
             <SolidColorBrush x:Key="StatusWarning" Color="#eab308"/>
             <SolidColorBrush x:Key="StatusError" Color="#c24b4b"/>
+            <SolidColorBrush x:Key="StatusErrorAlt" Color="#822e2e"/>
             <SolidColorBrush x:Key="SeparatorColour" Color="#474747"/>
         </ResourceDictionary>
     </Application.Resources>

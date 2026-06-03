@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using DaedalusLauncher.Models;
 
 namespace DaedalusLauncher.ViewModels;
 
@@ -51,14 +54,65 @@ public partial class CreateProjectViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public async Task CreateProjectAsync()
+    public async Task CreateProjectAsync(Window? window)
     {
-        if (string.IsNullOrWhiteSpace(ProjectName) || string.IsNullOrWhiteSpace(ProjectPath))
+        if (string.IsNullOrWhiteSpace(ProjectName) || string.IsNullOrWhiteSpace(ProjectPath) ||
+            string.IsNullOrWhiteSpace(ProjectAuthor))
+        {
             return;
+            // Create visual output
+        }
 
-        string targetDirectory = Path.Combine(ProjectPath, ProjectName);
-        
-        await Task.CompletedTask; 
+        try
+        {
+            string localPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projects.json"); // Change to ../.metadata/ as Directory for release build
+
+            ProjectInfo newProject = new ProjectInfo()
+            {
+                Id = Guid.NewGuid(),
+                Name = ProjectName,
+                EngineVersion = "v1.0.0-beta.1", // update to dynamically change based on installed engine version
+                LastModified = DateTime.Now,
+                ProjectPath = this.ProjectPath,
+                Author = ProjectAuthor,
+                IsFavourite = false,
+                TargetNetVersion = SelectedDotNetVersion,
+                RenderApiBackend = SelectedRenderApi,
+                DefaultWindowMode = SelectedWindowMode,
+                TargetResolution = SelectedResolution,
+                GitInitialised = InitializeGit
+            };
+            
+            var options = new JsonSerializerOptions 
+            { 
+                WriteIndented = true,
+                PropertyNameCaseInsensitive = true
+            };
+
+            ProjectRoot root;
+            if (File.Exists(localPath))
+            {
+                string currentJson = await File.ReadAllTextAsync(localPath);
+                root = JsonSerializer.Deserialize<ProjectRoot>(currentJson, options) ?? new ProjectRoot();
+            }
+            else
+            {
+                root = new ProjectRoot();
+            }
+            
+            root.Projects.Add(newProject);
+            
+            string updatedJson = JsonSerializer.Serialize(root, options);
+            await File.WriteAllTextAsync(localPath, updatedJson);
+            
+            WeakReferenceMessenger.Default.Send(new ProjectCreatedMessage());
+            
+            CloseWindow(window);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to write project to JSON: {ex.Message}");
+        }
     }
 
     [RelayCommand]
