@@ -56,8 +56,7 @@ public partial class CreateProjectViewModel : ViewModelBase
     [RelayCommand]
     public async Task CreateProjectAsync(Window? window)
     {
-        if (string.IsNullOrWhiteSpace(ProjectName) || string.IsNullOrWhiteSpace(ProjectPath) ||
-            string.IsNullOrWhiteSpace(ProjectAuthor))
+        if (string.IsNullOrWhiteSpace(ProjectName) || string.IsNullOrWhiteSpace(ProjectPath))
         {
             return;
             // Create visual output

@@ -29,18 +29,23 @@
                     </StackPanel>
 
                     <StackPanel Spacing="4">
-                        <Grid ColumnDefinitions="Auto, 5, Auto">
+                        <Grid ColumnDefinitions="Auto, 5, Auto, 5, Auto">
                             <TextBlock Grid.Column="0" Text="Project Path" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
                             <TextBlock Grid.Column="2" Text="*Required" FontSize="11" Foreground="{StaticResource StatusErrorAlt}"/>
+                            <TextBlock Grid.Column="4" Text="• Creates a new directory at this location" FontSize="9" Foreground="{StaticResource SecondaryText}" VerticalAlignment="Center"/>
                         </Grid>
-                        <TextBox Text="{Binding ProjectPath, Mode=TwoWay}" PlaceholderText="/home/user/projects/ or C:\Projects\"/>
+    
+                        <TextBox Text="{Binding ProjectPath, Mode=TwoWay}" PlaceholderText="/home/user/projects/ or C:\Projects\">
+                            <TextBox.InnerRightContent>
+                                <Button Classes="pathPickerButton" Click="SelectFolderButton_Click">
+                                    <PathIcon Data="{StaticResource FolderIcon}" Width="16" Height="16"/>
+                                </Button>
+                            </TextBox.InnerRightContent>
+                        </TextBox>
                     </StackPanel>
 
                     <StackPanel Spacing="4">
-                        <Grid ColumnDefinitions="Auto, 5, Auto">
-                            <TextBlock Grid.Column="0" Text="Author / Organisation" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
-                            <TextBlock Grid.Column="2" Text="*Required" FontSize="11" Foreground="{StaticResource StatusErrorAlt}"/>
-                        </Grid>
+                        <TextBlock Text="Author / Organisation" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
                         <TextBox Text="{Binding ProjectAuthor, Mode=TwoWay}" PlaceholderText="Daedalus Developer"/>
                     </StackPanel>
                 </StackPanel>

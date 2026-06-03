@@ -186,6 +186,31 @@
         <Setter Property="RenderTransform" Value="scale(1.1)"/>
     </Style>
     
+    <Style Selector="Button.pathPickerButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.pathPickerButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+    </Style>
+
+    <Style Selector="Button.pathPickerButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="RenderTransform" Value="scale(1.1)"/>
+    </Style>
+    
     <Style Selector="Button.book">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Background" Value="Transparent"/>
