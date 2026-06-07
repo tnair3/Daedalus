@@ -33,19 +33,30 @@
                     <Border Classes="tableHeader">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="FavoriteCol"/>   <!-- Favorite Star Column -->
-                                <ColumnDefinition Width="*"/>                                    <!-- Main Name Column -->
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="VersionCol"/>    <!-- Engine Version -->
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="DateCol"/>       <!-- Last Modified -->
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="OptionsCol"/>    <!-- Options Menu Column -->
+                                <ColumnDefinition Width="40" SharedSizeGroup="FavoriteCol"/>   <!-- Favorite Star Column -->
+                                <ColumnDefinition Width="*"/>                                  <!-- Main Name Column -->
+                                <ColumnDefinition Width="125" SharedSizeGroup="VersionCol"/>   <!-- Engine Version -->
+                                <ColumnDefinition Width="150" SharedSizeGroup="DateCol"/>      <!-- Last Modified -->
+                                <ColumnDefinition Width="50" SharedSizeGroup="OptionsCol"/>    <!-- Options Menu Column -->
                             </Grid.ColumnDefinitions>
-                            <Grid Grid.Column="0" Width="40">
+                            <Grid Grid.Column="0">
                                 <PathIcon Data="{StaticResource StarFilled}" Width="14" Opacity="0.5" VerticalAlignment="Center"/>
                             </Grid>
-                            <TextBlock Grid.Column="1" Text="Name" VerticalAlignment="Center" Margin="15,0" FontWeight="SemiBold"/>
-                            <TextBlock Grid.Column="2" Text="Engine Version" Width="125" TextAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold"/>
-                            <TextBlock Grid.Column="3" Text="Last Modified" Width="150" TextAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold"/>
-                            <Grid Grid.Column="4" Width="50"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Button Content="Name" Command="{Binding SortItemsCommand}" CommandParameter="{x:Static models:ProjectsSortBy.Name}" FontWeight="SemiBold" Background="Transparent" BorderThickness="0" Padding="0"/>
+                                <PathIcon Data="{StaticResource Sort}" Opacity="0.5" IsVisible="{Binding IsSortedByName}" Margin="15, 0"/>
+                            </StackPanel>
+        
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Button Content="Engine" Command="{Binding SortItemsCommand}" CommandParameter="{x:Static models:ProjectsSortBy.Engine}" FontWeight="SemiBold" Background="Transparent" BorderThickness="0" Padding="0"/>
+                                <PathIcon Data="{StaticResource Sort}" Opacity="0.5" IsVisible="{Binding IsSortedByEngine}" Margin="15, 0"/>
+                            </StackPanel>
+        
+                            <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Button Content="Last Modified" Command="{Binding SortItemsCommand}" CommandParameter="{x:Static models:ProjectsSortBy.LastModified}" FontWeight="SemiBold" Background="Transparent" BorderThickness="0" Padding="0"/>
+                                <PathIcon Data="{StaticResource Sort}" Opacity="0.5" IsVisible="{Binding IsSortedByModified}" Margin="15, 0"/>
+                            </StackPanel>
+                            <Grid Grid.Column="4"/>
                         </Grid>
                     </Border>
                 </StackPanel>
@@ -53,28 +64,90 @@
                 <!-- Projects Content -->
                 <ScrollViewer Grid.Row="1">
                     <Grid>
-                        <TextBlock Text="No projects found yet..." VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.5" Margin="0,40,0,0" IsVisible="{Binding !Projects.Count}"/>
+                        <TextBlock Text="No projects found yet..." VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.5" Margin="0,40,0,0" IsVisible="{Binding !Projects.Count, FallbackValue=True}"/>
 
                         <ItemsControl ItemsSource="{Binding Projects}">
+                            <ItemsControl.Styles>
+                                <Style Selector="Border.project-row Button.contextMenuButton">
+                                    <Setter Property="Opacity" Value="0"/>
+                                    <Setter Property="IsHitTestVisible" Value="False"/>
+                                    <Setter Property="Transitions">
+                                        <Transitions>
+                                            <DoubleTransition Property="Opacity" Duration="0:0:0.15"/>
+                                        </Transitions>
+                                    </Setter>
+                                </Style>
+                                
+                                <Style Selector="Border.project-row:pointerover Button.contextMenuButton">
+                                    <Setter Property="Opacity" Value="1"/>
+                                    <Setter Property="IsHitTestVisible" Value="True"/>
+                                </Style>
+
+                                <Style Selector="Border.project-row Button.favouriteIcon">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Style>
+                                
+                                <Style Selector="Border.project-row Button.favouriteIcon:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Style>
+                                
+                                
+                                <Style Selector="Border.project-row Button.favouriteIcon:pressed /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Style>
+                                
+                                <Style Selector="Border.project-row Button.hoverFavouriteButton">
+                                    <Setter Property="Opacity" Value="0"/>
+                                    <Setter Property="IsHitTestVisible" Value="False"/>
+                                    <Setter Property="Transitions">
+                                        <Transitions>
+                                            <DoubleTransition Property="Opacity" Duration="0:0:0.15"/>
+                                        </Transitions>
+                                    </Setter>
+                                </Style>
+                                
+                                <Style Selector="Border.project-row:pointerover Button.hoverFavouriteButton">
+                                    <Setter Property="Opacity" Value="1"/>
+                                    <Setter Property="IsHitTestVisible" Value="True"/>
+                                </Style>
+                            </ItemsControl.Styles>
+
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="models:ProjectInfo">
-                                    <Border BorderBrush="{StaticResource SecondaryBackground}" BorderThickness="0,0,0,1" Padding="0,10">
+                                    <Border Classes="project-row" BorderBrush="{StaticResource SecondaryBackground}" Background="Transparent" BorderThickness="0,0,0,1" Padding="0,10">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" SharedSizeGroup="FavoriteCol"/>
+                                                <ColumnDefinition Width="40" SharedSizeGroup="FavoriteCol"/>
                                                 <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto" SharedSizeGroup="VersionCol"/>
-                                                <ColumnDefinition Width="Auto" SharedSizeGroup="DateCol"/>
-                                                <ColumnDefinition Width="Auto" SharedSizeGroup="OptionsCol"/>
+                                                <ColumnDefinition Width="125" SharedSizeGroup="VersionCol"/>
+                                                <ColumnDefinition Width="150" SharedSizeGroup="DateCol"/>
+                                                <ColumnDefinition Width="50" SharedSizeGroup="OptionsCol"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <Grid Grid.Column="0" Width="40">
-                                                <PathIcon Data="{StaticResource StarFilled}" Width="14" IsVisible="{Binding IsFavourite}" VerticalAlignment="Center"/>
+                                            <Grid Grid.Column="0">
+                                                <Button Classes="favouriteIcon" 
+                                                        Background="Transparent" BorderThickness="0" Padding="0" 
+                                                        IsVisible="{Binding IsFavourite}" 
+                                                        HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                        Command="{Binding $parent[ItemsControl].((vm:ProjectsViewModel)DataContext).SetFavouriteCommand, FallbackValue={x:Null}}" 
+                                                        CommandParameter="{Binding}">
+                                                    <PathIcon Data="{StaticResource StarFilled}" Width="14"/>
+                                                </Button>
+
+                                                <Button Classes="favouriteIcon hoverFavouriteButton" 
+                                                        Background="Transparent" BorderThickness="0" Padding="0" 
+                                                        IsVisible="{Binding !IsFavourite}" 
+                                                        HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                        Command="{Binding $parent[ItemsControl].((vm:ProjectsViewModel)DataContext).SetFavouriteCommand, FallbackValue={x:Null}}" 
+                                                        CommandParameter="{Binding}">
+                                                    <PathIcon Data="{StaticResource Star}" Width="14"/>
+                                                </Button>
                                             </Grid>
 
                                             <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" Margin="15,0"/>
-                                            <TextBlock Grid.Column="2" Text="{Binding EngineVersion}" Width="125" TextAlignment="Center" VerticalAlignment="Center"/>
-                                            <TextBlock Grid.Column="3" Text="{Binding LastModified, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="150" TextAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding EngineVersion}" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding LastModified, StringFormat={}{0:yyyy-MM-dd HH:mm}}" VerticalAlignment="Center"/>
+                                            
                                             <Button Grid.Column="4" HorizontalAlignment="Center" Classes="contextMenuButton">
                                                 <PathIcon Data="{StaticResource ContextMenu}"/>
                                             </Button>

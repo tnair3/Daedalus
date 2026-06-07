@@ -1,6 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
+using Avalonia.Threading;
 using DaedalusLauncher.ViewModels;
 using System.Threading.Tasks;
 using System.Reactive.Disposables;
@@ -15,7 +16,7 @@ public partial class ProjectsView : ReactiveUserControl<ProjectsViewModel>
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
         
-        this.WhenActivated((CompositeDisposable disposables) =>
+        this.WhenActivated((disposables) =>
         {
             this.ViewModel!.ShowCreateProjectDialog
                 .RegisterHandler(DoOpenCreateProjectDialog)
@@ -23,11 +24,11 @@ public partial class ProjectsView : ReactiveUserControl<ProjectsViewModel>
         });
     }
     
-    private async void OnDataContextChanged(object? sender, EventArgs e)
+    private void OnDataContextChanged(object? sender, EventArgs e)
     {
         if (DataContext is ProjectsViewModel vm)
         {
-            await vm.LoadProjects();
+            Dispatcher.UIThread.InvokeAsync(async () => await vm.LoadProjects());
         }
     }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -15,9 +16,19 @@ namespace DaedalusLauncher.ViewModels;
 
 public partial class ProjectsViewModel : ViewModelBase
 {
-    private static string LocalPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projects.json"); // Change to ../.metadata/ as Directory for release build
+    private static string LocalPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projects.json");
     
     [ObservableProperty] private ObservableCollection<ProjectInfo> _projects = new();
+    private bool _sortAscending = false;
+    
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsSortedByName))]
+    [NotifyPropertyChangedFor(nameof(IsSortedByEngine))]
+    [NotifyPropertyChangedFor(nameof(IsSortedByModified))]
+    private ProjectsSortBy _sortBy = ProjectsSortBy.LastModified;
+    public bool IsSortedByName => SortBy ==  ProjectsSortBy.Name;
+    public bool IsSortedByEngine => SortBy ==  ProjectsSortBy.Engine;
+    public bool IsSortedByModified => SortBy ==   ProjectsSortBy.LastModified;
     
     public Interaction<CreateProjectViewModel, bool> ShowCreateProjectDialog { get; } = new();
 
@@ -35,33 +46,21 @@ public partial class ProjectsViewModel : ViewModelBase
         {
             if (!File.Exists(LocalPath))
             {
-                string directory = Path.GetDirectoryName(LocalPath) ?? string.Empty;
-                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
+                EnsureDirectoryExists(LocalPath);
                 
-                var newProjectRoot = new ProjectRoot
-                {
-                    Projects = new List<ProjectInfo>() 
-                };
-
+                var newProjectRoot = new ProjectRoot { Projects = new List<ProjectInfo>() };
                 var options = new JsonSerializerOptions { WriteIndented = true };
                 string initialJson = JsonSerializer.Serialize(newProjectRoot, options);
-                
+            
                 await File.WriteAllTextAsync(LocalPath, initialJson);
             }
-            
+        
             string jsonContent = await File.ReadAllTextAsync(LocalPath);
             var root = JsonSerializer.Deserialize<ProjectRoot>(jsonContent);
-            
+        
             if (root?.Projects != null)
             {
-                Projects.Clear();
-                foreach (var project in root.Projects)
-                {
-                    Projects.Add(project);
-                }
+                UpdateProjectList(root.Projects);
             }
         }
         catch (Exception ex)
@@ -69,18 +68,93 @@ public partial class ProjectsViewModel : ViewModelBase
             System.Diagnostics.Debug.WriteLine($"Failed to initialize project file: {ex.Message}");
         }
     }
+
+    [RelayCommand]
+    private void SortItems(ProjectsSortBy sortBy)
+    {
+        if (sortBy == SortBy)
+        {
+            _sortAscending = !_sortAscending;
+        }
+        else if (sortBy == ProjectsSortBy.LastModified)
+        {
+            _sortAscending = false; 
+        }
+        else
+        {
+            _sortAscending = true;
+        }
+    
+        SortBy = sortBy;
+        UpdateProjectList(Projects);
+    }
     
     [RelayCommand]
-    public async Task OpenCreateProjectWindow()
+    private async Task SetFavourite(ProjectInfo project)
+    {
+        try
+        {
+            project.IsFavourite = !project.IsFavourite;
+            UpdateProjectList(Projects);
+            await SaveProjectsToDisk();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to update favorite or save JSON: {ex.Message}");
+        }
+    }
+    
+    private async Task SaveProjectsToDisk()
+    {
+        var projectRoot = new ProjectRoot { Projects = Projects.ToList() };
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string json = JsonSerializer.Serialize(projectRoot, options);
+    
+        await File.WriteAllTextAsync(LocalPath, json);
+    }
+
+    private void UpdateProjectList(IEnumerable<ProjectInfo> sourceItems)
+    {
+        var baseQuery = sourceItems.OrderByDescending(p => p.IsFavourite);
+        
+        IOrderedEnumerable<ProjectInfo> orderedQuery = SortBy switch
+        {
+            ProjectsSortBy.Name => _sortAscending 
+                ? baseQuery.ThenBy(p => p.Name) 
+                : baseQuery.ThenByDescending(p => p.Name),
+            
+            ProjectsSortBy.Engine => _sortAscending 
+                ? baseQuery.ThenBy(p => p.EngineVersion) 
+                : baseQuery.ThenByDescending(p => p.EngineVersion),
+            
+            ProjectsSortBy.LastModified => _sortAscending 
+                ? baseQuery.ThenBy(p => p.LastModified) 
+                : baseQuery.ThenByDescending(p => p.LastModified),
+            
+            _ => baseQuery.ThenByDescending(p => p.LastModified)
+        };
+        
+        Projects = new ObservableCollection<ProjectInfo>(orderedQuery.ToList());
+    }
+
+    [RelayCommand]
+    private async Task OpenCreateProjectWindow()
     {
         var createProjectVm = new CreateProjectViewModel();
-        
         bool isCreated = await ShowCreateProjectDialog.Handle(createProjectVm);
         
         if (isCreated)
         {
-            // Reload from disk or append the new project directly to the Projects collection
             await LoadProjects();
+        }
+    }
+
+    private static void EnsureDirectoryExists(string path)
+    {
+        string directory = Path.GetDirectoryName(path) ?? string.Empty;
+        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
         }
     }
 }

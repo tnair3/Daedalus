@@ -70,7 +70,7 @@ public partial class CreateProjectViewModel : ViewModelBase
             {
                 Id = Guid.NewGuid(),
                 Name = ProjectName,
-                EngineVersion = "v1.0.0-beta.1", // update to dynamically change based on installed engine version
+                EngineVersion = "v1.0.0-alpha.1", // update to dynamically change based on installed engine version
                 LastModified = DateTime.Now,
                 ProjectPath = this.ProjectPath,
                 Author = ProjectAuthor,
