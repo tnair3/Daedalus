@@ -19,13 +19,15 @@ public partial class ProjectsViewModel : ViewModelBase
     private static string LocalPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projects.json");
     
     [ObservableProperty] private ObservableCollection<ProjectInfo> _projects = new();
-    private bool _sortAscending = false;
+    [ObservableProperty] private string _searchQuery = string.Empty;
+    [ObservableProperty] private ObservableCollection<ProjectInfo> _filteredProjects = new();
     
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsSortedByName))]
     [NotifyPropertyChangedFor(nameof(IsSortedByEngine))]
     [NotifyPropertyChangedFor(nameof(IsSortedByModified))]
     private ProjectsSortBy _sortBy = ProjectsSortBy.LastModified;
+    private bool _sortAscending = false;
     public bool IsSortedByName => SortBy ==  ProjectsSortBy.Name;
     public bool IsSortedByEngine => SortBy ==  ProjectsSortBy.Engine;
     public bool IsSortedByModified => SortBy ==   ProjectsSortBy.LastModified;
@@ -60,7 +62,10 @@ public partial class ProjectsViewModel : ViewModelBase
         
             if (root?.Projects != null)
             {
-                UpdateProjectList(root.Projects);
+                var incomingList = root.Projects;
+                Projects = new ObservableCollection<ProjectInfo>(incomingList);
+                
+                UpdateProjectList(Projects);
             }
         }
         catch (Exception ex)
@@ -113,10 +118,20 @@ public partial class ProjectsViewModel : ViewModelBase
         await File.WriteAllTextAsync(LocalPath, json);
     }
 
+    partial void OnSearchQueryChanged(string value)
+    {
+        UpdateProjectList(Projects);
+    }
+
     private void UpdateProjectList(IEnumerable<ProjectInfo> sourceItems)
     {
-        var baseQuery = sourceItems.OrderByDescending(p => p.IsFavourite);
+        if (!string.IsNullOrWhiteSpace(SearchQuery))
+        {
+            sourceItems = sourceItems.Where(p => 
+                p.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
+        }
         
+        var baseQuery = sourceItems.OrderByDescending(p => p.IsFavourite);
         IOrderedEnumerable<ProjectInfo> orderedQuery = SortBy switch
         {
             ProjectsSortBy.Name => _sortAscending 
@@ -134,7 +149,7 @@ public partial class ProjectsViewModel : ViewModelBase
             _ => baseQuery.ThenByDescending(p => p.LastModified)
         };
         
-        Projects = new ObservableCollection<ProjectInfo>(orderedQuery.ToList());
+        FilteredProjects = new ObservableCollection<ProjectInfo>(orderedQuery.ToList());
     }
 
     [RelayCommand]

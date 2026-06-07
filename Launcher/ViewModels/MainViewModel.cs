@@ -15,9 +15,9 @@ public partial class MainViewModel : ViewModelBase
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
             .InformationalVersion ?? "1.0.0";
     
-    public ProjectsViewModel Projects { get; } = new();
-    public InstallationsViewModel Installations { get; } = new();
-    public LearnViewModel Learn { get; } = new();
+    private ProjectsViewModel Projects { get; } = new();
+    private InstallationsViewModel Installations { get; } = new();
+    private LearnViewModel Learn { get; } = new();
     
     public bool IsProjectsTab => SelectedTab == TabType.Projects;
     public bool IsInstallationsTab => SelectedTab == TabType.Installations;
