@@ -8,8 +8,7 @@ namespace Daedalus {
             std::cerr << "Failed to initialize GLFW!" << std::endl;
             return;
         }
-
-        // Configure window (Assuming Vulkan later, so no OpenGL context)
+        
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API); 
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
@@ -22,7 +21,9 @@ namespace Daedalus {
     }
 
     EditorWindow::~EditorWindow() {
-        glfwDestroyWindow(m_Window);
+        if (m_Window) {
+            glfwDestroyWindow(m_Window);
+        }
         glfwTerminate();
     }
 

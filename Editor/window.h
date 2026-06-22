@@ -11,9 +11,14 @@ namespace Daedalus {
         EditorWindow(int width, int height, const std::string& title);
         ~EditorWindow();
 
+        EditorWindow(const EditorWindow&) = delete;
+        EditorWindow& operator=(const EditorWindow&) = delete;
+
         bool ShouldClose() const;
         void PollEvents();
         void SwapBuffers();
+        
+        GLFWwindow* GetNativeWindow() const { return m_Window; }
 
     private:
         GLFWwindow* m_Window;
