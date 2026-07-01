@@ -1,11 +1,9 @@
-find_package(glfw3 REQUIRED)
-find_package(Vulkan REQUIRED)
-
 set(EDITOR_SOURCES
-        main.cpp
-        main.h
-        window.cpp
-        window.h
+        Main.cpp
+        Main.h
+        Window.cpp
+        Window.h
+        EditorVulkanBootstrap.cpp
 
         # imgui source files
         imgui/imgui.cpp
