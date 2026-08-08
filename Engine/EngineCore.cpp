@@ -1,12 +1,9 @@
-#include "EngineCore.h"
 #include <iostream>
 
-namespace Daedalus {
-    EngineCore::EngineCore() {
-        // Constructor logic
-    }
+#include "EngineCore.h"
 
-    void EngineCore::Initialize() {
-        std::cout << "Daedalus Engine Initialized!" << std::endl;
-    }
+namespace Daedalus {
+    EngineCore::EngineCore() {}
+
+    void EngineCore::Initialize(GLFWwindow* window) { std::cout << "Daedalus Engine Initialized!" << std::endl; }
 }

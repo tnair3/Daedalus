@@ -1,10 +1,26 @@
 set(EDITOR_SOURCES
-        main.cpp
-        main.h
+        Main.cpp
+        Main.h
+        Window.cpp
+        Window.h
+        EditorVulkanBootstrap.cpp
+
+        # imgui source files
+        imgui/imgui.cpp
+        imgui/imgui_demo.cpp
+        imgui/imgui_draw.cpp
+        imgui/imgui_tables.cpp
+        imgui/imgui_widgets.cpp
+
+        # imgui backends
+        imgui/backends/imgui_impl_glfw.cpp
+        imgui/backends/imgui_impl_vulkan.cpp
 )
 
 # Executable
 add_executable(EditorApp ${EDITOR_SOURCES})
+# To hide the console, change add_executable to:
+# add_executable(EditorApp WIN32 ${EDITOR_SOURCES})
 
 # C++ Standard
 set_target_properties(EditorApp PROPERTIES
@@ -17,10 +33,27 @@ target_include_directories(EditorApp
         PRIVATE
             .
             ${CMAKE_SOURCE_DIR}/Include
+            ${Vulkan_INCLUDE_DIRS}
+            imgui
+            imgui/backends
 )
 
+if(WIN32)
+    target_link_options(EditorApp
+            PRIVATE
+                "-static-libgcc"
+                "-static-libstdc++"
+    )
+endif()
+
 # Libraries
-target_link_libraries(EditorApp PRIVATE Engine)
+target_link_libraries(EditorApp
+        PRIVATE
+            Engine
+            glfw
+            Vulkan::Vulkan
+            nfd::nfd
+)
 
 # Output to ../Build/
 set_target_properties(EditorApp PROPERTIES

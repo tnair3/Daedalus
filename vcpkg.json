@@ -1,0 +1,8 @@
+{
+  "name": "daedalus-engine",
+  "version": "0.1.0",
+  "dependencies": [
+    "glfw3",
+    "nativefiledialog-extended"
+  ]
+}

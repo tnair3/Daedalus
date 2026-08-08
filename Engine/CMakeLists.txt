@@ -18,6 +18,12 @@ target_include_directories(Engine
         PRIVATE .
 )
 
+# Libraries
+target_link_libraries(Engine
+        PRIVATE
+            glfw
+            Vulkan::Vulkan)
+
 # Output to ../Build/
 set_target_properties(Engine PROPERTIES
         ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/Build/lib"

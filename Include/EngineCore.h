@@ -1,9 +1,29 @@
 #pragma once
 
+#include <GLFW/glfw3.h>
+#include <string>
+
+#include "EngineContext.h"
+
 namespace Daedalus {
-    class EngineCore {
-    public:
-        EngineCore();
-        void Initialize();
+    class EngineCore
+    {
+        public:
+            EngineCore();
+            ~EngineCore();
+
+            const EngineGraphicsContext& GetGraphicsContext() const { return m_GraphicsContext; }
+
+            void RecreateSwapchain(GLFWwindow* window);
+            void Initialize(GLFWwindow* window);
+            void Update();
+            void Shutdown();
+            bool LoadProject(const std::string& projectPath);
+
+        private:
+            EngineGraphicsContext m_GraphicsContext;
+            std::string m_ActiveProjectPath;
+
+            void CreateMinimalVulkanInstance();
     };
 }
