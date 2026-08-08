@@ -1,1 +1,11 @@
+* text=auto
+
+# Exclude third-party C++ dependencies
 ThirdParty/** linguist-vendored
+
+*.cs text linguist-language=C# linguist-detectable=true
+*.axaml text linguist-language=XAML linguist-detectable=true
+*.xaml text linguist-language=XAML linguist-detectable=true
+
+*.cpp linguist-language=C++
+*.hpp linguist-language=C++
