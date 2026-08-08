@@ -12,6 +12,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # Packages
 find_package(glfw3 REQUIRED)
 find_package(Vulkan REQUIRED)
+find_package(nfd CONFIG REQUIRED)
 
 # Public Headers
 include_directories(Include)

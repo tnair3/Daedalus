@@ -52,6 +52,7 @@ target_link_libraries(EditorApp
             Engine
             glfw
             Vulkan::Vulkan
+            nfd::nfd
 )
 
 # Output to ../Build/

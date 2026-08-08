@@ -294,4 +294,12 @@ namespace Daedalus {
             vkCreateFramebuffer(m_GraphicsContext.Device, &framebufferInfo, nullptr, &m_GraphicsContext.Framebuffers[i]);
         }
     }
+
+    bool EngineCore::LoadProject(const std::string& projectPath)
+    {
+        std::cout << "Testing: Opening project from: " << projectPath << std::endl;
+        m_ActiveProjectPath = projectPath;
+
+        return true;
+    }
 }

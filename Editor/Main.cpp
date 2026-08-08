@@ -2,6 +2,7 @@
 #include <iostream>
 #include <tchar.h>
 #include <stdexcept>
+#include <nfd.hpp>
 
 #include "Main.h"
 #include "Window.h"
@@ -196,12 +197,34 @@ namespace Editor {
                 if (ImGui::BeginMenu("File"))
                 {
                     if (ImGui::MenuItem("New Project", "Ctrl+N")) {  }
-                    if (ImGui::MenuItem("Open Project...", "Ctrl+O")) {  }
+                    if (ImGui::MenuItem("Open Project", "Ctrl+O"))
+                    {
+                        NFD::Guard nfdGuard;
+                        nfdu8char_t* outPath = nullptr;
+                        nfdu8filteritem_t filterItem[1] = { { "Daedalus Project File", "myproject" } };
+                        nfdresult_t result = NFD::OpenDialog(outPath, filterItem, 1, nullptr);
+
+                        if (result == NFD_OKAY)
+                        {
+                            std::string selectedPath(outPath);
+                            m_engine.LoadProject(selectedPath);
+                            NFD::FreePath(outPath);
+                        }
+                        else if (result == NFD_CANCEL)
+                        {
+                            std::cout << "User canceled file selection." << std::endl;
+                        }
+                        else
+                        {
+                            std::cerr << "Error: " << NFD::GetError() << std::endl;
+                        }
+                    }
                     if (ImGui::MenuItem("Save", "Ctrl+S")) {  }
                     ImGui::Separator();
                     if (ImGui::MenuItem("Exit", "Alt+F4")) { m_IsRunning = false; }
                     ImGui::EndMenu();
                 }
+
                 if (ImGui::BeginMenu("Edit"))
                 {
                     if (ImGui::MenuItem("Undo", "Ctrl+Z")) {  }
@@ -211,6 +234,7 @@ namespace Editor {
                     if (ImGui::MenuItem("Paste", "Ctrl+V")) {  }
                     ImGui::EndMenu();
                 }
+
                 if (ImGui::BeginMenu("View"))
                 {
                     ImGui::EndMenu();

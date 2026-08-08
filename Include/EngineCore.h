@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+#include <string>
 
 #include "EngineContext.h"
 
@@ -17,9 +18,11 @@ namespace Daedalus {
             void Initialize(GLFWwindow* window);
             void Update();
             void Shutdown();
+            bool LoadProject(const std::string& projectPath);
 
         private:
             EngineGraphicsContext m_GraphicsContext;
+            std::string m_ActiveProjectPath;
 
             void CreateMinimalVulkanInstance();
     };
