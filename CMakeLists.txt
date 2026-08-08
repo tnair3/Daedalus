@@ -10,7 +10,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # Packages
-find_package(glfw3 REQUIRED)
+find_package(glfw3 REQUIRED) # Add "-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake" to CMake Options in CLion Settings
 find_package(Vulkan REQUIRED)
 find_package(nfd CONFIG REQUIRED)
 
