@@ -1,0 +1,71 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="DaedalusLauncher.App"
+             xmlns:local="using:DaedalusLauncher"
+             xmlns:controls="using:DaedalusLauncher.Controls"
+             RequestedThemeVariant="Dark">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <FontFamily x:Key="SoraFont">avares://DaedalusLauncher/Assets/Fonts#Sora</FontFamily>
+            
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://DaedalusLauncher/Assets/Icons.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <SolidColorBrush x:Key="PrimaryBackground" Color="#1e1e1e"/>
+            <SolidColorBrush x:Key="SecondaryBackground" Color="#323232"/>
+            <SolidColorBrush x:Key="SidebarBackground" Color="#2b2b2b"/>
+            <SolidColorBrush x:Key="AutoCompleteForeground" Color="#a3a3a3"/>
+            <SolidColorBrush x:Key="AutoCompleteBackground" Color="#3f3f3f"/>
+            <SolidColorBrush x:Key="PrimaryText" Color="#cfcfcf"/>
+            <SolidColorBrush x:Key="SecondaryText" Color="#8e8e8e"/>
+            <SolidColorBrush x:Key="PrimaryHoverText" Color="White"/>
+            <SolidColorBrush x:Key="SidebarHoverBackground" Color="#333333"/>
+            <SolidColorBrush x:Key="ApplicationAccent" Color="#0d3163"/>
+            <SolidColorBrush x:Key="ApplicationAccentAlt" Color="#2d63ad"/>
+            <SolidColorBrush x:Key="StatusSuccess" Color="#279100"/>
+            <SolidColorBrush x:Key="SuccessOnHover" Color="#389615"/>
+            <SolidColorBrush x:Key="StatusSuccessAlt" Color="#5a8f57"/>
+            <SolidColorBrush x:Key="StatusWarning" Color="#eab308"/>
+            <SolidColorBrush x:Key="StatusError" Color="#c24b4b"/>
+            <SolidColorBrush x:Key="StatusErrorAlt" Color="#822e2e"/>
+            <SolidColorBrush x:Key="SeparatorColour" Color="#474747"/>
+        </ResourceDictionary>
+    </Application.Resources>
+     
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="Styles/AppDefaultStyles.axaml"/>
+        
+        <Style Selector="Window">
+            <Setter Property="WindowStartupLocation" Value="CenterScreen"/>
+        </Style>
+        
+        <Style Selector="controls|WindowFrame">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <DockPanel LastChildFill="True" Background="{StaticResource SidebarBackground}">
+                        <Grid Height="50" ColumnDefinitions="20, *, Auto, 20" DockPanel.Dock="Top" Background="Transparent" PointerPressed="TitleBar_PointerPressed">
+                            <TextBlock Grid.Column="1" Text="{TemplateBinding WindowName}" Foreground="{StaticResource PrimaryText}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center" Padding="5, 0"/>
+                
+                            <Button Grid.Column="2" Command="{TemplateBinding CloseWindowCommand}" CommandParameter="{Binding $parent[Window]}" Classes="closeButton" Padding="5, 0"/>
+                        </Grid>
+            
+                        <Border Width="20" DockPanel.Dock="Left"/>
+                        <Border Width="20" DockPanel.Dock="Right"/>
+                        <Border Height="20" DockPanel.Dock="Bottom"/>
+            
+                        <Border Background="{StaticResource PrimaryBackground}" CornerRadius="8" ClipToBounds="True" Padding="15">
+                            <ContentPresenter Content="{TemplateBinding Content}"/>
+                        </Border>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+    </Application.Styles>
+</Application>

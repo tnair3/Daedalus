@@ -1,0 +1,47 @@
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Data.Core;
+using Avalonia.Data.Core.Plugins;
+using System.Linq;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Markup.Xaml;
+using DaedalusLauncher.ViewModels;
+using DaedalusLauncher.Views;
+
+namespace DaedalusLauncher;
+
+public partial class App : Application
+{
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.MainWindow = new MainView
+            {
+                DataContext = new MainViewModel(),
+            };
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+
+    private void TitleBar_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (sender is Visual visual)
+        {
+            if (e.GetCurrentPoint(visual).Properties.IsLeftButtonPressed)
+            {
+                if (TopLevel.GetTopLevel(visual) is Window window)
+                {
+                    window.BeginMoveDrag(e);
+                }
+            }
+        }
+    }
+}

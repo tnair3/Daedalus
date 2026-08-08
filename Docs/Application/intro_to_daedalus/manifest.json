@@ -1,0 +1,20 @@
+{
+  "book_id": "intro_to_daedalus",
+  "title": "Introduction to Daedalus",
+  "author": "Daedalus Team",
+  "description": "A comprehensive guide to the launcher and ecosystem basics.",
+  "version": "2026-01-01",
+  "category": "Application Basics",
+  "shelf_index": 0,
+  "chapters": [
+    {
+      "title": "Welcome to Daedalus",
+      "file": "01_welcome.md",
+      "id": "welcome"
+    }
+  ],
+  "metadata": {
+    "estimated_read_time": "15 min",
+    "tags": ["beginner", "setup", "launcher"]
+  }
+}

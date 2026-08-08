@@ -4,6 +4,9 @@
 *.swp
 *.swo
 
+# Module Versioning
+release.json
+
 # CMake & Build
 cmake-build-debug/
 cmake-build-release/

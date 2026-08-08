@@ -1,0 +1,414 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20" Background="{StaticResource SidebarBackground}">
+            <!-- Add Controls for Previewer Here -->
+            <Button Content="Hello World" Classes="sidebar"/>
+        </Border>
+    </Design.PreviewWith>
+    
+    <Style Selector="Window">
+        <Setter Property="FontFamily" Value="{StaticResource SoraFont}"/>
+    </Style>
+    
+    <Style Selector="Border.tableHeader">
+        <Setter Property="Background" Value="{StaticResource SidebarBackground}"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="CornerRadius" Value="16 16 0 0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Margin" Value="0 10 0 0"/>
+    </Style>
+    
+    <Style Selector="Border.appVersions">
+        <Setter Property="Background" Value="{StaticResource SecondaryBackground}"/>
+        <Setter Property="Padding" Value="15"/>
+        <Setter Property="CornerRadius" Value="10"/>
+    </Style>
+    
+    <Style Selector="Border.book">
+        <Setter Property="Width" Value="140"/>
+        <Setter Property="Background" Value="#2D2D2D"/>
+        <Setter Property="CornerRadius" Value="4 12 12 4"/>
+        <Setter Property="BoxShadow" Value="5 5 15 0 #40000000"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ApplicationAccent}"/>
+        <Setter Property="BorderThickness" Value="4 0 0 0"/>
+    </Style>
+    
+    <Style Selector="Border.projectButtonBackground">
+        <Setter Property="Background" Value="{StaticResource SecondaryBackground}"/>
+        <Setter Property="Opacity" Value="0"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.15" Easing="SineEaseInOut"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Button /template/ ContentPresenter">
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.1"/>
+                <BrushTransition Property="Foreground" Duration="0:0:0.1"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Button /template/ ContentPresenter">
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.1"/>
+                <BrushTransition Property="Foreground" Duration="0:0:0.1"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Button.closeButton">
+        <Setter Property="Background" Value="{StaticResource StatusError}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Width" Value="15"/>
+        <Setter Property="Height" Value="15"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    
+    <Style Selector="Button.closeButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource StatusError}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    
+    <Style Selector="Button.closeButton:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource StatusError}"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    
+    <Style Selector="Button.projectButton">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+    <Style Selector="Button.projectButton /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="Button.projectButton:pointerover Border.projectButtonBackground">
+        <Setter Property="Opacity" Value="0.4"/>
+    </Style>
+
+    <Style Selector="Button.projectButton:pressed Border.projectButtonBackground">
+        <Setter Property="Opacity" Value="0.6"/>
+    </Style>
+    
+    <Style Selector="Button.creatingProject">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    </Style>
+    
+    <Style Selector="Button.creatingProject:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    
+    <Style Selector="Button.creatingProject:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    
+    <Style Selector="Button.sidebar">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="Background" Value="{StaticResource SidebarBackground}"/>
+        <Setter Property="CornerRadius" Value="15"/>
+    </Style>
+        
+    <Style Selector="Button.sidebar[Tag=True] /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="Background" Value="{StaticResource SidebarHoverBackground}"/>
+    </Style>
+    
+    <Style Selector="Button.sidebar:pointerover /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="Background" Value="{StaticResource SidebarHoverBackground}"/>
+    </Style>
+    
+    <Style Selector="Button.sidebar:pressed /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="Background" Value="{StaticResource SidebarHoverBackground}"/>
+    </Style>
+    
+    <Style Selector="Button.createButton">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="Background" Value="{StaticResource StatusSuccess}"/>
+        <Setter Property="CornerRadius" Value="15"/>
+    </Style>
+    
+    <Style Selector="Button.createButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="Background" Value="{StaticResource SuccessOnHover}"/>
+    </Style>
+    
+    <Style Selector="Button.createButton:pressed /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="Background" Value="{StaticResource SuccessOnHover}"/>
+    </Style>
+    
+    <Style Selector="Button.updateButton">
+        <Setter Property="Background" Value="{StaticResource AccentButtonBackground}"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="Content" Value="Update Now"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="CornerRadius" Value="20"/>
+    </Style>
+    
+    <Style Selector="Button.updateButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource AccentButtonBackgroundPointerOver}"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+    </Style>
+    
+    <Style Selector="Button.updateButton:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource AccentButtonBackgroundPointerOver}"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+    </Style>
+    
+    <Style Selector="Button.refreshButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="RenderTransform" Value="scale(1)"/>
+    </Style>
+    
+    <Style Selector="Button.refreshButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+    </Style>
+    
+    <Style Selector="Button.refreshButton:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="RenderTransform" Value="scale(1.1)"/>
+    </Style>
+    
+    <Style Selector="Button.contextMenuButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="RenderTransform" Value="scale(1)"/>
+    </Style>
+    
+    <Style Selector="Button.contextMenuButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+    </Style>
+    
+    <Style Selector="Button.contextMenuButton:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="RenderTransform" Value="scale(1.1)"/>
+    </Style>
+    
+    <Style Selector="Button.pathPickerButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.pathPickerButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+    </Style>
+
+    <Style Selector="Button.pathPickerButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="RenderTransform" Value="scale(1.1)"/>
+    </Style>
+    
+    <Style Selector="Button.book">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    
+    <Style Selector="Button.book:pointerover /template/ ContentPresenter">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    
+    <Style Selector="Button.book:pressed /template/ ContentPresenter">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    
+    <Style Selector="TextBlock.heading">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Margin" Value="10"/>
+    </Style>
+    
+    <Style Selector="TextBlock.upToDate">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+    </Style>
+    
+    <Style Selector="TextBlock.bookTitle">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="0, 10"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+    
+    <Style Selector="Label.sidebar">
+        <Setter Property="Padding" Value="10, 0, 0, 0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    
+    <Style Selector="PathIcon">
+        <Setter Property="Width" Value="14"/>
+    </Style>
+    
+    <Style Selector="AutoCompleteBox.searchBox">
+        <Setter Property="Background" Value="{StaticResource AutoCompleteBackground}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="AutoCompleteBox.searchBox /template/ TextBox#PART_TextBox">
+        <Setter Property="PlaceholderText" Value="Search"/>
+        <Setter Property="SelectionBrush" Value="{StaticResource ApplicationAccent}"/>
+        <Setter Property="InnerLeftContent">
+            <Template>
+                <PathIcon Data="{StaticResource Search}" Width="15" Height="15" Margin="10 0 0 0" VerticalAlignment="Center"/>
+            </Template>
+        </Setter>
+    </Style>
+
+    <Style Selector="AutoCompleteBox.searchBox /template/ TextBox#PART_TextBox:pointerover /template/ Border#PART_BorderElement,
+                    AutoCompleteBox.searchBox /template/ TextBox#PART_TextBox:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{StaticResource AutoCompleteBackground}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <Style Selector="AutoCompleteBox.searchBox /template/ Popup#PART_Popup Border">
+        <Setter Property="Background" Value="{StaticResource AutoCompleteBackground}"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <Style Selector="AutoCompleteBox.searchBox /template/ TextBox#PART_TextBox:focus /template/ TextBlock#PART_Watermark">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="Opacity" Value="0.5"/>
+    </Style>
+    
+    <Style Selector="ListBox /template/ ContentPresenter">
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.1"/>
+                <BrushTransition Property="Foreground" Duration="0:0:0.1"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="ListBox">
+        <Setter Property="Background" Value="{StaticResource SidebarBackground}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+
+    <Style Selector="ListBoxItem">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="Background" Value="{StaticResource SidebarBackground}"/>
+        <Setter Property="Padding" Value="0"/> 
+        <Setter Property="Margin" Value="0,2"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="CornerRadius" Value="15"/>
+    </Style>
+
+    <Style Selector="ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="Background" Value="{StaticResource SidebarBackground}"/>
+        <Setter Property="Padding" Value="12,8"/> 
+        <Setter Property="CornerRadius" Value="15"/>
+    </Style>
+    
+    <Style Selector="ListBoxItem /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="Background" Value="{StaticResource SidebarBackground}"/>
+        <Setter Property="CornerRadius" Value="15"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.1"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="ListBoxItem /template/ Border">
+        <Setter Property="CornerRadius" Value="15"/>
+    </Style>
+    
+    <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource SidebarHoverBackground}"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+    </Style>
+
+    <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource SidebarBackground}"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    
+    <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource SidebarHoverBackground}"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+    </Style>
+
+    <Style Selector="ListBoxItem:selected TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+    
+    <Style Selector="ScrollViewer.booksView">
+        <Setter Property="Padding" Value="0,0,0,15"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+    </Style>
+    
+    <Style Selector="ScrollViewer.booksView /template/ ScrollBar#PART_HorizontalScrollBar">
+        <Setter Property="Height" Value="4"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Margin" Value="0,10,0,0"/>
+    </Style>
+
+    <Style Selector="ScrollViewer.booksView /template/ ScrollBar#PART_HorizontalScrollBar /template/ Thumb">
+        <Setter Property="Background" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="Opacity" Value="0.2"/>
+        <Setter Property="CornerRadius" Value="2"/>
+    </Style>
+
+    <Style Selector="ScrollViewer.booksView /template/ ScrollBar#PART_HorizontalScrollBar:pointerover /template/ Thumb">
+        <Setter Property="Opacity" Value="0.5"/>
+    </Style>
+    
+</Styles>

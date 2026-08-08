@@ -1,0 +1,93 @@
+<rxui:ReactiveWindow x:TypeArguments="vm:MainViewModel"
+                     xmlns="https://github.com/avaloniaui"
+                     xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:vm="using:DaedalusLauncher.ViewModels"
+                     xmlns:view="using:DaedalusLauncher.Views"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:models="clr-namespace:DaedalusLauncher.Models"
+                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                     Width="800" Height="450"
+                     x:Class="DaedalusLauncher.Views.MainView"
+                     x:DataType="vm:MainViewModel"
+                     CanResize="False"
+                     Icon="/Assets/avalonia-logo.ico"
+                     Title="Daedalus Engine Launcher">
+        
+        <rxui:ReactiveWindow.DataTemplates>
+                <DataTemplate DataType="{x:Type vm:ProjectsViewModel}">
+                        <view:ProjectsView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:InstallationsViewModel}">
+                        <view:InstallationsView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:LearnViewModel}">
+                        <view:LearnView />
+                </DataTemplate>
+        </rxui:ReactiveWindow.DataTemplates>
+        
+        <Grid ColumnDefinitions="200 *">
+                <!-- Sidebar -->
+                <Border Grid.Column="0" Background="{StaticResource SidebarBackground}" Padding="10">
+                        <Grid RowDefinitions="* Auto">
+                                <!-- Logo and Main Page Navigation -->
+                                <StackPanel Grid.Row="0" Spacing="5">
+                                        <Grid ColumnDefinitions="Auto *" Margin="5 5 5 20">
+                                                <Border Grid.Column="0" Padding="5 0" VerticalAlignment="Center">
+                                                        <PathIcon Data="{StaticResource AppLogo}" Width="30" Height="30"/>
+                                                </Border>
+                                                
+                                                <Border Grid.Column="1" VerticalAlignment="Center">
+                                                        <StackPanel Spacing="-2">
+                                                                <TextBlock Text="Daedalus" FontSize="14" FontWeight="Regular" VerticalAlignment="Center"/>
+                                                                <TextBlock FontSize="12" FontWeight="ExtraLight" Foreground="{StaticResource SecondaryText}">
+                                                                        <Label Content="{Binding AppVersion, StringFormat='v{0}'}" Padding="0"/>
+                                                                </TextBlock>
+                                                        </StackPanel>
+                                                </Border>
+                                        </Grid>
+                                        
+                                        <Button HorizontalAlignment="Stretch" Classes="sidebar" Tag="{Binding IsProjectsTab}" 
+                                                Command="{Binding Navigate}" CommandParameter="{x:Static models:TabType.Projects}">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <PathIcon Data="{StaticResource NavigationProjects}"/>
+                                                        <Label Content="Projects" Classes="sidebar"/>
+                                                </StackPanel>
+                                        </Button>
+                                        <Button HorizontalAlignment="Stretch" Classes="sidebar" Tag="{Binding IsInstallationsTab}" 
+                                                Command="{Binding Navigate}" CommandParameter="{x:Static models:TabType.Installations}">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <PathIcon Data="{StaticResource NavigationInstallations}"/>
+                                                        <Label Content="Installations" Classes="sidebar"/>
+                                                </StackPanel>
+                                        </Button>
+                                        <Button HorizontalAlignment="Stretch" Classes="sidebar" Tag="{Binding IsLearnTab}" 
+                                                Command="{Binding Navigate}" CommandParameter="{x:Static models:TabType.Learn}">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <PathIcon Data="{StaticResource NavigationLearning}"/>
+                                                        <Label Content="Learn" Classes="sidebar"/>
+                                                </StackPanel>
+                                        </Button>
+                                </StackPanel>
+                                
+                                <!-- Utility Navigation -->
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
+                                        <Button Classes="sidebar" Command="{Binding OpenWindow}" CommandParameter="{x:Static models:WindowType.Settings}">
+                                                <PathIcon Data="{StaticResource NavigationSettings}"/>
+                                        </Button>
+                                        <Button Classes="sidebar" Command="{Binding OpenWindow}" CommandParameter="{x:Static models:WindowType.Report}">
+                                                <PathIcon Data="{StaticResource NavigationBugReport}"/>
+                                        </Button>
+                                        <Button Classes="sidebar" Command="{Binding OpenWindow}" CommandParameter="{x:Static models:WindowType.About}">
+                                                <PathIcon Data="{StaticResource NavigationAbout}"/>
+                                        </Button>
+                                </StackPanel>
+                        </Grid>
+                </Border>
+
+                <!-- Main Content Area -->
+                <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" />
+        </Grid>
+
+</rxui:ReactiveWindow>

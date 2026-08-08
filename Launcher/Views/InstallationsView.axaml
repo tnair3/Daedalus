@@ -1,0 +1,85 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:DaedalusLauncher.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DaedalusLauncher.Views.InstallationsView"
+             x:DataType="vm:InstallationsViewModel">
+    
+    <Grid Background="{StaticResource PrimaryBackground}">
+        <Border Padding="10">
+            <Grid RowDefinitions="Auto *">
+                <!-- Page Header -->
+                <Grid Grid.Row="0" ColumnDefinitions="* Auto">
+                    <TextBlock Grid.Column="0" Text="Installations" Classes="heading"/>
+                    <Button Grid.Column="1" Command="{Binding CheckVersionsAsync}" Classes="refreshButton" Margin="5 0">
+                        <PathIcon Data="{StaticResource Refresh}"/>
+                    </Button>
+                </Grid>
+                    
+                <!-- Installations Content -->
+                <ScrollViewer Grid.Row="1">
+                    <StackPanel Spacing="15" Margin="10">
+                        <!-- Launcher -->
+                        <Border Classes="appVersions">
+                            <DockPanel LastChildFill="True">
+                                <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
+                                    <Button Classes="updateButton" IsVisible="{Binding IsLauncherUpdateAvailable}"/>
+                                    <TextBlock Classes="upToDate" Text="{Binding Status}" IsVisible="{Binding !IsLauncherUpdateAvailable}"/>
+                                </Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Daedalus Launcher" FontSize="18" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding LauncherVersion, StringFormat='Installed Version: {0}'}" Opacity="0.7"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+
+                        <!-- Project Editor -->
+                        <Border Classes="appVersions">
+                            <DockPanel LastChildFill="True">
+                                <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
+                                    <Button Classes="updateButton" IsVisible="{Binding IsEditorUpdateAvailable}"/>
+                                    <TextBlock Classes="upToDate" Text="{Binding Status}" IsVisible="{Binding !IsEditorUpdateAvailable}"/>
+                                </Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Daedalus Project Editor" FontSize="18" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding EditorVersion, StringFormat='Installed Version: {0}'}" Opacity="0.7"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+
+                        <!-- Engine -->
+                        <Border Classes="appVersions">
+                            <DockPanel LastChildFill="True">
+                                <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
+                                    <Button Classes="updateButton" IsVisible="{Binding IsEngineUpdateAvailable}"/>
+                                    <TextBlock Classes="upToDate" Text="{Binding Status}" IsVisible="{Binding !IsEngineUpdateAvailable}"/>
+                                </Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Daedalus Engine" FontSize="18" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding EngineVersion, StringFormat='Installed Version: {0}'}" Opacity="0.7"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        
+                        <!-- Books -->
+                        <Border Classes="appVersions">
+                            <DockPanel LastChildFill="True">
+                                <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
+                                    <Button Classes="updateButton" IsVisible="{Binding IsBooksUpdateAvailable}"/>
+                                    <TextBlock Classes="upToDate" Text="{Binding Status}" IsVisible="{Binding !IsBooksUpdateAvailable}"/>
+                                </Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Books" FontSize="18" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding BooksVersion, StringFormat='Installed Version: {0}'}" Opacity="0.7"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+    
+</UserControl>

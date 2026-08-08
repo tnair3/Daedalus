@@ -1,0 +1,20 @@
+{
+  "book_id": "system_overview",
+  "title": "System Overview",
+  "author": "Daedalus Team",
+  "description": "",
+  "version": "2026-01-01",
+  "category": "Software Architecture",
+  "shelf_index": 0,
+  "chapters": [
+    {
+      "title": "",
+      "file": "",
+      "id": ""
+    }
+  ],
+  "metadata": {
+    "estimated_read_time": "",
+    "tags": []
+  }
+}

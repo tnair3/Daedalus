@@ -1,0 +1,20 @@
+{
+  "book_id": "config_ref",
+  "title": "Configuration Reference",
+  "author": "Daedalus Team",
+  "description": "",
+  "version": "2026-01-01",
+  "category": "Application Basics",
+  "shelf_index": 4,
+  "chapters": [
+    {
+      "title": "",
+      "file": "",
+      "id": ""
+    }
+  ],
+  "metadata": {
+    "estimated_read_time": "",
+    "tags": []
+  }
+}
