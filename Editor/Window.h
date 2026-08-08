@@ -19,9 +19,15 @@ namespace Daedalus {
             void PollEvents();
             void SwapBuffers();
 
+            bool WasFramebufferResized() const { return m_FramebufferResized; }
+            void ResetFramebufferResizedFlag() { m_FramebufferResized = false; }
+
             [[nodiscard]] GLFWwindow* GetNativeWindow() const { return m_Window; }
 
         private:
             GLFWwindow* m_Window;
+            bool m_FramebufferResized = false;
+
+            static void FramebufferResizeCallback(GLFWwindow* window, int width, int height);
     };
 }

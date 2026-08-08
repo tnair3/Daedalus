@@ -13,6 +13,7 @@ namespace Daedalus {
 
             const EngineGraphicsContext& GetGraphicsContext() const { return m_GraphicsContext; }
 
+            void RecreateSwapchain(GLFWwindow* window);
             void Initialize(GLFWwindow* window);
             void Update();
             void Shutdown();

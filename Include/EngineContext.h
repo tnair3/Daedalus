@@ -18,7 +18,7 @@ namespace Daedalus {
         std::vector<VkImage> SwapchainImages;
         std::vector<VkImageView> SwapchainImageViews;
         std::vector<VkFramebuffer> Framebuffers;
-        VkExtent2D SwapchainExtent = {1280, 720};
+        VkExtent2D SwapchainExtent = {0, 0}; 
         VkFence AcquireFence = VK_NULL_HANDLE;
     };
 }

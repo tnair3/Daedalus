@@ -33,7 +33,6 @@ namespace Daedalus {
 
         vkCreateInstance(&createInfo, nullptr, &m_GraphicsContext.Instance);
 
-        // Create Surface immediately after instance allocation
         if (glfwCreateWindowSurface(m_GraphicsContext.Instance, window, nullptr, &m_GraphicsContext.pSurface) != VK_SUCCESS) { throw std::runtime_error("Vulkan Bootstrap Error: Failed to create window surface."); }
 
         uint32_t deviceCount = 0;
@@ -107,7 +106,7 @@ namespace Daedalus {
         colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
         colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
         colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-        colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR; // Safe now because Swapchain is enabled!
+        colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
         VkAttachmentReference colorAttachmentRef{0, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL};
         VkSubpassDescription subpass{};
@@ -122,6 +121,13 @@ namespace Daedalus {
         renderPassInfo.subpassCount = 1;
         renderPassInfo.pSubpasses = &subpass;
         vkCreateRenderPass(m_GraphicsContext.Device, &renderPassInfo, nullptr, &m_GraphicsContext.RenderPass);
+
+        VkSurfaceCapabilitiesKHR capabilities;
+        vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_GraphicsContext.PhysicalDevice, m_GraphicsContext.pSurface, &capabilities);
+
+        int width, height;
+        glfwGetFramebufferSize(window, &width, &height);
+        m_GraphicsContext.SwapchainExtent = { static_cast<uint32_t>(width), static_cast<uint32_t>(height) };
 
         // Create Swapchain
         VkSwapchainCreateInfoKHR swapchainInfo{};
@@ -205,5 +211,87 @@ namespace Daedalus {
         m_GraphicsContext.Device = VK_NULL_HANDLE;
         m_GraphicsContext.pSurface = VK_NULL_HANDLE;
         m_GraphicsContext.Instance = VK_NULL_HANDLE;
+    }
+
+    void EngineCore::RecreateSwapchain(GLFWwindow* window)
+    {
+        int width = 0, height = 0;
+        glfwGetFramebufferSize(window, &width, &height);
+
+        while (width == 0 || height == 0)
+        {
+            glfwGetFramebufferSize(window, &width, &height);
+            glfwWaitEvents();
+        }
+
+        vkDeviceWaitIdle(m_GraphicsContext.Device);
+
+        for (auto framebuffer : m_GraphicsContext.Framebuffers)
+            if (framebuffer) vkDestroyFramebuffer(m_GraphicsContext.Device, framebuffer, nullptr);
+        for (auto imageView : m_GraphicsContext.SwapchainImageViews)
+            if (imageView) vkDestroyImageView(m_GraphicsContext.Device, imageView, nullptr);
+
+        m_GraphicsContext.Framebuffers.clear();
+        m_GraphicsContext.SwapchainImageViews.clear();
+
+        VkSwapchainKHR oldSwapchain = m_GraphicsContext.Swapchain;
+
+        VkSurfaceCapabilitiesKHR capabilities;
+        vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_GraphicsContext.PhysicalDevice, m_GraphicsContext.pSurface, &capabilities);
+        m_GraphicsContext.SwapchainExtent = { static_cast<uint32_t>(width), static_cast<uint32_t>(height) };
+
+        VkSwapchainCreateInfoKHR swapchainInfo{};
+        swapchainInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+        swapchainInfo.surface = m_GraphicsContext.pSurface;
+        swapchainInfo.minImageCount = 2;
+        swapchainInfo.imageFormat = VK_FORMAT_B8G8R8A8_UNORM;
+        swapchainInfo.imageColorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
+        swapchainInfo.imageExtent = m_GraphicsContext.SwapchainExtent;
+        swapchainInfo.imageArrayLayers = 1;
+        swapchainInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+        swapchainInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+        swapchainInfo.preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
+        swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+        swapchainInfo.presentMode = VK_PRESENT_MODE_FIFO_KHR;
+        swapchainInfo.clipped = VK_TRUE;
+        swapchainInfo.oldSwapchain = oldSwapchain;
+
+        vkCreateSwapchainKHR(m_GraphicsContext.Device, &swapchainInfo, nullptr, &m_GraphicsContext.Swapchain);
+
+        if (oldSwapchain != VK_NULL_HANDLE)
+        {
+            vkDestroySwapchainKHR(m_GraphicsContext.Device, oldSwapchain, nullptr);
+        }
+
+        uint32_t imageCount = 0;
+        vkGetSwapchainImagesKHR(m_GraphicsContext.Device, m_GraphicsContext.Swapchain, &imageCount, nullptr);
+        m_GraphicsContext.SwapchainImages.resize(imageCount);
+        vkGetSwapchainImagesKHR(m_GraphicsContext.Device, m_GraphicsContext.Swapchain, &imageCount, m_GraphicsContext.SwapchainImages.data());
+
+        m_GraphicsContext.SwapchainImageViews.resize(imageCount);
+        m_GraphicsContext.Framebuffers.resize(imageCount);
+
+        for (size_t i = 0; i < imageCount; i++)
+        {
+            VkImageViewCreateInfo viewInfo{};
+            viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+            viewInfo.image = m_GraphicsContext.SwapchainImages[i];
+            viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+            viewInfo.format = VK_FORMAT_B8G8R8A8_UNORM;
+            viewInfo.subresourceRange = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1};
+
+            vkCreateImageView(m_GraphicsContext.Device, &viewInfo, nullptr, &m_GraphicsContext.SwapchainImageViews[i]);
+
+            VkFramebufferCreateInfo framebufferInfo{};
+            framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+            framebufferInfo.renderPass = m_GraphicsContext.RenderPass;
+            framebufferInfo.attachmentCount = 1;
+            framebufferInfo.pAttachments = &m_GraphicsContext.SwapchainImageViews[i];
+            framebufferInfo.width = m_GraphicsContext.SwapchainExtent.width;
+            framebufferInfo.height = m_GraphicsContext.SwapchainExtent.height;
+            framebufferInfo.layers = 1;
+
+            vkCreateFramebuffer(m_GraphicsContext.Device, &framebufferInfo, nullptr, &m_GraphicsContext.Framebuffers[i]);
+        }
     }
 }

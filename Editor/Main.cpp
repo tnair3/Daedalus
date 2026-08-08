@@ -6,6 +6,7 @@
 #include "Main.h"
 #include "Window.h"
 #include "imgui.h"
+#include "imgui_internal.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_vulkan.h"
 
@@ -22,7 +23,19 @@ namespace Editor {
 
         if (graphicsContext.Device != VK_NULL_HANDLE) { vkDeviceWaitIdle(graphicsContext.Device); }
 
-        CleanupImGui();
+        if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) { ImGui::DestroyPlatformWindows(); }
+
+        ImGui_ImplVulkan_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+
+        if (m_CommandPoolObj != VK_NULL_HANDLE)
+        {
+            vkDestroyCommandPool(graphicsContext.Device, m_CommandPoolObj, nullptr);
+            m_CommandPoolObj = VK_NULL_HANDLE;
+        }
+
+        ImGui::DestroyPlatformWindows();
+        ImGui::DestroyContext();
     }
 
     void EditorApp::InitImGui()
@@ -32,6 +45,8 @@ namespace Editor {
         ImGuiIO& io = ImGui::GetIO();
         (void)io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+        io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
         ImGui::StyleColorsDark();
 
@@ -99,7 +114,15 @@ namespace Editor {
             &imageIndex
         );
 
-        if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) return;
+        if (result == VK_ERROR_OUT_OF_DATE_KHR)
+        {
+            m_engine.RecreateSwapchain(m_Window.GetNativeWindow());
+            return;
+        }
+        else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
+        {
+            return;
+        }
 
         vkWaitForFences(graphicsContext.Device, 1, &graphicsContext.AcquireFence, VK_TRUE, UINT64_MAX);
         vkResetFences(graphicsContext.Device, 1, &graphicsContext.AcquireFence);
@@ -142,8 +165,22 @@ namespace Editor {
         presentInfo.swapchainCount = 1;
         presentInfo.pSwapchains = &graphicsContext.Swapchain;
         presentInfo.pImageIndices = &imageIndex;
+        
+        result = vkQueuePresentKHR(graphicsContext.GraphicsQueue, &presentInfo);
 
-        vkQueuePresentKHR(graphicsContext.GraphicsQueue, &presentInfo);
+        if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || m_Window.WasFramebufferResized())
+        {
+            m_Window.ResetFramebufferResizedFlag();
+            m_engine.RecreateSwapchain(m_Window.GetNativeWindow());
+        }
+
+        if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            GLFWwindow* backup_current_context = glfwGetCurrentContext();
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+            glfwMakeContextCurrent(backup_current_context);
+        }
     }
 
     void EditorApp::Run()
@@ -151,29 +188,84 @@ namespace Editor {
         while (m_IsRunning && !m_Window.ShouldClose())
         {
             m_Window.PollEvents();
-
             BeginFrame();
 
-            ImGui::Begin("Daedalus Hierarchy");
+            const ImGuiViewport* viewport = ImGui::GetMainViewport();
+            ImGui::SetNextWindowPos(viewport->WorkPos);
+            ImGui::SetNextWindowSize(viewport->WorkSize);
+            ImGui::SetNextWindowViewport(viewport->ID);
 
-            ImVec2 windowSize = ImGui::GetWindowSize();
+            ImGuiWindowFlags hostWindowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
+                ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+                ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
+                ImGuiWindowFlags_NoDocking;
 
-            const char* textStr = "Test";
-            ImVec2 textSize = ImGui::CalcTextSize(textStr);
-            float textPosX = (windowSize.x - textSize.x) * 0.5f;
-            float textPosY = (windowSize.y * 0.5f) - textSize.y;
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 
-            ImGui::SetCursorPosX(textPosX);
-            ImGui::SetCursorPosY(textPosY);
-            ImGui::Text("%s", textStr);
+            ImGui::Begin("EditorRootDockSpaceWindow", nullptr, hostWindowFlags);
+            ImGui::PopStyleVar(2);
 
-            const char* buttonStr = "Click Me";
-            ImVec2 buttonSize = ImVec2(120.0f, 30.0f);
-            float buttonPosX = (windowSize.x - buttonSize.x) * 0.5f;
+            ImGuiID dockspaceId = ImGui::GetID("MainEditorDockSpace");
+            ImGui::DockSpace(dockspaceId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
-            ImGui::SetCursorPosX(buttonPosX);
-            if (ImGui::Button(buttonStr, buttonSize)) { std::cout << "Centered button clicked!" << std::endl; }
+            static bool layoutInitialized = false;
+            if (!layoutInitialized)
+            {
+                layoutInitialized = true;
 
+                ImGui::DockBuilderRemoveNode(dockspaceId);
+                ImGui::DockBuilderAddNode(dockspaceId, ImGuiDockNodeFlags_DockSpace);
+                ImGui::DockBuilderSetNodeSize(dockspaceId, viewport->WorkSize);
+
+                ImGuiID dockIdLeft;
+                ImGuiID dockIdCenter;
+                ImGuiID dockIdRight;
+
+                dockIdLeft = ImGui::DockBuilderSplitNode(dockspaceId, ImGuiDir_Left, 0.20f, nullptr, &dockIdCenter);
+                dockIdRight = ImGui::DockBuilderSplitNode(dockIdCenter, ImGuiDir_Right, 0.25f, nullptr, &dockIdCenter);
+
+                ImGuiID dockIdLeftTop, dockIdLeftBottom;
+                dockIdLeftTop = ImGui::DockBuilderSplitNode(dockIdLeft, ImGuiDir_Up, 0.60f, nullptr, &dockIdLeftBottom);
+
+                ImGuiID dockIdCenterTop, dockIdCenterBottom;
+                dockIdCenterTop = ImGui::DockBuilderSplitNode(dockIdCenter, ImGuiDir_Up, 0.75f, nullptr, &dockIdCenterBottom);
+
+                ImGui::DockBuilderDockWindow("Project Explorer", dockIdLeftTop);
+                ImGui::DockBuilderDockWindow("Version Control (Git)", dockIdLeftBottom);
+
+                ImGui::DockBuilderDockWindow("Scene Viewer", dockIdCenterTop);
+                ImGui::DockBuilderDockWindow("Code Editor", dockIdCenterTop);
+                ImGui::DockBuilderDockWindow("Terminal Output", dockIdCenterBottom);
+
+                ImGui::DockBuilderDockWindow("Inspector", dockIdRight);
+
+                ImGui::DockBuilderFinish(dockspaceId);
+            }
+            ImGui::End();
+
+            ImGui::Begin("Project Explorer");
+            ImGui::Text("File hierarchy tree goes here.");
+            ImGui::End();
+
+            ImGui::Begin("Version Control (Git)");
+            ImGui::Text("Git history logs.");
+            ImGui::End();
+
+            ImGui::Begin("Scene Viewer");
+            ImGui::Text("Vulkan Viewport Render Target Window.");
+            ImGui::End();
+
+            ImGui::Begin("Code Editor");
+            ImGui::Text("// C++ Source text editor mock.");
+            ImGui::End();
+
+            ImGui::Begin("Terminal Output");
+            ImGui::Text("Build output logs go here.");
+            ImGui::End();
+
+            ImGui::Begin("Inspector");
+            ImGui::Text("Component properties.");
             ImGui::End();
 
             EndFrame();
@@ -182,6 +274,11 @@ namespace Editor {
 
     void EditorApp::CleanupImGui()
     {
+        if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) { ImGui::DestroyPlatformWindows(); }
+
+        ImGui_ImplVulkan_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+
         const auto& graphicsContext = m_engine.GetGraphicsContext();
         if (m_CommandPoolObj != VK_NULL_HANDLE)
         {
@@ -189,8 +286,6 @@ namespace Editor {
             m_CommandPoolObj = VK_NULL_HANDLE;
         }
 
-        ImGui_ImplVulkan_Shutdown();
-        ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
     }
 }

@@ -17,8 +17,8 @@ namespace Editor {
         private:
             bool m_IsRunning;
 
-            Daedalus::EditorWindow m_Window;
             Daedalus::EngineCore m_engine;
+            Daedalus::EditorWindow m_Window;
 
             // ImGui Vulkan Backend Requirements
             VkInstance m_VkInstance = VK_NULL_HANDLE;

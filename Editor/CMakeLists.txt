@@ -43,7 +43,6 @@ if(WIN32)
             PRIVATE
                 "-static-libgcc"
                 "-static-libstdc++"
-                "-static"
     )
 endif()
 
