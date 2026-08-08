@@ -6,8 +6,7 @@
             <Button Content="Hello World" Classes="sidebar"/>
         </Border>
     </Design.PreviewWith>
-
-    <!-- Add Styles Here -->
+    
     <Style Selector="Window">
         <Setter Property="FontFamily" Value="{StaticResource SoraFont}"/>
     </Style>
@@ -33,6 +32,16 @@
         <Setter Property="BoxShadow" Value="5 5 15 0 #40000000"/>
         <Setter Property="BorderBrush" Value="{StaticResource ApplicationAccent}"/>
         <Setter Property="BorderThickness" Value="4 0 0 0"/>
+    </Style>
+    
+    <Style Selector="Border.projectButtonBackground">
+        <Setter Property="Background" Value="{StaticResource SecondaryBackground}"/>
+        <Setter Property="Opacity" Value="0"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.15" Easing="SineEaseInOut"/>
+            </Transitions>
+        </Setter>
     </Style>
     
     <Style Selector="Button /template/ ContentPresenter">
@@ -73,6 +82,24 @@
     <Style Selector="Button.closeButton:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{StaticResource StatusError}"/>
         <Setter Property="Foreground" Value="White"/>
+    </Style>
+    
+    <Style Selector="Button.projectButton">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+    <Style Selector="Button.projectButton /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="Button.projectButton:pointerover Border.projectButtonBackground">
+        <Setter Property="Opacity" Value="0.4"/>
+    </Style>
+
+    <Style Selector="Button.projectButton:pressed Border.projectButtonBackground">
+        <Setter Property="Opacity" Value="0.6"/>
     </Style>
     
     <Style Selector="Button.creatingProject">

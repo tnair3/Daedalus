@@ -143,8 +143,13 @@
                                                     <PathIcon Data="{StaticResource Star}" Width="14"/>
                                                 </Button>
                                             </Grid>
-
-                                            <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" Margin="15,0"/>
+                                            
+                                            <Button Grid.Column="1" Margin="10,2" Classes="projectButton">
+                                                <Grid>
+                                                    <Border Classes="projectButtonBackground" CornerRadius="15"/>
+                                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5,0"/>
+                                                </Grid>
+                                            </Button>
                                             <TextBlock Grid.Column="2" Text="{Binding EngineVersion}" VerticalAlignment="Center"/>
                                             <TextBlock Grid.Column="3" Text="{Binding LastModified, StringFormat={}{0:yyyy-MM-dd HH:mm}}" VerticalAlignment="Center"/>
                                             
