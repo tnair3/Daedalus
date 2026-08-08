@@ -206,33 +206,31 @@ namespace Editor {
             ImGui::Begin("EditorRootDockSpaceWindow", nullptr, hostWindowFlags);
             ImGui::PopStyleVar(2);
 
-            ImGuiID dockspaceId = ImGui::GetID("MainEditorDockSpace");
-            ImGui::DockSpace(dockspaceId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
+            ImGuiID dockSpace_id = ImGui::GetID("EditorDockSpace");
+            ImGui::DockSpace(dockSpace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
             static bool layoutInitialized = false;
             if (!layoutInitialized)
             {
                 layoutInitialized = true;
 
-                ImGui::DockBuilderRemoveNode(dockspaceId);
-                ImGui::DockBuilderAddNode(dockspaceId, ImGuiDockNodeFlags_DockSpace);
-                ImGui::DockBuilderSetNodeSize(dockspaceId, viewport->WorkSize);
+                ImGui::DockBuilderRemoveNode(dockSpace_id);
+                ImGui::DockBuilderAddNode(dockSpace_id, ImGuiDockNodeFlags_DockSpace);
+                ImGui::DockBuilderSetNodeSize(dockSpace_id, viewport->WorkSize);
 
-                ImGuiID dockIdLeft;
                 ImGuiID dockIdCenter;
-                ImGuiID dockIdRight;
 
-                dockIdLeft = ImGui::DockBuilderSplitNode(dockspaceId, ImGuiDir_Left, 0.20f, nullptr, &dockIdCenter);
-                dockIdRight = ImGui::DockBuilderSplitNode(dockIdCenter, ImGuiDir_Right, 0.25f, nullptr, &dockIdCenter);
+                ImGuiID dockIdLeft = ImGui::DockBuilderSplitNode(dockSpace_id, ImGuiDir_Left, 0.20f, nullptr, &dockIdCenter);
+                ImGuiID dockIdRight = ImGui::DockBuilderSplitNode(dockIdCenter, ImGuiDir_Right, 0.25f, nullptr, &dockIdCenter);
 
-                ImGuiID dockIdLeftTop, dockIdLeftBottom;
-                dockIdLeftTop = ImGui::DockBuilderSplitNode(dockIdLeft, ImGuiDir_Up, 0.60f, nullptr, &dockIdLeftBottom);
+                ImGuiID dockIdLeftBottom;
+                ImGuiID dockIdLeftTop = ImGui::DockBuilderSplitNode(dockIdLeft, ImGuiDir_Up, 0.60f, nullptr, &dockIdLeftBottom);
 
-                ImGuiID dockIdCenterTop, dockIdCenterBottom;
-                dockIdCenterTop = ImGui::DockBuilderSplitNode(dockIdCenter, ImGuiDir_Up, 0.75f, nullptr, &dockIdCenterBottom);
+                ImGuiID dockIdCenterBottom;
+                ImGuiID dockIdCenterTop = ImGui::DockBuilderSplitNode(dockIdCenter, ImGuiDir_Up, 0.75f, nullptr, &dockIdCenterBottom);
 
                 ImGui::DockBuilderDockWindow("Project Explorer", dockIdLeftTop);
-                ImGui::DockBuilderDockWindow("Version Control (Git)", dockIdLeftBottom);
+                ImGui::DockBuilderDockWindow("Version Control", dockIdLeftBottom);
 
                 ImGui::DockBuilderDockWindow("Scene Viewer", dockIdCenterTop);
                 ImGui::DockBuilderDockWindow("Code Editor", dockIdCenterTop);
@@ -240,7 +238,7 @@ namespace Editor {
 
                 ImGui::DockBuilderDockWindow("Inspector", dockIdRight);
 
-                ImGui::DockBuilderFinish(dockspaceId);
+                ImGui::DockBuilderFinish(dockSpace_id);
             }
             ImGui::End();
 
@@ -248,7 +246,7 @@ namespace Editor {
             ImGui::Text("File hierarchy tree goes here.");
             ImGui::End();
 
-            ImGui::Begin("Version Control (Git)");
+            ImGui::Begin("Version Control");
             ImGui::Text("Git history logs.");
             ImGui::End();
 
@@ -257,7 +255,7 @@ namespace Editor {
             ImGui::End();
 
             ImGui::Begin("Code Editor");
-            ImGui::Text("// C++ Source text editor mock.");
+            ImGui::Text("Built in code editor window");
             ImGui::End();
 
             ImGui::Begin("Terminal Output");
