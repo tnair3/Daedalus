@@ -190,6 +190,35 @@ namespace Editor {
             m_Window.PollEvents();
             BeginFrame();
 
+            // Menu bar
+            if (ImGui::BeginMainMenuBar())
+            {
+                if (ImGui::BeginMenu("File"))
+                {
+                    if (ImGui::MenuItem("New Project", "Ctrl+N")) {  }
+                    if (ImGui::MenuItem("Open Project...", "Ctrl+O")) {  }
+                    if (ImGui::MenuItem("Save", "Ctrl+S")) {  }
+                    ImGui::Separator();
+                    if (ImGui::MenuItem("Exit", "Alt+F4")) { m_IsRunning = false; }
+                    ImGui::EndMenu();
+                }
+                if (ImGui::BeginMenu("Edit"))
+                {
+                    if (ImGui::MenuItem("Undo", "Ctrl+Z")) {  }
+                    if (ImGui::MenuItem("Redo", "Ctrl+Y")) {  }
+                    if (ImGui::MenuItem("Cut", "Ctrl+X")) {  }
+                    if (ImGui::MenuItem("Copy", "Ctrl+C")) {  }
+                    if (ImGui::MenuItem("Paste", "Ctrl+V")) {  }
+                    ImGui::EndMenu();
+                }
+                if (ImGui::BeginMenu("View"))
+                {
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMainMenuBar();
+            }
+
+            // Dockspace
             const ImGuiViewport* viewport = ImGui::GetMainViewport();
             ImGui::SetNextWindowPos(viewport->WorkPos);
             ImGui::SetNextWindowSize(viewport->WorkSize);
