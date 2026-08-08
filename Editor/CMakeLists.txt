@@ -57,5 +57,5 @@ target_link_libraries(EditorApp
 
 # Output to ../Build/
 set_target_properties(EditorApp PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/Build/bin"
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/Build/editor"
 )
