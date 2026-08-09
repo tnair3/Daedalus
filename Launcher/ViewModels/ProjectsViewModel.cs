@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -36,7 +38,7 @@ public partial class ProjectsViewModel : ViewModelBase
 
     public ProjectsViewModel()
     {
-        WeakReferenceMessenger.Default.Register<ProjectCreatedMessage>(this, async (r, m) =>
+        WeakReferenceMessenger.Default.Register<NewProjectMessage>(this, async (r, m) =>
         {
             await LoadProjects();
         });
@@ -71,6 +73,75 @@ public partial class ProjectsViewModel : ViewModelBase
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Failed to initialize project file: {ex.Message}");
+        }
+    }
+
+    [RelayCommand]
+    private async Task LoadExistingProject(Window? window)
+    {
+        if (window == null) return;
+
+        var topLevel = TopLevel.GetTopLevel(window);
+        if (topLevel == null) return;
+
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Open Existing Project",
+            AllowMultiple = false,
+            FileTypeFilter =
+            [
+                new FilePickerFileType("MyProject Files (*.myproject)")
+                {
+                    Patterns = ["*.myproject"]
+                }
+            ]
+        });
+
+        if (files.Count == 0) return;
+
+        string filePath = files[0].Path.LocalPath;
+        if (!File.Exists(filePath)) return;
+
+        try
+        {
+            string jsonContent = await File.ReadAllTextAsync(filePath);
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var manifest = JsonSerializer.Deserialize<ProjectManifest>(jsonContent, options);
+
+            if (manifest?.Project == null) return;
+
+            string? projectDirectory = Path.GetDirectoryName(filePath);
+            
+            if (Projects.Any(p => p.Id == manifest.Project.Id || p.ProjectPath == projectDirectory))
+            {
+                System.Diagnostics.Debug.WriteLine("Project already exists in launcher.");
+                // TODO: Add visual error output for the user
+                return;
+            }
+
+            var newProject = new ProjectInfo
+            {
+                Id = manifest.Project.Id,
+                Name = manifest.Project.Name,
+                Author = manifest.Project.Author,
+                EngineVersion = manifest.Project.EngineVersion,
+                TargetNetVersion = manifest.Project.TargetNetVersion,
+                GitInitialised = manifest.Project.GitInitialised,
+                RenderApiBackend = manifest.GraphicsDefaults.RenderApiBackend,
+                DefaultWindowMode = manifest.GraphicsDefaults.DefaultWindowMode,
+                TargetResolution = manifest.GraphicsDefaults.TargetResolution,
+                ProjectPath = projectDirectory ?? filePath,
+                LastModified = File.GetLastWriteTime(filePath),
+                IsFavourite = false
+            };
+
+            Projects.Add(newProject);
+            UpdateProjectList(Projects);
+            await SaveProjectsToDisk();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to load existing project: {ex.Message}");
         }
     }
 

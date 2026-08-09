@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Reflection;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -58,21 +59,84 @@ public partial class CreateProjectViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(ProjectName) || string.IsNullOrWhiteSpace(ProjectPath))
         {
+            // TODO: Add visual error output for the user
             return;
-            // Create visual output
+        }
+        
+        if (!Directory.Exists(ProjectPath))
+        {
+            System.Diagnostics.Debug.WriteLine($"Directory does not exist: {ProjectPath}");
+            // TODO: Add visual error output for the user
+            return;
         }
 
         try
         {
+            // Create project directory and .myproject file
+            string sanitizedProjectName = System.Text.RegularExpressions.Regex.Replace(ProjectName.Trim(), @"\s+", "_");
+            string fullProjectPath = Path.Combine(ProjectPath, sanitizedProjectName);
+            
+            if (Directory.Exists(fullProjectPath))
+            {
+                System.Diagnostics.Debug.WriteLine($"Error: A directory already exists at '{fullProjectPath}'");
+                // TODO: Add visual error output for the user
+                return;
+            }
+            
+            Directory.CreateDirectory(fullProjectPath);
+            Directory.CreateDirectory(Path.Combine(fullProjectPath, $"Assets"));
+            Directory.CreateDirectory(Path.Combine(fullProjectPath, $"Cache"));
+            
+            string projectFilePath = Path.Combine(fullProjectPath, $"{sanitizedProjectName}.myproject");
+            
+            Guid projectId = Guid.NewGuid();
+            string engineVersion = Assembly.GetExecutingAssembly()
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+                .InformationalVersion ?? "Unknown";
+            
+            var newProjectManifest = new ProjectManifest
+            {
+                Project = new ProjectIdentity
+                {
+                    Id = projectId,
+                    Name = ProjectName,
+                    Author = ProjectAuthor,
+                    EngineVersion = engineVersion,
+                    TargetNetVersion = SelectedDotNetVersion,
+                    GitInitialised = InitializeGit
+                },
+                Directories = new ProjectDirectories
+                {
+                    AssetDirectory = "Assets",
+                    CacheDirectory = "Cache",
+                    StartScene = "Assets/Scenes/Main.scene"
+                },
+                GraphicsDefaults = new ProjectGraphicsDefaults
+                {
+                    RenderApiBackend = SelectedRenderApi,
+                    DefaultWindowMode = SelectedWindowMode,
+                    TargetResolution = SelectedResolution
+                }
+            };
+            
+            var options = new JsonSerializerOptions 
+            { 
+                WriteIndented = true,
+                PropertyNameCaseInsensitive = true
+            };
+            string jsonContent = JsonSerializer.Serialize(newProjectManifest, options);
+            File.WriteAllText(projectFilePath, jsonContent);
+            
+            // Update launcher projects.json
             string localPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projects.json"); // Change to ../.metadata/ as Directory for release build
 
             ProjectInfo newProject = new ProjectInfo()
             {
-                Id = Guid.NewGuid(),
+                Id = projectId,
                 Name = ProjectName,
-                EngineVersion = "v1.0.0-alpha.1", // update to dynamically change based on installed engine version
+                EngineVersion = engineVersion,
                 LastModified = DateTime.Now,
-                ProjectPath = this.ProjectPath,
+                ProjectPath = ProjectPath,
                 Author = ProjectAuthor,
                 IsFavourite = false,
                 TargetNetVersion = SelectedDotNetVersion,
@@ -80,12 +144,6 @@ public partial class CreateProjectViewModel : ViewModelBase
                 DefaultWindowMode = SelectedWindowMode,
                 TargetResolution = SelectedResolution,
                 GitInitialised = InitializeGit
-            };
-            
-            var options = new JsonSerializerOptions 
-            { 
-                WriteIndented = true,
-                PropertyNameCaseInsensitive = true
             };
 
             ProjectRoot root;
@@ -104,13 +162,14 @@ public partial class CreateProjectViewModel : ViewModelBase
             string updatedJson = JsonSerializer.Serialize(root, options);
             await File.WriteAllTextAsync(localPath, updatedJson);
             
-            WeakReferenceMessenger.Default.Send(new ProjectCreatedMessage());
+            WeakReferenceMessenger.Default.Send(new NewProjectMessage());
             
             CloseWindow(window);
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Failed to write project to JSON: {ex.Message}");
+            // TODO: Add visual error output for the user
         }
     }
 

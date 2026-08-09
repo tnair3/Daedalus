@@ -10,7 +10,7 @@
     
     <Grid Background="{StaticResource PrimaryBackground}">
         <Border Padding="10" Grid.IsSharedSizeScope="True">
-            <Grid RowDefinitions="Auto *">
+            <Grid RowDefinitions="Auto * Auto">
                 <!-- Page Header -->
                 <StackPanel Grid.Row="0">
                     <!-- Page Title, Search Bar, and Create New Button-->
@@ -147,7 +147,7 @@
                                             <Button Grid.Column="1" Margin="10,2" Classes="projectButton">
                                                 <Grid>
                                                     <Border Classes="projectButtonBackground" CornerRadius="15"/>
-                                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5,0"/>
+                                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5,0" Cursor="Hand"/>
                                                 </Grid>
                                             </Button>
                                             <TextBlock Grid.Column="2" Text="{Binding EngineVersion}" VerticalAlignment="Center"/>
@@ -163,6 +163,16 @@
                         </ItemsControl>
                     </Grid>
                 </ScrollViewer>
+                
+                <!-- Load Existing Project -->
+                <Border Grid.Row="2" BorderBrush="{StaticResource SecondaryBackground}" Background="Transparent" BorderThickness="0,0,0,1" Padding="0,10">
+                    <Button Classes="loadProjectButton" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding LoadExistingProjectCommand}" CommandParameter="{Binding $parent[Window]}">
+                        <Grid ColumnDefinitions="Auto Auto">
+                            <TextBlock Grid.Column="0" Text="Load Existing Project" FontWeight="SemiBold" VerticalAlignment="Center" Margin="15 0"/>
+                            <PathIcon Grid.Column="1" Data="{StaticResource Load}"/>
+                        </Grid>
+                    </Button>
+                </Border>
             </Grid>
         </Border>
     </Grid>

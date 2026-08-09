@@ -1,3 +1,3 @@
 namespace DaedalusLauncher.Models;
 
-public record ProjectCreatedMessage();
+public record NewProjectMessage();

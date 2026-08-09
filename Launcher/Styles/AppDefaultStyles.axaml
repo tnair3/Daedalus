@@ -42,6 +42,7 @@
                 <DoubleTransition Property="Opacity" Duration="0:0:0.15" Easing="SineEaseInOut"/>
             </Transitions>
         </Setter>
+        <Setter Property="Cursor" Value="Hand"/>
     </Style>
     
     <Style Selector="Button /template/ ContentPresenter">
@@ -90,6 +91,7 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Padding" Value="0"/>
     </Style>
+    
     <Style Selector="Button.projectButton /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="Transparent"/>
     </Style>
@@ -100,6 +102,27 @@
 
     <Style Selector="Button.projectButton:pressed Border.projectButtonBackground">
         <Setter Property="Opacity" Value="0.6"/>
+    </Style>
+    
+    <Style Selector="Button.loadProjectButton">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+        <Setter Property="Background" Value="{StaticResource PrimaryBackground}"/>
+        <Setter Property="CornerRadius" Value="15"/>
+    </Style>
+        
+    <Style Selector="Button.loadProjectButton[Tag=True] /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="Background" Value="{StaticResource PrimaryBackground}"/>
+    </Style>
+    
+    <Style Selector="Button.loadProjectButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="Background" Value="{StaticResource SidebarBackground}"/>
+    </Style>
+    
+    <Style Selector="Button.loadProjectButton:pressed /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+        <Setter Property="Background" Value="{StaticResource SidebarHoverBackground}"/>
     </Style>
     
     <Style Selector="Button.creatingProject">
