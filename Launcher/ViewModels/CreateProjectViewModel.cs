@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using DaedalusLauncher.Controls;
 using DaedalusLauncher.Models;
 
 namespace DaedalusLauncher.ViewModels;
@@ -59,14 +60,14 @@ public partial class CreateProjectViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(ProjectName) || string.IsNullOrWhiteSpace(ProjectPath))
         {
-            // TODO: Add visual error output for the user
+            NotificationService.Show("Project name and path cannot be empty", "error");
             return;
         }
         
         if (!Directory.Exists(ProjectPath))
         {
             System.Diagnostics.Debug.WriteLine($"Directory does not exist: {ProjectPath}");
-            // TODO: Add visual error output for the user
+            NotificationService.Show($"Directory '{ProjectPath}' does not exist", "error");
             return;
         }
 
@@ -79,7 +80,7 @@ public partial class CreateProjectViewModel : ViewModelBase
             if (Directory.Exists(fullProjectPath))
             {
                 System.Diagnostics.Debug.WriteLine($"Error: A directory already exists at '{fullProjectPath}'");
-                // TODO: Add visual error output for the user
+                NotificationService.Show($"A directory already exists at '{fullProjectPath}'", "error");
                 return;
             }
             
@@ -125,7 +126,7 @@ public partial class CreateProjectViewModel : ViewModelBase
                 PropertyNameCaseInsensitive = true
             };
             string jsonContent = JsonSerializer.Serialize(newProjectManifest, options);
-            File.WriteAllText(projectFilePath, jsonContent);
+            await File.WriteAllTextAsync(projectFilePath, jsonContent);
             
             // Update launcher projects.json
             string localPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projects.json"); // Change to ../.metadata/ as Directory for release build
@@ -169,16 +170,36 @@ public partial class CreateProjectViewModel : ViewModelBase
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Failed to write project to JSON: {ex.Message}");
-            // TODO: Add visual error output for the user
+            NotificationService.Show($"Failed to write project to JSON, check error logs", "error");
+            
+            string logsDir = Path.Combine(AppContext.BaseDirectory, "logs");
+
+            if (!Directory.Exists(logsDir))
+            {
+                Directory.CreateDirectory(logsDir);
+            }
+            
+            try
+            {
+                string fileName = $"log_{DateTime.Now:yyyy-MM-dd}.txt";
+                string filePath = Path.Combine(logsDir, fileName);
+
+                string logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] EXCEPTION THROWN:" +
+                                  $"{Environment.NewLine}{ex}" +
+                                  $"{Environment.NewLine}{new string('-', 80)}{Environment.NewLine}";
+
+                await File.AppendAllTextAsync(filePath, logEntry);
+            }
+            catch (Exception logEx)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to write to log file: {logEx.Message}");
+            }
         }
     }
 
     [RelayCommand]
     public void CloseWindow(Window? window)
     {
-        if (window != null)
-        {
-            window.Close();
-        }
+        window?.Close();
     }
 }

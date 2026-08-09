@@ -11,6 +11,7 @@ using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using DaedalusLauncher.Controls;
 using DaedalusLauncher.Models;
 using ReactiveUI;
 
@@ -115,7 +116,7 @@ public partial class ProjectsViewModel : ViewModelBase
             if (Projects.Any(p => p.Id == manifest.Project.Id || p.ProjectPath == projectDirectory))
             {
                 System.Diagnostics.Debug.WriteLine("Project already exists in launcher.");
-                // TODO: Add visual error output for the user
+                NotificationService.Show("Project already exists in launcher.", "error");
                 return;
             }
 

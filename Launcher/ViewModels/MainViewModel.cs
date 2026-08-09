@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DaedalusLauncher.Controls;
 using DaedalusLauncher.Models;
 using ReactiveUI;
 
@@ -30,6 +31,12 @@ public partial class MainViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(IsInstallationsTab))]
     [NotifyPropertyChangedFor(nameof(IsLearnTab))]
     private TabType _selectedTab;
+    
+    public Interaction<SettingsViewModel, bool> ShowSettingsDialog { get; } = new();
+    public Interaction<ReportViewModel, bool> ShowReportDialog { get; } = new();
+    public Interaction<AboutViewModel, bool> ShowAboutDialog { get; } = new();
+    
+    public NotificationService NotificationService { get; } = new();
 
     public MainViewModel()
     {
@@ -84,8 +91,4 @@ public partial class MainViewModel : ViewModelBase
     {
         return await interaction.Handle(vm);
     }
-    
-    public Interaction<SettingsViewModel, bool> ShowSettingsDialog { get; } = new();
-    public Interaction<ReportViewModel, bool> ShowReportDialog { get; } = new();
-    public Interaction<AboutViewModel, bool> ShowAboutDialog { get; } = new();
 }
