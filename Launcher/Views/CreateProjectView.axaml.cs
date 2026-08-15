@@ -1,15 +1,12 @@
 using System.Collections.Generic;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using DaedalusLauncher.ViewModels;
 
 namespace DaedalusLauncher.Views;
 
-public partial class CreateProjectView : Window
+public partial class CreateProjectView : UserControl
 {
     public CreateProjectView()
     {

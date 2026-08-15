@@ -9,6 +9,8 @@ namespace DaedalusLauncher.ViewModels;
 
 public partial class SettingsViewModel : ViewModelBase
 {
+    public event Action<bool>? CloseRequested;
+    
     public IEnumerable<SettingsCategory> Categories { get; } = Enum.GetValues<SettingsCategory>();
     [ObservableProperty] private SettingsCategory _selectedCategory;
     
@@ -24,20 +26,18 @@ public partial class SettingsViewModel : ViewModelBase
     {
         RequestClose(false);
     }
-    
-    public event Action<bool>? CloseRequested;
 
-    private void RequestClose(bool result)
-    {
-        CloseRequested?.Invoke(result);
-    }
-    
     [RelayCommand]
-    public void CloseWindow(Window? window)
+    private void CloseWindow(Window? window)
     {
         if (window != null)
         {
             window.Close();
         }
+    }
+    
+    private void RequestClose(bool result)
+    {
+        CloseRequested?.Invoke(result);
     }
 }

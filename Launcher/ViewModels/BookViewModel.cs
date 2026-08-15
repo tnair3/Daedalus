@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.Input;
 using DaedalusLauncher.Models;
 
@@ -28,7 +26,7 @@ public partial class BookViewModel : ViewModelBase
     [RelayCommand]
     private void OpenBook()
     {
-        // Implement the reader to be opened
+        // TODO: Implement the reader to be opened
         Console.WriteLine($"Opening: {Title}");
     }
 }

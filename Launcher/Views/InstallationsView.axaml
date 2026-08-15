@@ -2,82 +2,172 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:DaedalusLauncher.Models"
              xmlns:vm="using:DaedalusLauncher.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="560"
              x:Class="DaedalusLauncher.Views.InstallationsView"
              x:DataType="vm:InstallationsViewModel">
     
     <Grid Background="{StaticResource PrimaryBackground}">
-        <Border Padding="10">
-            <Grid RowDefinitions="Auto *">
+        <Border Padding="20">
+            <Grid RowDefinitions="Auto Auto *">
                 <!-- Page Header -->
                 <Grid Grid.Row="0" ColumnDefinitions="* Auto">
-                    <TextBlock Grid.Column="0" Text="Installations" Classes="heading"/>
-                    <Button Grid.Column="1" Command="{Binding CheckVersionsAsync}" Classes="refreshButton" Margin="5 0">
-                        <PathIcon Data="{StaticResource Refresh}"/>
+                    <TextBlock Grid.Column="0" Text="Installations" Classes="heading" Margin="0"/>
+                    <Button Grid.Column="1" Command="{Binding CheckVersionsAsync}" Classes="refreshButton" Padding="8" VerticalAlignment="Center">
+                        <PathIcon Data="{StaticResource Refresh}" Width="15" Height="15"/>
                     </Button>
                 </Grid>
+
+                <TextBlock Grid.Row="1" Text="{Binding Status}" Classes="chipSubtitle" Margin="0,4,0,16"/>
                     
-                <!-- Installations Content -->
-                <ScrollViewer Grid.Row="1">
-                    <StackPanel Spacing="15" Margin="10">
-                        <!-- Launcher -->
-                        <Border Classes="appVersions">
-                            <DockPanel LastChildFill="True">
-                                <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
-                                    <Button Classes="updateButton" IsVisible="{Binding IsLauncherUpdateAvailable}"/>
-                                    <TextBlock Classes="upToDate" Text="{Binding Status}" IsVisible="{Binding !IsLauncherUpdateAvailable}"/>
-                                </Grid>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Daedalus Launcher" FontSize="18" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding LauncherVersion, StringFormat='Installed Version: {0}'}" Opacity="0.7"/>
-                                </StackPanel>
-                            </DockPanel>
-                        </Border>
+                <!-- Main Content -->
+                <Grid Grid.Row="2" ColumnDefinitions="Auto 20 *">
+                    <ScrollViewer Grid.Column="0">
+                        <WrapPanel Orientation="Vertical" ItemSpacing="14" LineSpacing="14">
 
-                        <!-- Project Editor -->
-                        <Border Classes="appVersions">
-                            <DockPanel LastChildFill="True">
-                                <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
-                                    <Button Classes="updateButton" IsVisible="{Binding IsEditorUpdateAvailable}"/>
-                                    <TextBlock Classes="upToDate" Text="{Binding Status}" IsVisible="{Binding !IsEditorUpdateAvailable}"/>
-                                </Grid>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Daedalus Project Editor" FontSize="18" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding EditorVersion, StringFormat='Installed Version: {0}'}" Opacity="0.7"/>
-                                </StackPanel>
-                            </DockPanel>
-                        </Border>
+                            <!-- Launcher -->
+                            <Button Classes="moduleChip" Command="{Binding UpdateSelectedModuleDetailsCommand}" CommandParameter="{x:Static models:ModuleType.Launcher}">
+                                <Grid ColumnDefinitions="Auto * Auto" Margin="4,4,10,4">
+                                    <Border Grid.Column="0" Classes="moduleChipIcon" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <PathIcon Data="{StaticResource LauncherModule}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
 
-                        <!-- Engine -->
-                        <Border Classes="appVersions">
-                            <DockPanel LastChildFill="True">
-                                <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
-                                    <Button Classes="updateButton" IsVisible="{Binding IsEngineUpdateAvailable}"/>
-                                    <TextBlock Classes="upToDate" Text="{Binding Status}" IsVisible="{Binding !IsEngineUpdateAvailable}"/>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,16,0" Spacing="1">
+                                        <TextBlock Text="Daedalus Launcher" Classes="chipTitle"/>
+                                        <TextBlock Text="{Binding LauncherVersion, StringFormat='v{0}'}" Classes="chipSubtitle"/>
+                                    </StackPanel>
+
+                                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                                        <Border Classes="chipStatusDot upToDate" IsVisible="{Binding LauncherUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.UpToDate}}" HorizontalAlignment="Center" Margin="0,0,6,0"/>
+                                        <Border Classes="chipStatusDot updateAvailable" IsVisible="{Binding LauncherUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.UpdateAvailable}}" HorizontalAlignment="Center" Margin="0,0,6,0"/>
+                                        <Border Classes="chipStatusDot serverError" IsVisible="{Binding LauncherUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.ServerUnreachable}}" HorizontalAlignment="Center" Margin="0,0,6,0"/>
+                                    </Grid>
                                 </Grid>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Daedalus Engine" FontSize="18" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding EngineVersion, StringFormat='Installed Version: {0}'}" Opacity="0.7"/>
-                                </StackPanel>
-                            </DockPanel>
-                        </Border>
-                        
-                        <!-- Books -->
-                        <Border Classes="appVersions">
-                            <DockPanel LastChildFill="True">
-                                <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
-                                    <Button Classes="updateButton" IsVisible="{Binding IsBooksUpdateAvailable}"/>
-                                    <TextBlock Classes="upToDate" Text="{Binding Status}" IsVisible="{Binding !IsBooksUpdateAvailable}"/>
+                            </Button>
+
+                            <!-- Project Editor -->
+                            <Button Classes="moduleChip" Command="{Binding UpdateSelectedModuleDetailsCommand}" CommandParameter="{x:Static models:ModuleType.Editor}">
+                                <Grid ColumnDefinitions="Auto * Auto" Margin="4,4,10,4">
+                                    <Border Grid.Column="0" Classes="moduleChipIcon" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <PathIcon Data="{StaticResource EditorModule}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,16,0" Spacing="1">
+                                        <TextBlock Text="Daedalus Editor" Classes="chipTitle"/>
+                                        <TextBlock Text="{Binding EditorVersion, StringFormat='v{0}'}" Classes="chipSubtitle"/>
+                                    </StackPanel>
+
+                                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                                        <Border Classes="chipStatusDot upToDate" IsVisible="{Binding EditorUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.UpToDate}}" HorizontalAlignment="Center" Margin="0,0,6,0"/>
+                                        <Border Classes="chipStatusDot updateAvailable" IsVisible="{Binding EditorUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.UpdateAvailable}}" HorizontalAlignment="Center" Margin="0,0,6,0"/>
+                                        <Border Classes="chipStatusDot serverError" IsVisible="{Binding EditorUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.ServerUnreachable}}" HorizontalAlignment="Center" Margin="0,0,6,0"/>
+                                    </Grid>
                                 </Grid>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Books" FontSize="18" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding BooksVersion, StringFormat='Installed Version: {0}'}" Opacity="0.7"/>
+                            </Button>
+
+                            <!-- Engine -->
+                            <Button Classes="moduleChip" Command="{Binding UpdateSelectedModuleDetailsCommand}" CommandParameter="{x:Static models:ModuleType.Engine}">
+                                <Grid ColumnDefinitions="Auto * Auto" Margin="4,4,10,4">
+                                    <Border Grid.Column="0" Classes="moduleChipIcon" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <PathIcon Data="{StaticResource EngineModule}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,16,0" Spacing="1">
+                                        <TextBlock Text="Daedalus Engine" Classes="chipTitle"/>
+                                        <TextBlock Text="{Binding EngineVersion, StringFormat='v{0}'}" Classes="chipSubtitle"/>
+                                    </StackPanel>
+
+                                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                                        <Border Classes="chipStatusDot upToDate" IsVisible="{Binding EngineUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.UpToDate}}" HorizontalAlignment="Center" Margin="0,0,6,0"/>
+                                        <Border Classes="chipStatusDot updateAvailable" IsVisible="{Binding EngineUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.UpdateAvailable}}" HorizontalAlignment="Center" Margin="0,0,6,0"/>
+                                        <Border Classes="chipStatusDot serverError" IsVisible="{Binding EngineUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.ServerUnreachable}}" HorizontalAlignment="Center" Margin="0,0,6,0"/>
+                                    </Grid>
+                                </Grid>
+                            </Button>
+                            
+                            <!-- Books -->
+                            <Button Classes="moduleChip" Command="{Binding UpdateSelectedModuleDetailsCommand}" CommandParameter="{x:Static models:ModuleType.Books}">
+                                <Grid ColumnDefinitions="Auto * Auto" Margin="4,4,10,4">
+                                    <Border Grid.Column="0" Classes="moduleChipIcon" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <PathIcon Data="{StaticResource Docs}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,16,0" Spacing="1">
+                                        <TextBlock Text="Books" Classes="chipTitle"/>
+                                        <TextBlock Text="{Binding BooksVersion}" Classes="chipSubtitle"/>
+                                    </StackPanel>
+
+                                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                                        <Border Classes="chipStatusDot upToDate" IsVisible="{Binding BooksUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.UpToDate}}" HorizontalAlignment="Center" Margin="0,0,6,0"/>
+                                        <Border Classes="chipStatusDot updateAvailable" IsVisible="{Binding BooksUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.UpdateAvailable}}" HorizontalAlignment="Center" Margin="0,0,6,0"/>
+                                        <Border Classes="chipStatusDot serverError" IsVisible="{Binding BooksUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.ServerUnreachable}}" HorizontalAlignment="Center" Margin="0,0,6,0"/>
+                                    </Grid>
+                                </Grid>
+                            </Button>
+                        </WrapPanel>
+                    </ScrollViewer>
+                    
+                    <ScrollViewer Grid.Column="2">
+                        <StackPanel Spacing="20" Margin="10,0,10,0">
+
+                            <!-- Header Section -->
+                            <Grid ColumnDefinitions="* Auto" VerticalAlignment="Center">
+                                <!-- Module Title & Version -->
+                                <StackPanel Grid.Column="0" Spacing="4">
+                                    <TextBlock Text="{Binding SelectedModuleName}" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PrimaryText}"/>
+                                    <TextBlock Text="{Binding SelectedModuleVersion, StringFormat='Version {0}'}" FontSize="12" Foreground="{StaticResource SecondaryText}"/>
                                 </StackPanel>
-                            </DockPanel>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
+
+                                <!-- Status -->
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <!-- Update Button -->
+                                    <Button Classes="updateButton" Command="{Binding UpdateSelectedModuleCommand}" IsVisible="{Binding SelectedModuleUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.UpdateAvailable}}"/>
+
+                                    <!-- Up To Date -->
+                                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" IsVisible="{Binding SelectedModuleUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.UpToDate}}">
+                                        <Border Classes="chipStatusDot upToDate" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Up to date" FontSize="13" FontWeight="Medium" Foreground="{StaticResource SecondaryText}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <!-- Server Unreachable -->
+                                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" IsVisible="{Binding SelectedModuleUpdateStatus, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:UpdateStatus.ServerUnreachable}}">
+                                        <Border Classes="chipStatusDot serverError" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Server unreachable" FontSize="13" FontWeight="Medium" Foreground="{StaticResource SecondaryText}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                            
+                            <Border Height="1" Background="{StaticResource SeparatorColour}"/>
+
+                            <!-- Description -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Description" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource PrimaryText}"/>
+                                
+                                <TextBlock Text="{Binding SelectedModuleDescription}" TextWrapping="Wrap" FontSize="13" Foreground="{StaticResource SecondaryText}" LineHeight="20"/>
+                            </StackPanel>
+
+                            <!-- Changelog -->
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="Changelog" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource PrimaryText}"/>
+
+                                <Border Background="{StaticResource CardBackground}" BorderBrush="{StaticResource SeparatorColour}" BorderThickness="1" CornerRadius="12" Padding="16">
+                                    <ItemsControl ItemsSource="{Binding SelectedModuleChangelog}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid ColumnDefinitions="Auto *" Margin="0,4">
+                                                    <TextBlock Text="•" Foreground="{StaticResource ApplicationAccentAlt}" Margin="0,0,8,0" FontWeight="Bold"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding}" TextWrapping="Wrap" FontSize="13" Foreground="{StaticResource PrimaryText}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Border>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
             </Grid>
         </Border>
     </Grid>

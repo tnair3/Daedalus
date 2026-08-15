@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -13,7 +13,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DaedalusLauncher.Controls;
 using DaedalusLauncher.Models;
-using ReactiveUI;
 
 namespace DaedalusLauncher.ViewModels;
 
@@ -22,8 +21,8 @@ public partial class ProjectsViewModel : ViewModelBase
     private static string LocalPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projects.json");
     
     [ObservableProperty] private ObservableCollection<ProjectInfo> _projects = new();
-    [ObservableProperty] private string _searchQuery = string.Empty;
     [ObservableProperty] private ObservableCollection<ProjectInfo> _filteredProjects = new();
+    [ObservableProperty] private string _searchQuery = string.Empty;
     
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsSortedByName))]
@@ -31,11 +30,14 @@ public partial class ProjectsViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(IsSortedByModified))]
     private ProjectsSortBy _sortBy = ProjectsSortBy.LastModified;
     private bool _sortAscending = false;
-    public bool IsSortedByName => SortBy ==  ProjectsSortBy.Name;
-    public bool IsSortedByEngine => SortBy ==  ProjectsSortBy.Engine;
-    public bool IsSortedByModified => SortBy ==   ProjectsSortBy.LastModified;
+
+    public bool IsSortedByName => SortBy == ProjectsSortBy.Name;
+    public bool IsSortedByEngine => SortBy == ProjectsSortBy.Engine;
+    public bool IsSortedByModified => SortBy == ProjectsSortBy.LastModified;
     
-    public Interaction<CreateProjectViewModel, bool> ShowCreateProjectDialog { get; } = new();
+    [ObservableProperty] private bool _isCreatingProject;
+    [ObservableProperty] private CreateProjectViewModel? _createProjectViewModel;
+
 
     public ProjectsViewModel()
     {
@@ -52,28 +54,26 @@ public partial class ProjectsViewModel : ViewModelBase
             if (!File.Exists(LocalPath))
             {
                 EnsureDirectoryExists(LocalPath);
-                
+
                 var newProjectRoot = new ProjectRoot { Projects = new List<ProjectInfo>() };
                 var options = new JsonSerializerOptions { WriteIndented = true };
                 string initialJson = JsonSerializer.Serialize(newProjectRoot, options);
-            
+
                 await File.WriteAllTextAsync(LocalPath, initialJson);
             }
-        
+
             string jsonContent = await File.ReadAllTextAsync(LocalPath);
             var root = JsonSerializer.Deserialize<ProjectRoot>(jsonContent);
-        
+
             if (root?.Projects != null)
             {
-                var incomingList = root.Projects;
-                Projects = new ObservableCollection<ProjectInfo>(incomingList);
-                
+                Projects = new ObservableCollection<ProjectInfo>(root.Projects);
                 UpdateProjectList(Projects);
             }
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Failed to initialize project file: {ex.Message}");
+            Debug.WriteLine($"Failed to initialize project file: {ex.Message}");
         }
     }
 
@@ -112,10 +112,10 @@ public partial class ProjectsViewModel : ViewModelBase
             if (manifest?.Project == null) return;
 
             string? projectDirectory = Path.GetDirectoryName(filePath);
-            
+
             if (Projects.Any(p => p.Id == manifest.Project.Id || p.ProjectPath == projectDirectory))
             {
-                System.Diagnostics.Debug.WriteLine("Project already exists in launcher.");
+                Debug.WriteLine("Project already exists in launcher.");
                 NotificationService.Show("Project already exists in launcher.", "error");
                 return;
             }
@@ -142,7 +142,7 @@ public partial class ProjectsViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Failed to load existing project: {ex.Message}");
+            Debug.WriteLine($"Failed to load existing project: {ex.Message}");
         }
     }
 
@@ -155,17 +155,17 @@ public partial class ProjectsViewModel : ViewModelBase
         }
         else if (sortBy == ProjectsSortBy.LastModified)
         {
-            _sortAscending = false; 
+            _sortAscending = false;
         }
         else
         {
             _sortAscending = true;
         }
-    
+
         SortBy = sortBy;
         UpdateProjectList(Projects);
     }
-    
+
     [RelayCommand]
     private async Task SetFavourite(ProjectInfo project)
     {
@@ -177,19 +177,20 @@ public partial class ProjectsViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Failed to update favorite or save JSON: {ex.Message}");
+            Debug.WriteLine($"Failed to update favorite or save JSON: {ex.Message}");
         }
     }
-    
-    private async Task SaveProjectsToDisk()
-    {
-        var projectRoot = new ProjectRoot { Projects = Projects.ToList() };
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        string json = JsonSerializer.Serialize(projectRoot, options);
-    
-        await File.WriteAllTextAsync(LocalPath, json);
-    }
 
+    [RelayCommand]
+    private void OpenCreateProject()
+    {
+        var createProjectVm = new CreateProjectViewModel();
+        createProjectVm.CloseRequested += OnCreateProjectClosed;
+
+        CreateProjectViewModel = createProjectVm;
+        IsCreatingProject = true;
+    }
+    
     partial void OnSearchQueryChanged(string value)
     {
         UpdateProjectList(Projects);
@@ -199,38 +200,51 @@ public partial class ProjectsViewModel : ViewModelBase
     {
         if (!string.IsNullOrWhiteSpace(SearchQuery))
         {
-            sourceItems = sourceItems.Where(p => 
+            sourceItems = sourceItems.Where(p =>
                 p.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
         }
-        
+
         var baseQuery = sourceItems.OrderByDescending(p => p.IsFavourite);
         IOrderedEnumerable<ProjectInfo> orderedQuery = SortBy switch
         {
-            ProjectsSortBy.Name => _sortAscending 
-                ? baseQuery.ThenBy(p => p.Name) 
+            ProjectsSortBy.Name => _sortAscending
+                ? baseQuery.ThenBy(p => p.Name)
                 : baseQuery.ThenByDescending(p => p.Name),
-            
-            ProjectsSortBy.Engine => _sortAscending 
-                ? baseQuery.ThenBy(p => p.EngineVersion) 
+
+            ProjectsSortBy.Engine => _sortAscending
+                ? baseQuery.ThenBy(p => p.EngineVersion)
                 : baseQuery.ThenByDescending(p => p.EngineVersion),
-            
-            ProjectsSortBy.LastModified => _sortAscending 
-                ? baseQuery.ThenBy(p => p.LastModified) 
+
+            ProjectsSortBy.LastModified => _sortAscending
+                ? baseQuery.ThenBy(p => p.LastModified)
                 : baseQuery.ThenByDescending(p => p.LastModified),
-            
+
             _ => baseQuery.ThenByDescending(p => p.LastModified)
         };
-        
+
         FilteredProjects = new ObservableCollection<ProjectInfo>(orderedQuery.ToList());
     }
 
-    [RelayCommand]
-    private async Task OpenCreateProjectWindow()
+    private async Task SaveProjectsToDisk()
     {
-        var createProjectVm = new CreateProjectViewModel();
-        bool isCreated = await ShowCreateProjectDialog.Handle(createProjectVm);
-        
-        if (isCreated)
+        var projectRoot = new ProjectRoot { Projects = Projects.ToList() };
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string json = JsonSerializer.Serialize(projectRoot, options);
+
+        await File.WriteAllTextAsync(LocalPath, json);
+    }
+
+    private async void OnCreateProjectClosed(bool wasCreated)
+    {
+        if (CreateProjectViewModel != null)
+        {
+            CreateProjectViewModel.CloseRequested -= OnCreateProjectClosed;
+        }
+
+        IsCreatingProject = false;
+        CreateProjectViewModel = null;
+
+        if (wasCreated)
         {
             await LoadProjects();
         }

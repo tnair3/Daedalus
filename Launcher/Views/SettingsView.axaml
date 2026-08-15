@@ -1,56 +1,57 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="using:DaedalusLauncher.ViewModels"
-        xmlns:controls="clr-namespace:DaedalusLauncher.Controls"
-        mc:Ignorable="d" d:DesignWidth="425" d:DesignHeight="470"
-        Width="425" Height="470"
-        x:Class="DaedalusLauncher.Views.SettingsView"
-        x:DataType="vm:SettingsViewModel"
-        CanResize="False"
-        Title="Settings"
-        ExtendClientAreaToDecorationsHint="True"
-        WindowDecorations="BorderOnly">
-    <controls:WindowFrame WindowName="Settings" CloseWindowCommand="{Binding CloseWindow}">
-        <Grid ColumnDefinitions="150, 1, *">
-                
-            <!-- Tabs -->
-            <ListBox Grid.Column="0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Background="Transparent" BorderThickness="0" Margin="0,0,10,0">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:DaedalusLauncher.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:SettingsViewModel"
+             x:Class="DaedalusLauncher.Views.SettingsView">
 
-                <ListBox.Styles>
-                    <Style Selector="ListBoxItem">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="Padding" Value="0" />
-        
-                        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                            <Setter Property="Background" Value="Transparent" />
-                        </Style>
-        
-                        <Style Selector="^:selected /template/ ContentPresenter#PART_ContentPresenter">
-                            <Setter Property="Background" Value="Transparent" />
-                        </Style>
-        
-                        <Style Selector="^:selected TextBlock">
-                            <Setter Property="FontWeight" Value="Bold" />
-                        </Style>
-                    </Style>
-                </ListBox.Styles>
+    <Grid Background="{StaticResource PrimaryBackground}">
+        <Border Padding="10">
+            <Grid RowDefinitions="Auto *">
+                <TextBlock Grid.Row="0" Text="Settings" Classes="heading"/>
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" Padding="10, 8" FontSize="12" Foreground="{StaticResource PrimaryText}" VerticalAlignment="Center"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                <Grid Grid.Row="1" ColumnDefinitions="170, 1, *" Margin="10,0,10,10">
+                    <!-- Category List -->
+                    <ListBox Grid.Column="0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Background="Transparent" BorderThickness="0" Margin="0,0,10,0">
 
-            <Rectangle Grid.Column="1" Width="1" VerticalAlignment="Stretch" Fill="{StaticResource SidebarBackground}" Opacity="0.3" Margin="5,0"/>
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Padding" Value="0" />
 
-            <!-- Content -->
-            <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
-                <TextBlock Text="Placeholder"/>
-            </ScrollViewer>
-        </Grid>
-    </controls:WindowFrame>
-    
-</Window>
+                                <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+
+                                <Style Selector="^:selected /template/ ContentPresenter#PART_ContentPresenter">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+
+                                <Style Selector="^:selected TextBlock">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="Foreground" Value="{StaticResource ApplicationAccentAlt}" />
+                                </Style>
+                            </Style>
+                        </ListBox.Styles>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Padding="10, 8" FontSize="12" Foreground="{StaticResource PrimaryText}" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <Rectangle Grid.Column="1" Width="1" VerticalAlignment="Stretch" Fill="{StaticResource SeparatorColour}" Margin="5,0"/>
+
+                    <!-- Content -->
+                    <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden" Margin="15,0,0,0">
+                        <TextBlock Text="Placeholder" Foreground="{StaticResource SecondaryText}" Opacity="0.6"/>
+                    </ScrollViewer>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+
+</UserControl>

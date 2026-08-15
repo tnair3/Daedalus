@@ -1,108 +1,189 @@
-<rxui:ReactiveWindow x:TypeArguments="vm:MainViewModel"
-                     xmlns="https://github.com/avaloniaui"
-                     xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
-                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                     xmlns:vm="using:DaedalusLauncher.ViewModels"
-                     xmlns:view="using:DaedalusLauncher.Views"
-                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                     xmlns:models="clr-namespace:DaedalusLauncher.Models"
-                     xmlns:controls="clr-namespace:DaedalusLauncher.Controls"
-                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                     Width="800" Height="450"
-                     x:Class="DaedalusLauncher.Views.MainView"
-                     x:DataType="vm:MainViewModel"
-                     CanResize="False"
-                     Icon="/Assets/avalonia-logo.ico"
-                     Title="Daedalus Engine Launcher">
-        
-        <rxui:ReactiveWindow.DataTemplates>
-                <DataTemplate DataType="{x:Type vm:ProjectsViewModel}">
-                        <view:ProjectsView />
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:InstallationsViewModel}">
-                        <view:InstallationsView />
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:LearnViewModel}">
-                        <view:LearnView />
-                </DataTemplate>
-        </rxui:ReactiveWindow.DataTemplates>
-        
-        <Grid ColumnDefinitions="200 *">
-                <!-- Sidebar -->
-                <Border Grid.Column="0" Background="{StaticResource SidebarBackground}" Padding="10">
-                        <Grid RowDefinitions="* Auto">
-                                <!-- Logo and Main Page Navigation -->
-                                <StackPanel Grid.Row="0" Spacing="5">
-                                        <Grid ColumnDefinitions="Auto *" Margin="5 5 5 20">
-                                                <Border Grid.Column="0" Padding="5 0" VerticalAlignment="Center">
-                                                        <PathIcon Data="{StaticResource AppLogo}" Width="30" Height="30"/>
-                                                </Border>
-                                                
-                                                <Border Grid.Column="1" VerticalAlignment="Center">
-                                                        <StackPanel Spacing="-2">
-                                                                <TextBlock Text="Daedalus" FontSize="14" FontWeight="Regular" VerticalAlignment="Center"/>
-                                                                <TextBlock FontSize="12" FontWeight="ExtraLight" Foreground="{StaticResource SecondaryText}">
-                                                                        <Label Content="{Binding AppVersion, StringFormat='v{0}'}" Padding="0"/>
-                                                                </TextBlock>
-                                                        </StackPanel>
-                                                </Border>
-                                        </Grid>
-                                        
-                                        <Button HorizontalAlignment="Stretch" Classes="sidebar" Tag="{Binding IsProjectsTab}" 
-                                                Command="{Binding Navigate}" CommandParameter="{x:Static models:TabType.Projects}">
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <PathIcon Data="{StaticResource NavigationProjects}"/>
-                                                        <Label Content="Projects" Classes="sidebar"/>
-                                                </StackPanel>
-                                        </Button>
-                                        <Button HorizontalAlignment="Stretch" Classes="sidebar" Tag="{Binding IsInstallationsTab}" 
-                                                Command="{Binding Navigate}" CommandParameter="{x:Static models:TabType.Installations}">
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <PathIcon Data="{StaticResource NavigationInstallations}"/>
-                                                        <Label Content="Installations" Classes="sidebar"/>
-                                                </StackPanel>
-                                        </Button>
-                                        <Button HorizontalAlignment="Stretch" Classes="sidebar" Tag="{Binding IsLearnTab}" 
-                                                Command="{Binding Navigate}" CommandParameter="{x:Static models:TabType.Learn}">
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <PathIcon Data="{StaticResource NavigationLearning}"/>
-                                                        <Label Content="Learn" Classes="sidebar"/>
-                                                </StackPanel>
-                                        </Button>
-                                </StackPanel>
-                                
-                                <!-- Utility Navigation -->
-                                <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
-                                        <Button Classes="sidebar" Command="{Binding OpenWindow}" CommandParameter="{x:Static models:WindowType.Settings}">
-                                                <PathIcon Data="{StaticResource NavigationSettings}"/>
-                                        </Button>
-                                        <Button Classes="sidebar" Command="{Binding OpenWindow}" CommandParameter="{x:Static models:WindowType.Report}">
-                                                <PathIcon Data="{StaticResource NavigationBugReport}"/>
-                                        </Button>
-                                        <Button Classes="sidebar" Command="{Binding OpenWindow}" CommandParameter="{x:Static models:WindowType.About}">
-                                                <PathIcon Data="{StaticResource NavigationAbout}"/>
-                                        </Button>
-                                </StackPanel>
-                        </Grid>
-                </Border>
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:DaedalusLauncher.ViewModels"
+        xmlns:view="using:DaedalusLauncher.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:DaedalusLauncher.Models"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+        Width="1000" Height="600"
+        x:Class="DaedalusLauncher.Views.MainView"
+        x:DataType="vm:MainViewModel"
+        CanResize="True"
+        MinWidth="940" MinHeight="480"
+        Icon="/Assets/avalonia-logo.ico"
+        Background="{StaticResource TopBarBackground}"
+        Title="Daedalus Engine Launcher">
+    
+    <Window.Resources>
+        <ControlTheme x:Key="TabBarButtonTheme" TargetType="Button">
+            <!-- Base Properties -->
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{StaticResource TabInactiveText}"/>
+            <Setter Property="Background" Value="{StaticResource TabInactiveBackground}"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="5,0,5,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TabInactiveBackground}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            
+            <!-- Custom Template -->
+            <Setter Property="Template">
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
 
-                <!-- Main Content Area -->
-                <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" />
-                
-                <!-- Notification Toast Overlay Container -->
-                <ItemsControl ItemsSource="{Binding NotificationService.Notifications}" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20" ZIndex="100">
-                        <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="vm:NotificationViewModel">
-                                        <Border Margin="0,8,0,0" Padding="12,10" CornerRadius="6" Background="#2D2D2D" MinWidth="260">
-                                                <Grid ColumnDefinitions="*, Auto">
-                                                        <TextBlock Grid.Column="0" Text="{Binding Message}" FontSize="14" Foreground="White" TextWrapping="Wrap" VerticalAlignment="Center" />
-                                                        <Button Grid.Column="1" Content="✕" Margin="12,0,0,0" Command="{Binding $parent[Window].((vm:MainViewModel)DataContext).NotificationService.DismissCommand, FallbackValue={x:Null}}" CommandParameter="{Binding .}" />
-                                                </Grid>
-                                        </Border>
-                                </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                </ItemsControl>
+            <!-- Inactive Hover / Pressed -->
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="{StaticResource TabHoverBackground}"/>
+                <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+            </Style>
+            <Style Selector="^:pressed">
+                <Setter Property="Background" Value="{StaticResource TabHoverBackground}"/>
+                <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+            </Style>
+
+            <!-- Active Base State -->
+            <Style Selector="^[Tag=True]">
+                <Setter Property="Background" Value="{StaticResource TabActiveBackground}"/>
+                <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource TabActiveIndicator}"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+
+            <!-- Active Hover / Pressed -->
+            <Style Selector="^[Tag=True]:pointerover">
+                <Setter Property="Background" Value="{StaticResource TabActiveBackground}"/>
+                <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource TabActiveIndicator}"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+            <Style Selector="^[Tag=True]:pressed">
+                <Setter Property="Background" Value="{StaticResource TabActiveBackground}"/>
+                <Setter Property="Foreground" Value="{StaticResource PrimaryHoverText}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource TabActiveIndicator}"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+        </ControlTheme>
+    </Window.Resources>
+    
+    <Window.DataTemplates>
+        <DataTemplate DataType="{x:Type vm:ProjectsViewModel}">
+            <view:ProjectsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:InstallationsViewModel}">
+            <view:InstallationsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LearnViewModel}">
+            <view:LearnView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AboutViewModel}">
+            <view:AboutView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReportViewModel}">
+            <view:ReportView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+            <view:SettingsView />
+        </DataTemplate>
+    </Window.DataTemplates>
+
+    <Grid RowDefinitions="46 *" Background="{StaticResource TopBarBackground}">
+
+        <!-- Tab bar -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto Auto * Auto" Background="{StaticResource TopBarBackground}" VerticalAlignment="Center">
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" Margin="14,0,16,0">
+                <PathIcon Data="{StaticResource AppLogo}" Width="18" Height="18" Foreground="{StaticResource ApplicationAccentAlt}"/>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Daedalus" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{StaticResource PrimaryText}"/>
+                    <TextBlock Text="{Binding AppVersion}" FontSize="9" FontWeight="Light" Foreground="{StaticResource SecondaryText}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <Rectangle Grid.Column="0" Width="1" Height="20" Fill="{StaticResource SeparatorColour}" HorizontalAlignment="Right" Margin="0,0,4,0"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="6,0,0,0">
+                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding IsProjectsTab}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Projects}">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <PathIcon Data="{StaticResource NavigationProjects}" Width="14" Height="14"/>
+                        <TextBlock Text="Projects" Classes="tabBarLabel"/>
+                    </StackPanel>
+                </Button>
+                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding IsInstallationsTab}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Installations}">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <PathIcon Data="{StaticResource NavigationInstallations}" Width="14" Height="14"/>
+                        <TextBlock Text="Installations" Classes="tabBarLabel"/>
+                    </StackPanel>
+                </Button>
+                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding IsLearnTab}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Learn}">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <PathIcon Data="{StaticResource NavigationLearning}" Width="14" Height="14"/>
+                        <TextBlock Text="Learn" Classes="tabBarLabel"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <Border Grid.Column="2" Background="Transparent"/>
+
+            <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,10,0">
+                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding IsAboutTab}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.About}">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <PathIcon Data="{StaticResource NavigationAbout}" Width="14" Height="14"/>
+                        <TextBlock Text="About" Classes="tabBarLabel"/>
+                    </StackPanel>
+                </Button>
+                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding IsReportTab}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Report}">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <PathIcon Data="{StaticResource NavigationBugReport}" Width="14" Height="14"/>
+                        <TextBlock Text="Report" Classes="tabBarLabel"/>
+                    </StackPanel>
+                </Button>
+                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding IsSettingsTab}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Settings}">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <PathIcon Data="{StaticResource NavigationSettings}" Width="14" Height="14"/>
+                        <TextBlock Text="Settings" Classes="tabBarLabel"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
         </Grid>
 
-</rxui:ReactiveWindow>
+        <!-- Main Page -->
+        <Border Grid.Row="1" Background="{StaticResource TabActiveBackground}" CornerRadius="10,0,0,0">
+            <Grid>
+                <ContentControl Content="{Binding CurrentPage}" />
+
+                <!-- Notification Toast -->
+                <ItemsControl ItemsSource="{Binding NotificationService.Notifications}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20" ZIndex="100">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:NotificationViewModel">
+                            <Border Margin="0,8,0,0" Padding="12,10" CornerRadius="10" Background="{StaticResource CardBackground}" BorderBrush="{StaticResource SeparatorColour}" BorderThickness="1" MinWidth="260">
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <TextBlock Grid.Column="0" Text="{Binding Message}" FontSize="14" Foreground="{StaticResource PrimaryText}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                    <Button Grid.Column="1" Content="✕" Classes="contextMenuButton" Margin="12,0,0,0" Command="{Binding $parent[Window].((vm:MainViewModel)DataContext).NotificationService.DismissCommand, FallbackValue={x:Null}}" CommandParameter="{Binding .}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Border>
+    </Grid>
+
+</Window>

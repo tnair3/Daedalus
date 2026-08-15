@@ -1,18 +1,20 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="using:DaedalusLauncher.ViewModels"
-        xmlns:controls="clr-namespace:DaedalusLauncher.Controls"
-        mc:Ignorable="d" d:DesignWidth="425" d:DesignHeight="300"
-        Width="425" Height="300"
-        x:DataType="vm:ReportViewModel"
-        x:Class="DaedalusLauncher.Views.ReportView"
-        CanResize="False"
-        Title="Bug Report"
-        ExtendClientAreaToDecorationsHint="True"
-        WindowDecorations="BorderOnly">
-    <controls:WindowFrame WindowName="Report" CloseWindowCommand="{Binding CloseWindow}">
-        <TextBlock Text="Placeholder"/>
-    </controls:WindowFrame>
-</Window>
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:DaedalusLauncher.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:ReportViewModel"
+             x:Class="DaedalusLauncher.Views.ReportView">
+
+    <Grid Background="{StaticResource PrimaryBackground}">
+        <Border Padding="10">
+            <Grid RowDefinitions="Auto *">
+                <TextBlock Grid.Row="0" Text="Report" Classes="heading"/>
+
+                <TextBlock Grid.Row="1" Text="Placeholder" Foreground="{StaticResource SecondaryText}" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.6"/>
+            </Grid>
+        </Border>
+    </Grid>
+
+</UserControl>
