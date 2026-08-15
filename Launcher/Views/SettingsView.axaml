@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:DaedalusLauncher.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:DataType="vm:SettingsViewModel"
-             x:Class="DaedalusLauncher.Views.SettingsView">
+             x:Class="DaedalusLauncher.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
 
     <Grid Background="{StaticResource PrimaryBackground}">
         <Border Padding="10">

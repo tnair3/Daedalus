@@ -21,26 +21,10 @@ public partial class MainViewModel : ViewModelBase
     private ReportViewModel Report { get; } = new();
     private SettingsViewModel Settings { get; } = new();
     
+    [ObservableProperty] private ViewModelBase _currentPage;
+    [ObservableProperty] private TabType _selectedTab;
+
     public NotificationService NotificationService { get; } = new();
-    
-    [ObservableProperty] private object _currentPage;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsProjectsTab))]
-    [NotifyPropertyChangedFor(nameof(IsInstallationsTab))]
-    [NotifyPropertyChangedFor(nameof(IsLearnTab))]
-    [NotifyPropertyChangedFor(nameof(IsAboutTab))]
-    [NotifyPropertyChangedFor(nameof(IsReportTab))]
-    [NotifyPropertyChangedFor(nameof(IsSettingsTab))]
-    private TabType _selectedTab;
-
-    public bool IsProjectsTab => SelectedTab == TabType.Projects;
-    public bool IsInstallationsTab => SelectedTab == TabType.Installations;
-    public bool IsLearnTab => SelectedTab == TabType.Learn;
-    public bool IsAboutTab => SelectedTab == TabType.About;
-    public bool IsReportTab => SelectedTab == TabType.Report;
-    public bool IsSettingsTab => SelectedTab == TabType.Settings;
-
 
     public MainViewModel()
     {

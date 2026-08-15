@@ -7,23 +7,10 @@ using DaedalusLauncher.ViewModels;
 
 namespace DaedalusLauncher.Views;
 
-public partial class AboutView : Window
+public partial class AboutView : UserControl
 {
     public AboutView()
     {
         InitializeComponent();
-    }
-    
-    protected override void OnDataContextChanged(EventArgs e)
-    {
-        base.OnDataContextChanged(e);
-
-        if (DataContext is AboutViewModel vm)
-        {
-            vm.CloseRequested += (result) =>
-            {
-                this.Close(result);
-            };
-        }
     }
 }

@@ -29,7 +29,7 @@ public partial class ProjectsViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(IsSortedByEngine))]
     [NotifyPropertyChangedFor(nameof(IsSortedByModified))]
     private ProjectsSortBy _sortBy = ProjectsSortBy.LastModified;
-    private bool _sortAscending = false;
+    private bool _sortAscending;
 
     public bool IsSortedByName => SortBy == ProjectsSortBy.Name;
     public bool IsSortedByEngine => SortBy == ProjectsSortBy.Engine;
@@ -41,9 +41,16 @@ public partial class ProjectsViewModel : ViewModelBase
 
     public ProjectsViewModel()
     {
-        WeakReferenceMessenger.Default.Register<NewProjectMessage>(this, async (r, m) =>
+        WeakReferenceMessenger.Default.Register<NewProjectMessage>(this, async void (r, m) =>
         {
-            await LoadProjects();
+            try
+            {
+                await LoadProjects();
+            }
+            catch
+            {
+                // TODO: Handle exception
+            }
         });
     }
     

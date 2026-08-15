@@ -120,22 +120,22 @@
             <Rectangle Grid.Column="0" Width="1" Height="20" Fill="{StaticResource SeparatorColour}" HorizontalAlignment="Right" Margin="0,0,4,0"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="6,0,0,0">
-                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding IsProjectsTab}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Projects}">
+                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding SelectedTab, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:TabType.Projects}}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Projects}">
                     <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                         <PathIcon Data="{StaticResource NavigationProjects}" Width="14" Height="14"/>
-                        <TextBlock Text="Projects" Classes="tabBarLabel"/>
+                        <TextBlock Text="Projects"/>
                     </StackPanel>
                 </Button>
-                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding IsInstallationsTab}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Installations}">
+                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding SelectedTab, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:TabType.Installations}}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Installations}">
                     <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                         <PathIcon Data="{StaticResource NavigationInstallations}" Width="14" Height="14"/>
-                        <TextBlock Text="Installations" Classes="tabBarLabel"/>
+                        <TextBlock Text="Installations"/>
                     </StackPanel>
                 </Button>
-                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding IsLearnTab}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Learn}">
+                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding SelectedTab, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:TabType.Learn}}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Learn}">
                     <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                         <PathIcon Data="{StaticResource NavigationLearning}" Width="14" Height="14"/>
-                        <TextBlock Text="Learn" Classes="tabBarLabel"/>
+                        <TextBlock Text="Learn"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
@@ -143,22 +143,22 @@
             <Border Grid.Column="2" Background="Transparent"/>
 
             <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,10,0">
-                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding IsAboutTab}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.About}">
+                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding SelectedTab, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:TabType.About}}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.About}">
                     <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                         <PathIcon Data="{StaticResource NavigationAbout}" Width="14" Height="14"/>
-                        <TextBlock Text="About" Classes="tabBarLabel"/>
+                        <TextBlock Text="About"/>
                     </StackPanel>
                 </Button>
-                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding IsReportTab}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Report}">
+                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding SelectedTab, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:TabType.Report}}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Report}">
                     <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                         <PathIcon Data="{StaticResource NavigationBugReport}" Width="14" Height="14"/>
-                        <TextBlock Text="Report" Classes="tabBarLabel"/>
+                        <TextBlock Text="Report"/>
                     </StackPanel>
                 </Button>
-                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding IsSettingsTab}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Settings}">
+                <Button Theme="{StaticResource TabBarButtonTheme}" Tag="{Binding SelectedTab, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:TabType.Settings}}" Command="{Binding NavigateCommand}" CommandParameter="{x:Static models:TabType.Settings}">
                     <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                         <PathIcon Data="{StaticResource NavigationSettings}" Width="14" Height="14"/>
-                        <TextBlock Text="Settings" Classes="tabBarLabel"/>
+                        <TextBlock Text="Settings"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
@@ -167,7 +167,7 @@
         <!-- Main Page -->
         <Border Grid.Row="1" Background="{StaticResource TabActiveBackground}" CornerRadius="10,0,0,0">
             <Grid>
-                <ContentControl Content="{Binding CurrentPage}" />
+                <ContentControl Content="{Binding CurrentPage}"/>
 
                 <!-- Notification Toast -->
                 <ItemsControl ItemsSource="{Binding NotificationService.Notifications}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20" ZIndex="100">
