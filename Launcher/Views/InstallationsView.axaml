@@ -27,7 +27,7 @@
                         <WrapPanel Orientation="Vertical" ItemSpacing="14" LineSpacing="14">
 
                             <!-- Launcher -->
-                            <Button Classes="moduleChip" Command="{Binding UpdateSelectedModuleDetailsCommand}" CommandParameter="{x:Static models:ModuleType.Launcher}">
+                            <Button Classes="moduleChip" Tag="{Binding SelectedModule, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:ModuleType.Launcher}}" Command="{Binding UpdateSelectedModuleDetailsCommand}" CommandParameter="{x:Static models:ModuleType.Launcher}">
                                 <Grid ColumnDefinitions="Auto * Auto" Margin="4,4,10,4">
                                     <Border Grid.Column="0" Classes="moduleChipIcon" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <PathIcon Data="{StaticResource LauncherModule}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -47,7 +47,7 @@
                             </Button>
 
                             <!-- Project Editor -->
-                            <Button Classes="moduleChip" Command="{Binding UpdateSelectedModuleDetailsCommand}" CommandParameter="{x:Static models:ModuleType.Editor}">
+                            <Button Classes="moduleChip" Tag="{Binding SelectedModule, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:ModuleType.Editor}}" Command="{Binding UpdateSelectedModuleDetailsCommand}" CommandParameter="{x:Static models:ModuleType.Editor}">
                                 <Grid ColumnDefinitions="Auto * Auto" Margin="4,4,10,4">
                                     <Border Grid.Column="0" Classes="moduleChipIcon" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <PathIcon Data="{StaticResource EditorModule}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -67,7 +67,7 @@
                             </Button>
 
                             <!-- Engine -->
-                            <Button Classes="moduleChip" Command="{Binding UpdateSelectedModuleDetailsCommand}" CommandParameter="{x:Static models:ModuleType.Engine}">
+                            <Button Classes="moduleChip" Tag="{Binding SelectedModule, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:ModuleType.Engine}}" Command="{Binding UpdateSelectedModuleDetailsCommand}" CommandParameter="{x:Static models:ModuleType.Engine}">
                                 <Grid ColumnDefinitions="Auto * Auto" Margin="4,4,10,4">
                                     <Border Grid.Column="0" Classes="moduleChipIcon" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <PathIcon Data="{StaticResource EngineModule}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -87,7 +87,7 @@
                             </Button>
                             
                             <!-- Books -->
-                            <Button Classes="moduleChip" Command="{Binding UpdateSelectedModuleDetailsCommand}" CommandParameter="{x:Static models:ModuleType.Books}">
+                            <Button Classes="moduleChip" Tag="{Binding SelectedModule, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static models:ModuleType.Books}}" Command="{Binding UpdateSelectedModuleDetailsCommand}" CommandParameter="{x:Static models:ModuleType.Books}">
                                 <Grid ColumnDefinitions="Auto * Auto" Margin="4,4,10,4">
                                     <Border Grid.Column="0" Classes="moduleChipIcon" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <PathIcon Data="{StaticResource Docs}" HorizontalAlignment="Center" VerticalAlignment="Center"/>

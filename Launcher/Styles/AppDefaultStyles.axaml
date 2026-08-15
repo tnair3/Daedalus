@@ -340,6 +340,19 @@
     <Style Selector="Button.moduleChip:pressed /template/ Border">
         <Setter Property="Background" Value="{StaticResource CardBackground}"/>
     </Style>
+    
+    <Style Selector="Button.moduleChip[Tag=True]">
+        <Setter Property="Background" Value="{StaticResource CardBackgroundSelected}"/>
+    </Style>
+    
+    <Style Selector="Button.moduleChip:pointerover[Tag=True] /template/ Border">
+        <Setter Property="Background" Value="{StaticResource CardBackgroundSelected}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    
+    <Style Selector="Button.moduleChip:pressed[Tag=True] /template/ Border">
+        <Setter Property="Background" Value="{StaticResource CardBackgroundSelected}"/>
+    </Style>
 
     <Style Selector="Border.moduleChipIcon">
         <Setter Property="Background" Value="{StaticResource ApplicationAccentSubtle}"/>

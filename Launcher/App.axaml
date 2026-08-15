@@ -21,6 +21,7 @@
             <SolidColorBrush x:Key="TopBarBackground" Color="#0D0D10"/>
             <SolidColorBrush x:Key="CardBackground" Color="#17171B"/>
             <SolidColorBrush x:Key="CardBackgroundHover" Color="#1D1D22"/>
+            <SolidColorBrush x:Key="CardBackgroundSelected" Color="#1F1F33"/>
             <SolidColorBrush x:Key="SeparatorColour" Color="#232328"/>
             
             <!-- Text -->
