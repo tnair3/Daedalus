@@ -12,18 +12,24 @@ namespace Daedalus {
             EngineCore();
             ~EngineCore();
 
-            const EngineGraphicsContext& GetGraphicsContext() const { return m_GraphicsContext; }
+            [[nodiscard]] const EngineGraphicsContext& GetGraphicsContext() const { return m_GraphicsContext; }
+            [[nodiscard]] const OffscreenRenderTarget& GetRenderTarget() const { return m_OffscreenTarget; }
 
             void RecreateSwapchain(GLFWwindow* window);
             void Initialize(GLFWwindow* window);
             void Update();
+            void Render();
             void Shutdown();
             bool LoadProject(const std::string& projectPath);
 
         private:
-            EngineGraphicsContext m_GraphicsContext;
-            std::string m_ActiveProjectPath;
+            [[nodiscard]] uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) const;
+            void TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
 
-            void CreateMinimalVulkanInstance();
+            EngineGraphicsContext m_GraphicsContext;
+            OffscreenRenderTarget m_OffscreenTarget;
+            VkCommandPool m_EngineCommandPool = VK_NULL_HANDLE;
+            VkCommandBuffer m_EngineCommandBuffer = VK_NULL_HANDLE;
+            std::string m_ActiveProjectPath;
     };
 }

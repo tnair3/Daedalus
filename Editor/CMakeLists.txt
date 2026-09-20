@@ -3,7 +3,7 @@ set(EDITOR_SOURCES
         Main.h
         Window.cpp
         Window.h
-        EditorVulkanBootstrap.cpp
+        #EditorVulkanBootstrap.cpp
 
         # imgui source files
         ../ThirdParty/imgui/imgui.cpp

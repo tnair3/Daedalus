@@ -18,7 +18,19 @@ namespace Daedalus {
         std::vector<VkImage> SwapchainImages;
         std::vector<VkImageView> SwapchainImageViews;
         std::vector<VkFramebuffer> Framebuffers;
-        VkExtent2D SwapchainExtent = {0, 0}; 
+        VkExtent2D SwapchainExtent = {.width = 0, .height = 0};
         VkFence AcquireFence = VK_NULL_HANDLE;
+        VkCommandPool CommandPool = VK_NULL_HANDLE;
+        VkCommandBuffer CommandBuffer = VK_NULL_HANDLE;
+    };
+
+    struct OffscreenRenderTarget {
+        VkExtent2D Extent{ .width = 1920, .height = 1080 };
+        VkImage Image = VK_NULL_HANDLE;
+        VkDeviceMemory ImageMemory = VK_NULL_HANDLE;
+        VkImageView ImageView = VK_NULL_HANDLE;
+        VkSampler Sampler = VK_NULL_HANDLE;
+        VkRenderPass RenderPass = VK_NULL_HANDLE;
+        VkFramebuffer Framebuffer = VK_NULL_HANDLE;
     };
 }
