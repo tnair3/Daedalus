@@ -21,6 +21,9 @@ Makefile
 install_manifest.txt
 _deps/
 
+# Compiled Shader Binaries
+*.spv
+
 # vcpkg
 vcpkg.json.user
 
