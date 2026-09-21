@@ -6,15 +6,15 @@ set(EDITOR_SOURCES
         #EditorVulkanBootstrap.cpp
 
         # imgui source files
-        ../ThirdParty/imgui/imgui.cpp
-        ../ThirdParty/imgui/imgui_demo.cpp
-        ../ThirdParty/imgui/imgui_draw.cpp
-        ../ThirdParty/imgui/imgui_tables.cpp
-        ../ThirdParty/imgui/imgui_widgets.cpp
+        ${CMAKE_SOURCE_DIR}/ThirdParty/imgui/imgui.cpp
+        ${CMAKE_SOURCE_DIR}/ThirdParty/imgui/imgui_demo.cpp
+        ${CMAKE_SOURCE_DIR}/ThirdParty/imgui/imgui_draw.cpp
+        ${CMAKE_SOURCE_DIR}/ThirdParty/imgui/imgui_tables.cpp
+        ${CMAKE_SOURCE_DIR}/ThirdParty/imgui/imgui_widgets.cpp
 
         # imgui backends
-        ../ThirdParty/imgui/backends/imgui_impl_glfw.cpp
-        ../ThirdParty/imgui/backends/imgui_impl_vulkan.cpp
+        ${CMAKE_SOURCE_DIR}/ThirdParty/imgui/backends/imgui_impl_glfw.cpp
+        ${CMAKE_SOURCE_DIR}/ThirdParty/imgui/backends/imgui_impl_vulkan.cpp
 )
 
 # Executable
