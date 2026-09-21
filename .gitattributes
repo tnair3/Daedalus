@@ -9,3 +9,7 @@ ThirdParty/** linguist-vendored
 
 *.cpp linguist-language=C++
 *.hpp linguist-language=C++
+
+*.vert text working-tree-encoding=UTF-8 eol=lf diff=glsl
+*.frag text working-tree-encoding=UTF-8 eol=lf diff=glsl
+*.spv binary
