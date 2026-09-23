@@ -207,6 +207,8 @@ namespace Editor {
         {
             m_Window.PollEvents();
 
+            m_engine.Render();
+
             BeginFrame();
 
             bool resetLayoutRequested = false;
@@ -538,8 +540,6 @@ namespace Editor {
 
             if (showMetricsWindow) { ImGui::ShowMetricsWindow(&showMetricsWindow); }
             if (showDemoWindow) { ImGui::ShowDemoWindow(&showDemoWindow); }
-
-            m_engine.Render();
 
             EndFrame();
         }

@@ -2,10 +2,13 @@
 
 #include <GLFW/glfw3.h>
 #include <string>
+#include <memory>
 
 #include "EngineContext.h"
 
 namespace Daedalus {
+    class TrianglePipeline;
+
     class EngineCore
     {
         public:
@@ -28,8 +31,9 @@ namespace Daedalus {
 
             EngineGraphicsContext m_GraphicsContext;
             OffscreenRenderTarget m_OffscreenTarget;
-            VkCommandPool m_EngineCommandPool = VK_NULL_HANDLE;
-            VkCommandBuffer m_EngineCommandBuffer = VK_NULL_HANDLE;
+
+            std::unique_ptr<TrianglePipeline> m_TrianglePipeline;
+
             std::string m_ActiveProjectPath;
     };
 }

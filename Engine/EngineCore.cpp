@@ -1,8 +1,10 @@
 #include <vulkan/vulkan.h>
 #include <iostream>
+#include <fstream>
 #include <vector>
 
 #include "EngineCore.h"
+#include "Graphics/Pipelines/TrianglePipeline.h"
 
 namespace Daedalus {
     EngineCore::EngineCore() = default;
@@ -14,6 +16,7 @@ namespace Daedalus {
         std::cout << "EngineCore: Initializing Vulkan context..." << std::endl;
 
         m_OffscreenTarget.Extent = { .width = 1920, .height = 1080 };
+        m_TrianglePipeline = std::make_unique<TrianglePipeline>();
 
         // Instance Creation
         VkApplicationInfo appInfo = {
@@ -399,6 +402,8 @@ namespace Daedalus {
             throw std::runtime_error("Vulkan Bootstrap Error: Failed to create acquire fence.");
         }
 
+        m_TrianglePipeline->Initialize(m_GraphicsContext.Device, m_OffscreenTarget.RenderPass, m_OffscreenTarget.Extent);
+
         std::cout << "EngineCore: Vulkan bootstrap initialised." << std::endl;
     }
 
@@ -413,9 +418,9 @@ namespace Daedalus {
             .flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
         };
 
-        vkBeginCommandBuffer(m_GraphicsContext.CommandBuffer, &beginInfo);
+        if (vkBeginCommandBuffer(m_GraphicsContext.CommandBuffer, &beginInfo) != VK_SUCCESS) { return; }
 
-        VkClearValue clearColor = { .color = { .float32{ 0.1f, 0.15f, 0.2f, 1.0f } } };
+        VkClearValue clearColor = { .color = { .float32 = { 0.1f, 0.15f, 0.2f, 1.0f } } };
 
         VkRenderPassBeginInfo renderPassInfo = {
             .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
@@ -432,11 +437,36 @@ namespace Daedalus {
         vkCmdBeginRenderPass(m_GraphicsContext.CommandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
         // =================================
-        // Geometry draw commands go here
+        // Geometry draw commands go below
+        // =================================
+
+        m_TrianglePipeline->RecordDraw(m_GraphicsContext.CommandBuffer, m_OffscreenTarget.Extent);
+
+        VkViewport viewport = {
+            .x = 0.0f,
+            .y = 0.0f,
+            .width = static_cast<float>(m_OffscreenTarget.Extent.width),
+            .height = static_cast<float>(m_OffscreenTarget.Extent.height),
+            .minDepth = 0.0f,
+            .maxDepth = 1.0f
+        };
+        vkCmdSetViewport(m_GraphicsContext.CommandBuffer, 0, 1, &viewport);
+
+        VkRect2D scissor = {
+            .offset = { .x = 0, .y = 0 },
+            .extent = m_OffscreenTarget.Extent
+        };
+        vkCmdSetScissor(m_GraphicsContext.CommandBuffer, 0, 1, &scissor);
+
+        vkCmdDraw(m_GraphicsContext.CommandBuffer, 3, 1, 0, 0);
+
+        // =================================
+        // Geometry draw commands go above
         // =================================
 
         vkCmdEndRenderPass(m_GraphicsContext.CommandBuffer);
-        vkEndCommandBuffer(m_GraphicsContext.CommandBuffer);
+
+        if (vkEndCommandBuffer(m_GraphicsContext.CommandBuffer) != VK_SUCCESS) { return; }
 
         VkSubmitInfo submitInfo = {
             .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
@@ -457,6 +487,8 @@ namespace Daedalus {
             std::cout << "EngineCore: Awaiting device idle..." << std::endl;
             vkDeviceWaitIdle(m_GraphicsContext.Device);
         }
+
+        m_TrianglePipeline->Cleanup(m_GraphicsContext.Device);
 
         if (m_OffscreenTarget.Sampler) vkDestroySampler(m_GraphicsContext.Device, m_OffscreenTarget.Sampler, nullptr);
         if (m_OffscreenTarget.Framebuffer) vkDestroyFramebuffer(m_GraphicsContext.Device, m_OffscreenTarget.Framebuffer, nullptr);
