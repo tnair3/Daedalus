@@ -134,7 +134,7 @@ public partial class ProjectsViewModel : ViewModelBase
                 Author = manifest.Project.Author,
                 EngineVersion = manifest.Project.EngineVersion,
                 TargetNetVersion = manifest.Project.TargetNetVersion,
-                GitInitialised = manifest.Project.GitInitialised,
+                GitInitialized = manifest.Project.GitInitialized,
                 RenderApiBackend = manifest.GraphicsDefaults.RenderApiBackend,
                 DefaultWindowMode = manifest.GraphicsDefaults.DefaultWindowMode,
                 TargetResolution = manifest.GraphicsDefaults.TargetResolution,

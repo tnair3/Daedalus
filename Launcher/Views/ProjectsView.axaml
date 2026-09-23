@@ -128,7 +128,7 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="models:ProjectInfo">
-                                    <Border Classes="project-row" BorderBrush="{StaticResource SeparatorColour}" Background="Transparent" BorderThickness="0,0,0,1" Padding="0,12">
+                                    <Border Classes="project-row" BorderBrush="{StaticResource SeparatorColor}" Background="Transparent" BorderThickness="0,0,0,1" Padding="0,12">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="44" SharedSizeGroup="FavoriteCol"/>

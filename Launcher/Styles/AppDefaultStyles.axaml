@@ -45,7 +45,7 @@
         <Setter Property="Background" Value="{StaticResource CardBackground}"/>
         <Setter Property="Height" Value="40"/>
         <Setter Property="CornerRadius" Value="12 12 0 0"/>
-        <Setter Property="BorderBrush" Value="{StaticResource SeparatorColour}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource SeparatorColor}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Margin" Value="0 10 0 0"/>
     </Style>
@@ -306,7 +306,7 @@
 
     <Style Selector="Button.moduleChip">
         <Setter Property="Background" Value="{StaticResource CardBackground}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource SeparatorColour}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource SeparatorColor}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="999"/>
         <Setter Property="Padding" Value="4"/>

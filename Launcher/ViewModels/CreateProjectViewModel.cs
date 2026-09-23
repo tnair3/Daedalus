@@ -99,7 +99,7 @@ public partial class CreateProjectViewModel : ViewModelBase
                     Author = ProjectAuthor,
                     EngineVersion = engineVersion,
                     TargetNetVersion = SelectedDotNetVersion,
-                    GitInitialised = InitializeGit
+                    GitInitialized = InitializeGit
                 },
                 Directories = new ProjectDirectories
                 {
@@ -139,7 +139,7 @@ public partial class CreateProjectViewModel : ViewModelBase
                 RenderApiBackend = SelectedRenderApi,
                 DefaultWindowMode = SelectedWindowMode,
                 TargetResolution = SelectedResolution,
-                GitInitialised = InitializeGit
+                GitInitialized = InitializeGit
             };
 
             ProjectRoot root;

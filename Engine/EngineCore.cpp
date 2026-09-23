@@ -404,7 +404,7 @@ namespace Daedalus {
 
         m_TrianglePipeline->Initialize(m_GraphicsContext.Device, m_OffscreenTarget.RenderPass, m_OffscreenTarget.Extent);
 
-        std::cout << "EngineCore: Vulkan bootstrap initialised." << std::endl;
+        std::cout << "EngineCore: Vulkan bootstrap initialized." << std::endl;
     }
 
     void EngineCore::Update() {}

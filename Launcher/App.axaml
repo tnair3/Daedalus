@@ -22,7 +22,7 @@
             <SolidColorBrush x:Key="CardBackground" Color="#17171B"/>
             <SolidColorBrush x:Key="CardBackgroundHover" Color="#1D1D22"/>
             <SolidColorBrush x:Key="CardBackgroundSelected" Color="#1F1F33"/>
-            <SolidColorBrush x:Key="SeparatorColour" Color="#232328"/>
+            <SolidColorBrush x:Key="SeparatorColor" Color="#232328"/>
             
             <!-- Text -->
             <SolidColorBrush x:Key="PrimaryText" Color="#E5E6EA"/>

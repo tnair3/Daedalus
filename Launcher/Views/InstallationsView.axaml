@@ -138,7 +138,7 @@
                                 </StackPanel>
                             </Grid>
                             
-                            <Border Height="1" Background="{StaticResource SeparatorColour}"/>
+                            <Border Height="1" Background="{StaticResource SeparatorColor}"/>
 
                             <!-- Description -->
                             <StackPanel Spacing="8">
@@ -151,7 +151,7 @@
                             <StackPanel Spacing="10">
                                 <TextBlock Text="Changelog" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource PrimaryText}"/>
 
-                                <Border Background="{StaticResource CardBackground}" BorderBrush="{StaticResource SeparatorColour}" BorderThickness="1" CornerRadius="12" Padding="16">
+                                <Border Background="{StaticResource CardBackground}" BorderBrush="{StaticResource SeparatorColor}" BorderThickness="1" CornerRadius="12" Padding="16">
                                     <ItemsControl ItemsSource="{Binding SelectedModuleChangelog}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>

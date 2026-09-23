@@ -36,8 +36,8 @@ public class ProjectIdentity
     [JsonPropertyName("TargetNetVersion")]
     public string TargetNetVersion { get; set; } = string.Empty;
 
-    [JsonPropertyName("GitInitialised")]
-    public bool GitInitialised { get; set; } = false;
+    [JsonPropertyName("GitInitialized")]
+    public bool GitInitialized { get; set; } = false;
 }
 
 public class ProjectDirectories

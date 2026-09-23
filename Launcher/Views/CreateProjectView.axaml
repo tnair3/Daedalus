@@ -51,12 +51,12 @@
                             </StackPanel>
 
                             <StackPanel Spacing="4">
-                                <TextBlock Text="Author / Organisation" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
+                                <TextBlock Text="Author / Organization" FontSize="11" Foreground="{StaticResource SecondaryText}"/>
                                 <TextBox Text="{Binding ProjectAuthor, Mode=TwoWay}" PlaceholderText="Daedalus Developer"/>
                             </StackPanel>
                         </StackPanel>
 
-                        <Separator Height="1" Background="{StaticResource SeparatorColour}" Opacity="0.3"/>
+                        <Separator Height="1" Background="{StaticResource SeparatorColor}" Opacity="0.3"/>
 
                         <!-- Development and Scripting -->
                         <StackPanel Spacing="10">
@@ -75,7 +75,7 @@
                             </Grid>
                         </StackPanel>
 
-                        <Separator Height="1" Background="{StaticResource SeparatorColour}" Opacity="0.3"/>
+                        <Separator Height="1" Background="{StaticResource SeparatorColor}" Opacity="0.3"/>
 
                         <!-- Engine and Graphics Configuration -->
                         <StackPanel Spacing="10">
@@ -100,7 +100,7 @@
                             </Grid>
                         </StackPanel>
 
-                        <Separator Height="1" Background="{StaticResource SeparatorColour}" Opacity="0.3"/>
+                        <Separator Height="1" Background="{StaticResource SeparatorColor}" Opacity="0.3"/>
 
                         <!-- Git -->
                         <StackPanel Spacing="10">

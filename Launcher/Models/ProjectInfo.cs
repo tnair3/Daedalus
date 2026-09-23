@@ -22,6 +22,6 @@ public partial class ProjectInfo : ObservableObject
     public string RenderApiBackend { get; set; } = string.Empty;
     public string DefaultWindowMode { get; set; } = string.Empty;
     public string TargetResolution { get; set; } = string.Empty;
-    public bool GitInitialised { get; set; } = false;
+    public bool GitInitialized { get; set; } = false;
     [ObservableProperty] private bool _isFavourite = false;
 }
