@@ -11,7 +11,7 @@ namespace Daedalus {
 
     EngineCore::~EngineCore() { Shutdown(); }
 
-    void EngineCore::Initialize(GLFWwindow* window)
+    void EngineCore::Initialize(GLFWwindow* window, std::string projectPath)
     {
         std::cout << "EngineCore: Initializing Vulkan context..." << std::endl;
 

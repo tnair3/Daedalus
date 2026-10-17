@@ -42,6 +42,14 @@ namespace Daedalus {
         // glfwSwapBuffers(m_Window); 
     }
 
+    void EditorWindow::SetTitle(const std::string& title)
+    {
+        if (m_Window)
+        {
+            glfwSetWindowTitle(m_Window, title.c_str());
+        }
+    }
+
     void EditorWindow::FramebufferResizeCallback(GLFWwindow* window, int width, int height)
     {
         auto appWindow = reinterpret_cast<EditorWindow*>(glfwGetWindowUserPointer(window));

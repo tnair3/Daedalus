@@ -198,6 +198,37 @@ public partial class ProjectsViewModel : ViewModelBase
         IsCreatingProject = true;
     }
     
+    [RelayCommand]
+    private static void LaunchProject(ProjectInfo? project)
+    {
+        if (project == null || string.IsNullOrEmpty(project.ProjectPath))
+        {
+            Debug.WriteLine("Project not found");
+            return;
+        }
+        
+        string launcherDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        string editorExePath = Path.Combine(launcherDirectory, "../editor/EditorApp.exe");
+
+        if (File.Exists(editorExePath))
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = editorExePath,
+                Arguments = $"\"{project.ProjectPath}\"",
+                WorkingDirectory = Path.GetDirectoryName(editorExePath),
+                UseShellExecute = true
+            });
+            
+            Environment.Exit(0);
+        }
+
+        else
+        {
+            Debug.WriteLine("EditorApp executable not found");
+        }
+    }
+    
     partial void OnSearchQueryChanged(string value)
     {
         UpdateProjectList(Projects);

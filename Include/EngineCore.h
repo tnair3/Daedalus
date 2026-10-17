@@ -19,7 +19,7 @@ namespace Daedalus {
             [[nodiscard]] const OffscreenRenderTarget& GetRenderTarget() const { return m_OffscreenTarget; }
 
             void RecreateSwapchain(GLFWwindow* window);
-            void Initialize(GLFWwindow* window);
+            void Initialize(GLFWwindow* window, std::string projectPath);
             void Update();
             void Render();
             void Shutdown();

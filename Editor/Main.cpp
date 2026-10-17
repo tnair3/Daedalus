@@ -3,6 +3,9 @@
 #include <tchar.h>
 #include <stdexcept>
 #include <nfd.hpp>
+#include <fstream>
+#include <sstream>
+#include <filesystem>
 
 #include "Main.h"
 #include "Window.h"
@@ -12,9 +15,47 @@
 #include "imgui_impl_vulkan.h"
 
 namespace Editor {
-    EditorApp::EditorApp() : m_IsRunning(true), m_Window(1280, 720, "Daedalus Engine Editor - v1.0.0")
+    static std::string ExtractProjectName(const std::string& projectPath)
     {
-        m_engine.Initialize(m_Window.GetNativeWindow());
+        if (projectPath.empty()) return "Daedalus Engine Editor v1.0.0";
+
+        try
+        {
+            for (const auto& entry : std::filesystem::directory_iterator(projectPath))
+            {
+                if (entry.path().extension() == ".myproject")
+                {
+                    std::ifstream file(entry.path());
+                    std::stringstream buffer;
+                    buffer << file.rdbuf();
+                    std::string content = buffer.str();
+
+                    size_t nameKey = content.find("\"Name\"");
+                    if (nameKey != std::string::npos)
+                    {
+                        size_t colon = content.find(':', nameKey);
+                        size_t firstQuote = content.find('"', colon);
+                        size_t secondQuote = content.find('"', firstQuote + 1);
+                        if (firstQuote != std::string::npos && secondQuote != std::string::npos)
+                        {
+                            std::string projectName = content.substr(firstQuote + 1, secondQuote - firstQuote - 1);
+                            return projectName + " - Daedalus Engine Editor v1.0.0";
+                        }
+                    }
+                }
+            }
+        }
+        catch (std::exception e)
+        {
+            // TODO: Implement fallback
+        }
+
+        return "Daedalus Engine Editor - v1.0.0";
+    }
+
+    EditorApp::EditorApp(std::string projectPath) : m_IsRunning(true), m_Window(1280, 720, ExtractProjectName(projectPath))
+    {
+        m_engine.Initialize(m_Window.GetNativeWindow(), projectPath);
         InitVulkanContext();
         InitImGui();
     }
@@ -238,8 +279,9 @@ namespace Editor {
 
                         if (result == NFD_OKAY)
                         {
-                            std::string selectedPath(outPath);
-                            m_engine.LoadProject(selectedPath);
+                            std::string filePath(outPath);
+                            std::string projectDirectory = std::filesystem::path(filePath).parent_path().string();
+                            LoadProjectFromPath(projectDirectory);
                             NFD::FreePath(outPath);
                         }
                         else if (result == NFD_CANCEL) {  }
@@ -545,6 +587,15 @@ namespace Editor {
         }
     }
 
+    void EditorApp::LoadProjectFromPath(const std::string& projectPath)
+    {
+        if (m_engine.LoadProject(projectPath))
+        {
+            std::string newTitle = ExtractProjectName(projectPath);
+            m_Window.SetTitle(newTitle);
+        }
+    }
+
     void EditorApp::CleanupImGui()
     {
         std::cout << "EditorApp: Cleaning up ImGui..." << std::endl;
@@ -587,11 +638,13 @@ namespace Editor {
     }
 }
 
-int main()
+int main(int argc, char* argv[])
 {
     try
     {
-        Editor::EditorApp app;
+        std::string projectPath = (argc > 1) ? argv[1] : "";
+
+        Editor::EditorApp app(projectPath);
         app.Run();
     }
     catch (const std::exception& e)

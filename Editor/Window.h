@@ -18,6 +18,7 @@ namespace Daedalus {
             bool ShouldClose() const;
             void PollEvents();
             void SwapBuffers();
+            void SetTitle(const std::string& title);
 
             bool WasFramebufferResized() const { return m_FramebufferResized; }
             void ResetFramebufferResizedFlag() { m_FramebufferResized = false; }

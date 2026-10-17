@@ -10,7 +10,7 @@ namespace Editor {
     class EditorApp
     {
         public:
-            EditorApp();
+            EditorApp(std::string projectPath);
             ~EditorApp();
 
             void Run();
@@ -29,6 +29,7 @@ namespace Editor {
             void InitVulkanContext();
             void CleanupImGui();
             void CleanupVulkanContext();
+            void LoadProjectFromPath(const std::string& projectPath);
 
             void BeginFrame();
             void EndFrame();

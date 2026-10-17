@@ -132,7 +132,7 @@ public partial class CreateProjectViewModel : ViewModelBase
                 Name = ProjectName,
                 EngineVersion = engineVersion,
                 LastModified = DateTime.Now,
-                ProjectPath = ProjectPath,
+                ProjectPath = fullProjectPath,
                 Author = ProjectAuthor,
                 IsFavourite = false,
                 TargetNetVersion = SelectedDotNetVersion,

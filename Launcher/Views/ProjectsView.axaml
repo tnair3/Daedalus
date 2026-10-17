@@ -158,7 +158,7 @@
                                                 </Button>
                                             </Grid>
                                             
-                                            <Button Grid.Column="1" Margin="10,2" Classes="projectButton">
+                                            <Button Grid.Column="1" Margin="10,2" Classes="projectButton" Command="{Binding $parent[ItemsControl].((vm:ProjectsViewModel)DataContext).LaunchProjectCommand, FallbackValue={x:Null}}" CommandParameter="{Binding}">
                                                 <Grid>
                                                     <Border Classes="projectButtonBackground" CornerRadius="20"/>
                                                     <TextBlock Text="{Binding Name}" Foreground="{StaticResource PrimaryText}" VerticalAlignment="Center" Margin="10,0" Cursor="Hand"/>
