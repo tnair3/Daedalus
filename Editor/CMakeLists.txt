@@ -39,10 +39,13 @@ target_include_directories(EditorApp
 )
 
 if(WIN32)
-    target_link_options(EditorApp
-            PRIVATE
-                "-static-libgcc"
-                "-static-libstdc++"
+    get_filename_component(COMPILER_BIN_DIR ${CMAKE_CXX_COMPILER} DIRECTORY)
+
+    add_custom_command(TARGET EditorApp POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${COMPILER_BIN_DIR}/libwinpthread-1.dll" "$<TARGET_FILE_DIR:EditorApp>"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${COMPILER_BIN_DIR}/libgcc_s_seh-1.dll" "$<TARGET_FILE_DIR:EditorApp>"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${COMPILER_BIN_DIR}/libstdc++-6.dll" "$<TARGET_FILE_DIR:EditorApp>"
+            VERBATIM
     )
 endif()
 
