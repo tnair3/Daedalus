@@ -4,6 +4,9 @@ set(ENGINE_SOURCES
 
         Graphics/Pipelines/TrianglePipeline.h
         Graphics/Pipelines/TrianglePipeline.cpp
+
+        # vma source files
+        ${CMAKE_SOURCE_DIR}/ThirdParty/vma/vk_mem_alloc.h
 )
 
 # Static Library
