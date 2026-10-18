@@ -21,7 +21,9 @@ set_target_properties(Engine PROPERTIES
 # Directories
 target_include_directories(Engine
         PUBLIC ${CMAKE_SOURCE_DIR}/Include
-        PRIVATE .
+        PRIVATE
+            .
+            ${CMAKE_SOURCE_DIR}/ThirdParty/vma
 )
 
 # Libraries
