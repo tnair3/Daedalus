@@ -11,9 +11,11 @@ namespace Daedalus {
 
     EngineCore::~EngineCore() { Shutdown(); }
 
-    void EngineCore::Initialize(GLFWwindow* window, std::string projectPath)
+    void EngineCore::Initialize(GLFWwindow* window, std::string& projectPath)
     {
         std::cout << "EngineCore: Initializing Vulkan context..." << std::endl;
+
+        m_ActiveProjectPath = projectPath;
 
         m_OffscreenTarget.Extent = { .width = 1920, .height = 1080 };
         m_TrianglePipeline = std::make_unique<TrianglePipeline>();
