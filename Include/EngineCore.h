@@ -24,6 +24,7 @@ namespace Daedalus {
             void Render();
             void Shutdown();
             bool LoadProject(const std::string& projectPath);
+            std::string GetActiveProjectPath() { return m_ActiveProjectPath; }
 
         private:
             [[nodiscard]] uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) const;

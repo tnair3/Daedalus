@@ -534,28 +534,48 @@ namespace Editor {
             if (showSceneViewer)
             {
                 ImGui::Begin("Scene Viewer");
-                if (const auto& offscreenTarget = m_engine.GetRenderTarget(); offscreenTarget.ImageView != VK_NULL_HANDLE && offscreenTarget.Sampler != VK_NULL_HANDLE)
+
+                if (m_engine.GetActiveProjectPath().empty())
                 {
-                    if (m_CurrentViewportImageView != offscreenTarget.ImageView)
-                    {
-                        if (m_ViewportTextureID != 0) { ImGui_ImplVulkan_RemoveTexture(reinterpret_cast<VkDescriptorSet>(m_ViewportTextureID)); }
+                    float windowWidth = ImGui::GetWindowSize().x;
+                    float windowHeight = ImGui::GetWindowSize().y;
+                    const char* text = "No project selected";
 
-                        m_ViewportTextureID = reinterpret_cast<ImTextureID>(ImGui_ImplVulkan_AddTexture(
-                            offscreenTarget.Sampler,
-                            offscreenTarget.ImageView,
-                            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
-                        ));
+                    ImGui::SetWindowFontScale(2.0f);
+                    float textWidth = ImGui::CalcTextSize(text).x;
+                    float textHeight = ImGui::CalcTextSize(text).y;
 
-                        m_CurrentViewportImageView = offscreenTarget.ImageView;
-                    }
-
-                    ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-                    ImGui::Image(m_ViewportTextureID, viewportPanelSize);
+                    ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+                    ImGui::SetCursorPosY((windowHeight - textHeight) * 0.5f);
+                    ImGui::Text("%s", text);
+                    ImGui::SetWindowFontScale(1.0f);
                 }
                 else
                 {
-                    ImGui::Text("Vulkan Viewport Render Target Window (Error in displaying scene)");
+                    if (const auto& offscreenTarget = m_engine.GetRenderTarget(); offscreenTarget.ImageView != VK_NULL_HANDLE && offscreenTarget.Sampler != VK_NULL_HANDLE)
+                    {
+                        if (m_CurrentViewportImageView != offscreenTarget.ImageView)
+                        {
+                            if (m_ViewportTextureID != 0) { ImGui_ImplVulkan_RemoveTexture(reinterpret_cast<VkDescriptorSet>(m_ViewportTextureID)); }
+
+                            m_ViewportTextureID = reinterpret_cast<ImTextureID>(ImGui_ImplVulkan_AddTexture(
+                                offscreenTarget.Sampler,
+                                offscreenTarget.ImageView,
+                                VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
+                            ));
+
+                            m_CurrentViewportImageView = offscreenTarget.ImageView;
+                        }
+
+                        ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+                        ImGui::Image(m_ViewportTextureID, viewportPanelSize);
+                    }
+                    else
+                    {
+                        ImGui::Text("Vulkan Viewport Render Target Window (Error in displaying scene)");
+                    }
                 }
+
                 ImGui::End();
             }
 
