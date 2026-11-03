@@ -35,6 +35,7 @@ target_include_directories(EditorApp
             ${CMAKE_SOURCE_DIR}/Include
             ${CMAKE_SOURCE_DIR}/ThirdParty/imgui
             ${CMAKE_SOURCE_DIR}/ThirdParty/imgui/backends
+            ${CMAKE_SOURCE_DIR}/ThirdParty/vma
             ${Vulkan_INCLUDE_DIRS}
 )
 

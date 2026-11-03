@@ -3,6 +3,9 @@
 #include <fstream>
 #include <vector>
 
+#define VMA_IMPLEMENTATION
+#include <vk_mem_alloc.h>
+
 #include "EngineCore.h"
 #include "Graphics/Pipelines/TrianglePipeline.h"
 
@@ -97,6 +100,18 @@ namespace Daedalus {
 
         vkGetDeviceQueue(m_GraphicsContext.Device, m_GraphicsContext.QueueFamilyIndex, 0, &m_GraphicsContext.GraphicsQueue);
 
+        // Initialize VMA Allocator
+        VmaAllocatorCreateInfo allocatorInfo = {};
+        allocatorInfo.physicalDevice = m_GraphicsContext.PhysicalDevice;
+        allocatorInfo.device = m_GraphicsContext.Device;
+        allocatorInfo.instance = m_GraphicsContext.Instance;
+        allocatorInfo.vulkanApiVersion = VK_API_VERSION_1_3;
+
+        if (vmaCreateAllocator(&allocatorInfo, &m_Allocator) != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to initialize VMA allocator!");
+        }
+
         // Offscreen Target Image, Memory, and View
         VkImageCreateInfo imageInfo = {
             .sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
@@ -112,26 +127,14 @@ namespace Daedalus {
             .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
         };
 
-        if (vkCreateImage(m_GraphicsContext.Device, &imageInfo, nullptr, &m_OffscreenTarget.Image) != VK_SUCCESS)
-        {
-            throw std::runtime_error("Failed to create offscreen image!");
-        }
+        VmaAllocationCreateInfo allocInfo = {};
+        allocInfo.usage = VMA_MEMORY_USAGE_AUTO;
+        allocInfo.requiredFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 
-        VkMemoryRequirements memRequirements;
-        vkGetImageMemoryRequirements(m_GraphicsContext.Device, m_OffscreenTarget.Image, &memRequirements);
-
-        VkMemoryAllocateInfo memAllocateInfo = {
-            .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
-            .allocationSize = memRequirements.size,
-            .memoryTypeIndex = FindMemoryType(memRequirements.memoryTypeBits,VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
-        };
-
-        if (vkAllocateMemory(m_GraphicsContext.Device, &memAllocateInfo, nullptr, &m_OffscreenTarget.ImageMemory) != VK_SUCCESS)
+        if (vmaCreateImage(m_Allocator, &imageInfo, &allocInfo, &m_OffscreenTarget.Image, &m_OffscreenTarget.Allocation, nullptr) != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to allocate offscreen image memory!");
         }
-
-        vkBindImageMemory(m_GraphicsContext.Device, m_OffscreenTarget.Image, m_OffscreenTarget.ImageMemory, 0);
 
         VkImageViewCreateInfo imageViewInfo = {
             .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
@@ -496,8 +499,7 @@ namespace Daedalus {
         if (m_OffscreenTarget.Framebuffer) vkDestroyFramebuffer(m_GraphicsContext.Device, m_OffscreenTarget.Framebuffer, nullptr);
         if (m_OffscreenTarget.RenderPass) vkDestroyRenderPass(m_GraphicsContext.Device, m_OffscreenTarget.RenderPass, nullptr);
         if (m_OffscreenTarget.ImageView) vkDestroyImageView(m_GraphicsContext.Device, m_OffscreenTarget.ImageView, nullptr);
-        if (m_OffscreenTarget.Image) vkDestroyImage(m_GraphicsContext.Device, m_OffscreenTarget.Image, nullptr);
-        if (m_OffscreenTarget.ImageMemory) vkFreeMemory(m_GraphicsContext.Device, m_OffscreenTarget.ImageMemory, nullptr);
+        if (m_OffscreenTarget.Image != VK_NULL_HANDLE && m_OffscreenTarget.Allocation != VK_NULL_HANDLE) { vmaDestroyImage(m_Allocator, m_OffscreenTarget.Image, m_OffscreenTarget.Allocation); }
 
         for (auto framebuffer : m_GraphicsContext.Framebuffers) { if (framebuffer) vkDestroyFramebuffer(m_GraphicsContext.Device, framebuffer, nullptr); }
         for (auto imageView : m_GraphicsContext.SwapchainImageViews) { if (imageView) vkDestroyImageView(m_GraphicsContext.Device, imageView, nullptr); }
@@ -512,6 +514,13 @@ namespace Daedalus {
         if (m_GraphicsContext.DescriptorPool) vkDestroyDescriptorPool(m_GraphicsContext.Device, m_GraphicsContext.DescriptorPool, nullptr);
         if (m_GraphicsContext.CommandPool) vkDestroyCommandPool(m_GraphicsContext.Device, m_GraphicsContext.CommandPool, nullptr);
         if (m_GraphicsContext.pSurface) vkDestroySurfaceKHR(m_GraphicsContext.Instance, m_GraphicsContext.pSurface, nullptr);
+
+        if (m_Allocator != VK_NULL_HANDLE)
+        {
+            vmaDestroyAllocator(m_Allocator);
+            m_Allocator = VK_NULL_HANDLE;
+        }
+
         if (m_GraphicsContext.Device) vkDestroyDevice(m_GraphicsContext.Device, nullptr);
         if (m_GraphicsContext.Instance) vkDestroyInstance(m_GraphicsContext.Instance, nullptr);
 
@@ -615,23 +624,6 @@ namespace Daedalus {
         m_ActiveProjectPath = projectPath;
 
         return true;
-    }
-
-    uint32_t EngineCore::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) const
-    {
-        VkPhysicalDeviceMemoryProperties memProperties;
-        vkGetPhysicalDeviceMemoryProperties(m_GraphicsContext.PhysicalDevice, &memProperties);
-
-        for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++)
-        {
-            if ((typeFilter & (1 << i)) &&
-               (memProperties.memoryTypes[i].propertyFlags & properties) == properties)
-            {
-                return i;
-            }
-        }
-
-        throw std::runtime_error("Failed to find suitable GPU memory type!");
     }
 
     void EngineCore::TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout)

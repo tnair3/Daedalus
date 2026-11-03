@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vulkan/vulkan.h>
+#include <vk_mem_alloc.h>
 #include <vector>
 
 namespace Daedalus {
@@ -27,7 +28,7 @@ namespace Daedalus {
     struct OffscreenRenderTarget {
         VkExtent2D Extent{ .width = 1920, .height = 1080 };
         VkImage Image = VK_NULL_HANDLE;
-        VkDeviceMemory ImageMemory = VK_NULL_HANDLE;
+        VmaAllocation Allocation = VK_NULL_HANDLE;
         VkImageView ImageView = VK_NULL_HANDLE;
         VkSampler Sampler = VK_NULL_HANDLE;
         VkRenderPass RenderPass = VK_NULL_HANDLE;

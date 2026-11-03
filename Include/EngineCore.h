@@ -32,6 +32,7 @@ namespace Daedalus {
 
             EngineGraphicsContext m_GraphicsContext;
             OffscreenRenderTarget m_OffscreenTarget;
+            VmaAllocator m_Allocator = VK_NULL_HANDLE;
 
             std::unique_ptr<TrianglePipeline> m_TrianglePipeline;
 
